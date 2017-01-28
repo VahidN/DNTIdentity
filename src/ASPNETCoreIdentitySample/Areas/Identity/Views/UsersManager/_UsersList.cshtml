@@ -1,0 +1,46 @@
+﻿@model PagedUsersListViewModel
+
+@{
+    ViewData["Title"] = "مدیریت کاربران";
+}
+
+@{ await Html.RenderPartialAsync(@"~/Areas/Identity/Views/UsersManager/_SearchUsers.cshtml", new SearchUsersViewModel()).ConfigureAwait(false); }
+
+@if (Model.Users.Any())
+{
+    foreach (var user in Model.Users)
+    {
+        <div id="usercard-@user.Id">
+            @{ await Html.RenderPartialAsync(@"~/Areas/Identity/Views/UserCard/_UserCardItem.cshtml",
+                                   new UserCardItemViewModel
+                                   {
+                                       User = user,
+                                       ShowAdminParts = true,
+                                       Roles = Model.Roles,
+                                       ActiveTab = UserCardItemActiveTab.UserInfo
+                                   }).ConfigureAwait(false); }
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-warning">کاربری یافت نشد.</div>
+}
+
+<div>
+    <cs-pager cs-paging-pagesize="@Model.Paging.ItemsPerPage"
+              cs-paging-pagenumber="@Model.Paging.CurrentPage"
+              cs-paging-totalitems="@Model.Paging.TotalItems"
+              cs-pagenumber-param="page"
+              cs-ajax-target="#gridcontainer"
+              asp-controller="UsersManager"
+              asp-action="Index"
+              asp-route-pagesize="@Model.Paging.ItemsPerPage"
+              cs-show-first-last="true"
+              cs-suppress-empty-nextprev="true"
+              cs-suppress-inactive-firstlast="true"
+              cs-first-page-text="ابتدا"
+              cs-last-page-text="انتها"
+              cs-pager-li-current-class="active"
+              cs-pager-li-non-active-class="disabled"></cs-pager>
+</div>

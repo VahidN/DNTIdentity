@@ -1,0 +1,22 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "ASPNETCoreIdentitySample.Common": "1.0.0-*",
+        "ASPNETCoreIdentitySample.DataLayer": "1.0.0-*",
+        "ASPNETCoreIdentitySample.Entities": "1.0.0-*",
+        "ASPNETCoreIdentitySample.ViewModels": "1.0.0-*",
+        "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+        "Microsoft.Extensions.Configuration.Abstractions": "1.1.0",
+        "Microsoft.Extensions.Caching.SqlServer": "1.1.0",
+        "Microsoft.Extensions.Options": "1.1.0",
+        "NETStandard.Library": "1.6.1",
+        "MailKit": "1.10.1"
+    },
+
+    "frameworks": {
+      "netstandard1.6": {
+        "imports": "dnxcore50"
+      }
+    }
+}

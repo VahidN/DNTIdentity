@@ -1,0 +1,72 @@
+﻿@model DynamicRoleClaimsManagerViewModel
+
+<h2>تنظیم سطوح دسترسی پویای نقش «@Model.RoleIncludeRoleClaims.Name»</h2>
+
+<div class="alert alert-info">
+    <a href="#" class="close" data-dismiss="alert">×</a>
+    <ul>
+        <li>
+            نقش ویژه‌ی Admin به تمام صفحات لیست شده‌ی در اینجا دسترسی کاملی دارد و هرگونه ویرایشی بر روی آن تاثیرگذار نخواهد بود.
+        </li>
+        <li>
+            در اینجا می‌توان به هر نقش ثابت، دسترسی‌های پویایی را نیز اعطاء کرد. در این حالت کنترلر و یا اکشن متدهایی با پالیسی سطوح دسترسی پویا، لیست شده و قابل انتخاب خواهند بود
+            <span dir="ltr">.([Authorize(Policy = ConstantPolicies.DynamicPermission)])</span>
+        </li>
+    </ul>
+</div>
+
+<div id="dynamicPermissions">
+    <form method="post"
+          asp-controller="DynamicRoleClaimsManager"
+          asp-action="Index"
+          role="form"
+          data-ajax="true"
+          data-ajax-begin="dataAjaxBegin"
+          data-ajax-success="dataAjaxSuccess"
+          data-ajax-failure="dataAjaxFailure">
+        <input name="RoleId" value="@Model.RoleIncludeRoleClaims.Id" type="hidden" />
+        @foreach (var controller in Model.SecuredControllerActions.OrderBy(x => x.ControllerDisplayName))
+        {
+            <div class="panel panel-default top30">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@controller.ControllerDisplayName</h3>
+                </div>
+                <ul class="list-group">
+                    @foreach (var action in controller.MvcActions.OrderBy(x => x.ActionDisplayName))
+                    {
+                        var isSelected = Model.RoleIncludeRoleClaims.Claims
+                            .Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
+                                              roleClaim.ClaimValue == action.ActionId);
+                        var selected = isSelected ? "checked" : "";
+                        var selectedClass = isSelected ? "list-group-item-success" : "";
+                        <li class="list-group-item @selectedClass" role="presentation">
+                            <input type="checkbox" name="actionIds" value="@action.ActionId" @selected />
+                            @action.ActionDisplayName
+                        </li>
+                    }
+                </ul>
+
+            </div>
+        }
+
+        <button type="submit" class="btn btn-info top15">
+            اعمال تغییرات
+            <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+        </button>
+    </form>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[name="actionIds"]').click(function () {
+                if ($(this).is(':checked')) {
+                    $(this).parent().addClass('list-group-item-success');
+                } else {
+                    $(this).parent().removeClass('list-group-item-success');
+                }
+            });
+        });
+    </script>
+}

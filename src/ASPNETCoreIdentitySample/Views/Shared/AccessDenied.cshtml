@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "عدم دسترسی!";
+    this.Context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+}
+
+<div class="panel panel-danger top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        متاسفانه شما مجوز دسترسی به صفحه‌ی درخواستی را ندارید.
+    </div>
+</div>

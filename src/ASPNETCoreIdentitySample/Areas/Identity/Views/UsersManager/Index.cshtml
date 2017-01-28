@@ -1,0 +1,14 @@
+﻿@model PagedUsersListViewModel
+
+@{
+    ViewData["Title"] = "مدیریت کاربران";
+ }
+
+<h2>
+    @ViewData["Title"]
+    <a class="btn btn-success btn-xs" asp-action="Index" asp-controller="Register">افزودن یک کاربر جدید</a>
+</h2>
+
+<div id="gridcontainer" class="top30">
+    @{ await Html.RenderPartialAsync("_UsersList", Model).ConfigureAwait(false); }
+</div>

@@ -1,0 +1,99 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        <form asp-controller="Register"
+              asp-action="Index"
+              method="post"
+              class="form-horizontal">
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            <div class="form-group">
+                <label asp-for="FirstName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="rtl" asp-for="FirstName" class="form-control col-md-4" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="rtl" asp-for="LastName" class="form-control col-md-4" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="Username" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                    <span class="optional-label">(جهت لاگین)</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="Password" class="form-control col-md-4" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control col-md-4" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col col-md-2 control-label">
+                    کد امنیتی
+                </label>
+                <div class="controls col col-md-10">
+                    <dnt-captcha asp-captcha-generator-max="9000"
+                                 asp-captcha-generator-min="1"
+                                 asp-captcha-generator-language="Persian"
+                                 asp-font-name="Tahoma"
+                                 asp-font-size="20"
+                                 asp-fore-color="black"
+                                 asp-back-color="#ccc"
+                                 asp-text-box-class="text-box single-line form-control col-md-4"
+                                 asp-text-box-template="<div class='input-group col-md-4'><span class='input-group-addon'><span class='glyphicon glyphicon-lock'></span></span>{0}</div>"
+                                 asp-validation-message-class="text-danger"
+                                 asp-area-name="" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-info col-md-2">ثبت نام</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function triggerRemoteValidation() {
+            $('#@nameof(RegisterViewModel.Username)').removeData('previousValue');
+            $('form').validate().element('#@nameof(RegisterViewModel.Username)');
+
+            $('#@nameof(RegisterViewModel.Email)').removeData('previousValue');
+            $('form').validate().element('#@nameof(RegisterViewModel.Email)');
+        }
+    </script>
+}

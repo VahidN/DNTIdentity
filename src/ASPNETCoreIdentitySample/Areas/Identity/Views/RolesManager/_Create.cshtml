@@ -1,0 +1,33 @@
+﻿@model RoleViewModel
+@{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+<form asp-action="AddRole" method="post" class="form-horizontal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                @if (string.IsNullOrEmpty(Model?.Id))
+                {
+                    <h4 class="modal-title">ایجاد یک نقش جدید</h4>
+                }
+                else
+                {
+                    <h4 class="modal-title">ویرایش یک نقش</h4>
+                }
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label asp-for="Name" class="col col-lg-4 control-label"></label>
+                    <div class="col col-lg-8 controls">
+                        <input asp-for="Id" />
+                        <input dir="ltr" asp-for="Name" class="form-control col col-md-8" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">ثبت</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">انصراف</button>
+            </div>
+        </div>
+    </div>
+</form>

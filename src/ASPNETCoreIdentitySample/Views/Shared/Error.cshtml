@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "خطا!";
+    this.Context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+}
+
+<div class="panel panel-danger top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        متاسفانه در حین پردازش درخواست جاری خطایی رخ داده‌است.
+        @if (User.IsInRole(ConstantRoles.Admin))
+        {
+            <a asp-controller="SystemLog" asp-action="Index" asp-area="@AreaConstants.IdentityArea"> مشاهده‌ی لیست خطاهای ثبت شده. </a>
+        }
+    </div>
+</div>

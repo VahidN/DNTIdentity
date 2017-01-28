@@ -1,0 +1,102 @@
+﻿@model IEnumerable<RoleAndUsersCountViewModel>
+
+@{
+    ViewData["Title"] = "مدیریت نقش‌های سیستم";
+}
+
+<div class="alert alert-warning top30">
+    <a href="#" class="close" data-dismiss="alert">×</a>
+    <ul>
+        <li>
+            ویرایش نام نقش‌های ثابت سیستم و یا حذف آن‌ها می‌تواند دسترسی به قسمت‌های از پیش طراحی شده‌ی برنامه را از کار بیندازد
+            <span dir="ltr">.([Authorize(Roles = ConstantRoles.Admin)])</span>
+            بنابراین هرگونه تغییری در اینجا نیاز است در کدهای برنامه نیز منعکس شود و یا برعکس.
+        </li>
+        <li>
+            در اینجا می‌توان به هر نقش ثابت، دسترسی‌های پویایی را نیز اعطاء کرد. در این حالت کنترلر و یا اکشن متدهایی با پالیسی سطوح دسترسی پویا، لیست شده و قابل انتخاب خواهند بود
+            <span dir="ltr">.([Authorize(Policy = ConstantPolicies.DynamicPermission)])</span>
+        </li>
+        <li>
+            در حالت استفاده‌ی از سطوح دسترسی پویا، با تغییر نام و یا حذف نقش‌های ثابت، نیازی به تغییری در کدهای برنامه نخواهد بود.
+        </li>
+        <li>تمام کاربران منتسب به نقش Admin، به صفحات دارای سطوح دسترسی پویا نیز دسترسی کاملی دارند و نیازی به افزودن آن‌ها به لیست نفرات این نوع نقش‌های پویای خاص نیست.</li>
+        <li>اگر در یک فیلتر Authorize، نقش جدیدی را بکار گرفته‌اید، می‌توانید آن‌را در اینجا اضافه کنید.</li>
+        <li>اگر نام نقش بکار رفته‌ی در فیلترهای Authorize را تغییر داده‌اید، می‌توانید این تغییرات را نیز در اینجا اعمال و ویرایش نمائید.</li>
+        <li>اگر از فیلترهای Authorize، نقشی را به طور کامل حذف کرده‌اید، می‌توانید این نقش را در اینجا نیز حذف کنید.</li>
+    </ul>
+</div>
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        @{ await Html.RenderPartialAsync("_AllRolesList", Model).ConfigureAwait(false); }
+    </div>
+    <footer class="panel-footer">
+        <a class="btn btn-success" href="#" id="btnCreate">ایجاد یک نقش جدید</a>
+    </footer>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#btnCreate').click(function (e) {
+                e.preventDefault(); //می‌خواهیم لینک به صورت معمول عمل نکند
+
+                $.bootstrapModalAjaxForm({
+                    postUrl: '@Url.Action("AddRole", "RolesManager")',
+                    renderModalPartialViewUrl: '@Url.Action("RenderRole", "RolesManager")',
+                    renderModalPartialViewData: {},
+                    loginUrl: '/identity/login',
+                    beforePostHandler: function () {
+                    },
+                    completeHandler: function () {
+                        location.reload();
+                    },
+                    errorHandler: function () {
+                    }
+                });
+            });
+
+            $("a[id^='btnEdit']").click(function (e) {
+                e.preventDefault(); //می‌خواهیم لینک به صورت معمول عمل نکند
+                var roleId = $(this).data("edit-id");
+
+                $.bootstrapModalAjaxForm({
+                    postUrl: '@Url.Action("EditRole", "RolesManager")',
+                    renderModalPartialViewUrl: '@Url.Action("RenderRole", "RolesManager")',
+                    renderModalPartialViewData: JSON.stringify({ "id": roleId }),
+                    loginUrl: '/identity/login',
+                    beforePostHandler: function () {
+                    },
+                    completeHandler: function () {
+                        location.reload();
+                    },
+                    errorHandler: function () {
+                    }
+                });
+            });
+
+            $("a[id^='btnDelete']").click(function (e) {
+                e.preventDefault(); //می‌خواهیم لینک به صورت معمول عمل نکند
+                var roleId = $(this).data("delete-id");
+
+                $.bootstrapModalAjaxForm({
+                    postUrl: '@Url.Action("Delete", "RolesManager")',
+                    renderModalPartialViewUrl: '@Url.Action("RenderDeleteRole", "RolesManager")',
+                    renderModalPartialViewData: JSON.stringify({ "id": roleId }),
+                    loginUrl: '/identity/login',
+                    beforePostHandler: function () {
+                    },
+                    completeHandler: function () {
+                        location.reload();
+                    },
+                    errorHandler: function () {
+                    }
+                });
+            });
+        });
+    </script>
+}

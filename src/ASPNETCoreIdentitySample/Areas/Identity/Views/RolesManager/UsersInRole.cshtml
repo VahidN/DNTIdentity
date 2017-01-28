@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Routing
+@model PagedUsersListViewModel
+
+@{
+    var roleId = (string)this.Context.GetRouteValue("Id");
+    var roleName = $"«{Model.Roles.First(x => x.Id.ToString() == roleId).Name}»";
+    ViewData["Title"] = $"کاربران نقش {roleName}";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-info top30">
+    <a href="#" class="close" data-dismiss="alert">×</a>
+    <ul>
+        <li>برای افزودن کاربر جدیدی به نقش @roleName، ابتدا او را جستجو کرده و سپس در برگه‌ی مدیریت کاربر او، نقش مورد نظر را انتخاب و سپس اعمال کنید.</li>
+        <li>برای حذف کاربران لیست شده‌ی در صفحه‌ی جاری از نقش @roleName، در برگه‌ی مدیریت کاربران آن‌ها، تیک مربوط به نقش @roleName را برداشته و سپس تغییرات را اعمال کنید.</li>
+    </ul>
+</div>
+
+<div id="gridcontainer" class="top30">
+    @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UsersManager/_UsersList.cshtml", Model).ConfigureAwait(false); }
+</div>

@@ -1,0 +1,19 @@
+{
+    "version": "1.0.0-*",
+
+    "dependencies": {
+        "ASPNETCoreIdentitySample.Entities": "1.0.0-*",
+        "cloudscribe.Web.Pagination": "1.1.1",
+        "Microsoft.AspNetCore.Identity": "1.1.0",
+        "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
+        "Microsoft.AspNetCore.Mvc.ViewFeatures": "1.1.1",
+        "NETStandard.Library": "1.6.1",
+        "System.ComponentModel.Annotations": "4.3.0"
+    },
+
+    "frameworks": {
+        "netstandard1.6": {
+            "imports": "dnxcore50"
+        }
+    }
+}

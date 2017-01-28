@@ -1,0 +1,139 @@
+﻿@model UserProfileViewModel
+@inject IUsersPhotoService PhotoService
+@inject IOptionsSnapshot<SiteSettings> SiteOptions
+
+@{
+    ViewData["Title"] = "تنظیمات کاربری";
+    var changePasswordUrl = Url.Action("Index", "ChangePassword");
+    var imageOptions = SiteOptions.Value.UserAvatarImageOptions;
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        @if (Model.IsPasswordTooOld)
+        {
+            <div class="alert alert-warning" role="alert">
+                <a href="#" class="close" data-dismiss="alert">×</a>
+                کلمه‌ی عبور شما بسیار قدیمی است. لطفا جهت تعویض آن <a href="@changePasswordUrl">اینجا</a> کلیک کنید.
+            </div>
+        }
+        <form asp-controller="UserProfile"
+              asp-action="Index"
+              method="post"
+              enctype="multipart/form-data"
+              class="form-horizontal">
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            <div class="form-group">
+                <label asp-for="FirstName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="rtl" asp-for="FirstName" class="form-control col-md-4"/>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="rtl" asp-for="LastName" class="form-control col-md-4"/>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="UserName" onblur="triggerRemoteValidation()" class="form-control col-md-4"/>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <span class="optional-label">(جهت لاگین)</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control col-md-4"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col col-md-2 control-label"></label>
+                <div class="controls col col-md-10">
+                    <input asp-for="IsEmailPublic"/>
+                    <label asp-for="IsEmailPublic"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col col-md-2 control-label"></label>
+                <div class="controls col col-md-10">
+                    <input asp-for="TwoFactorEnabled" />
+                    <label asp-for="TwoFactorEnabled"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col col-md-2 control-label">تاریخ تولد</label>
+                <div class="controls col col-md-10 form-inline">
+                    <select asp-for="DateOfBirthDay" class="form-control"
+                            asp-items="Enumerable.Range(1, 31).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() })">
+                        <option value="">-- روز --</option>
+                    </select> /
+                    <select asp-for="DateOfBirthMonth" class="form-control"
+                            asp-items="Enumerable.Range(1, 12).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() })">
+                        <option value="">-- ماه --</option>
+                    </select> /
+                    <select asp-for="DateOfBirthYear" class="form-control"
+                            asp-items="Enumerable.Range(1300, 90).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() })">
+                        <option value="">-- سال --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="rtl" asp-for="Location" class="form-control col-md-4"/>
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhotoFileName" class="col-md-2 control-label"></label>
+                <div class="controls col col-md-9">
+                    <img src="@PhotoService.GetUserPhotoUrl(Model.PhotoFileName)"
+                         asp-append-version="true" alt="photo"/>
+
+                    <input type="file" asp-for="Photo" class="form-control"/>
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input asp-for="Pid"/> <input asp-for="IsAdminEdit"/>
+                    <button type="submit" class="btn btn-info col-md-2">ارسال</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="alert alert-info top30" role="alert">
+    <a href="#" class="close" data-dismiss="alert">×</a>
+    <ul>
+        <li>لطفا دقت بفرمائید با تغییر آدرس ایمیل، اکانت شما به صورت موقت غیرفعال شده و یک ایمیل فعالسازی مجدد آن‌را بلافاصله دریافت خواهید کرد.</li>
+        <li>در صورت عدم ورود تصویر، از اطلاعات قبلی استفاده خواهد شد. </li>
+        <li>
+            تصاویر مجاز برای ارسال از نوع‌های png، gif و jpg هستند؛ با حداکثر اندازه @imageOptions.MaxWidth * @imageOptions.MaxHeight
+            پیکسل.
+        </li>
+    </ul>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function triggerRemoteValidation() {
+            $('#@nameof(UserProfileViewModel.UserName)').removeData('previousValue');
+            $('form').validate().element('#@nameof(UserProfileViewModel.UserName)');
+
+            $('#@nameof(UserProfileViewModel.Email)').removeData('previousValue');
+            $('form').validate().element('#@nameof(UserProfileViewModel.Email)');
+        }
+    </script>
+}

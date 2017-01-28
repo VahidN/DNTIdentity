@@ -1,0 +1,21 @@
+{
+    "name": "samim-font",
+    "version": "1.0.2",
+    "main": [
+        "dist/*"
+    ],
+    "homepage": "http://rastikerdar.github.io/samim-font/",
+    "authors": [
+        { "name": "Saber Rastikerdar", "homepage": "http://rastikerdar.blog.ir" }
+    ],
+    "license": ["OFL-1.1"],
+    "ignore": [
+        "*.md",
+        "*.json",
+        "source"
+    ],
+    "keywords": [
+        "font",
+        "persian"
+    ]
+}

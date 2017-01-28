@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "Newtonsoft.Json": "9.0.1",
+        "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.1.0",
+        "Microsoft.EntityFrameworkCore": "1.1.0",
+        "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+        "NETStandard.Library": "1.6.1",
+        "System.ComponentModel.Annotations": "4.3.0",
+        "ASPNETCoreIdentitySample.Common": "1.0.0-*"
+    },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

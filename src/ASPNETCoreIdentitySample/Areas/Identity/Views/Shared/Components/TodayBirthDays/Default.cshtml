@@ -1,0 +1,33 @@
+﻿@inject IUsersPhotoService PhotoService
+
+@model TodayBirthDaysViewModel
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <span class="fa fa-calendar" aria-hidden="true"></span>
+            تولدهای امروز
+        </h3>
+    </div>
+    <ul id="voteslist" class="list-group">
+        @foreach (var user in Model.Users)
+        {
+            var photoUrl = PhotoService.GetUserPhotoUrl(user.PhotoFileName);
+            <li class="list-group-item" role="presentation">
+                <img class="img-circle userImage" src="@photoUrl" alt="@user.DisplayName" asp-append-version="true"
+                     onerror="this.style.visibility = 'hidden';this.width = 0;this.height = 0;" />
+                <a asp-action="Index" asp-controller="UserCard" asp-area="@AreaConstants.IdentityArea" asp-route-id="@user.Id">@user.DisplayName</a>
+                <span class="badge pull-left">@user.BirthDate.Value.GetAge().ToPersianNumbers()</span>
+            </li>
+        }
+    </ul>
+    @if (Model.AgeStat.UsersCount > 0)
+    {
+        <div class="panel-footer">
+            <span>
+                میانگین سنی کاربران
+            </span>
+            <span class="badge badge-primary pull-left"><abbr title="@Model.AgeStat.MinMax">@Model.AgeStat.AverageAge.ToPersianNumbers()</abbr></span>
+        </div>
+    }
+</div>

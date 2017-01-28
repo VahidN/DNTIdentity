@@ -1,0 +1,8 @@
+﻿@{
+    ViewData["Title"] = $"کاربران آنلاین";
+}
+<div dir="rtl">
+    <cache expires-after="@TimeSpan.FromMinutes(1)">
+        <vc:online-users numbers-to-take="100" minutes-to-take="15" show-more-items-link="false"></vc:online-users>
+    </cache>
+</div>

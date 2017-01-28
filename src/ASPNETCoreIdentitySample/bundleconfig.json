@@ -1,0 +1,30 @@
+[
+    {
+        "outputFileName": "wwwroot/css/site.min.css",
+        "inputFiles": [
+            "bower_components/bootstrap/dist/css/bootstrap.min.css",
+            "bower_components/bootstrap-rtl/dist/css/bootstrap-rtl.min.css",
+            "bower_components/components-font-awesome/css/font-awesome.min.css",
+            "content/custom.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/site.min.js",
+        "inputFiles": [
+            "bower_components/jquery/dist/jquery.min.js",
+            "bower_components/jquery-validation/dist/jquery.validate.min.js",
+            "bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+            "bower_components/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js",
+            "bower_components/bootstrap/dist/js/bootstrap.min.js",
+            "scripts/jquery.bootstrap-modal-confirm.js",
+            "scripts/jquery.bootstrap-modal-alert.js",
+            "scripts/jquery.bootstrap-modal-ajax-form.js",
+            "scripts/custom.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        "sourceMap": false
+    }
+]

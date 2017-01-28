@@ -1,0 +1,45 @@
+﻿@model ForgotPasswordViewModel
+@{
+    ViewData["Title"] = "بازیابی کلمه‌ی عبور فراموش شده";
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        <form asp-controller="ForgotPassword" asp-action="Index" method="post" class="form-horizontal">
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="Email" class="form-control col-md-4" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col col-md-2 control-label">
+                    کد امنیتی
+                </label>
+                <div class="controls col col-md-10">
+                    <dnt-captcha asp-captcha-generator-max="9000"
+                                 asp-captcha-generator-min="1"
+                                 asp-captcha-generator-language="Persian"
+                                 asp-font-name="Tahoma"
+                                 asp-font-size="20"
+                                 asp-fore-color="black"
+                                 asp-back-color="#ccc"
+                                 asp-text-box-class="text-box single-line form-control col-md-4"
+                                 asp-text-box-template="<div class='input-group col-md-4'><span class='input-group-addon'><span class='glyphicon glyphicon-lock'></span></span>{0}</div>"
+                                 asp-validation-message-class="text-danger"
+                                 asp-area-name="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-info col-md-2">ارسال</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

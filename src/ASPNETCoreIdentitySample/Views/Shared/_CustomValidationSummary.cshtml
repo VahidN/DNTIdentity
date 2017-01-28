@@ -1,0 +1,8 @@
+﻿@if (ViewData.ModelState.Any(keyValuePair => keyValuePair.Value.Errors.Any()))
+{
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">×</a>
+        <h4>خطاهای اعتبارسنجی</h4>
+        <div asp-validation-summary="ModelOnly"></div>
+    </div>
+}

@@ -1,0 +1,282 @@
+﻿@model UserCardItemViewModel
+
+@{
+    var user = Model.User;
+}
+
+<div class="top30">
+    <div class="col-md-7">
+        <table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
+            <tr>
+                <th class="text-center">ویژگی کاربری</th>
+                <th class="text-center">وضعیت</th>
+                <th class="text-center">اختیارات</th>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-user"></span>
+                    <strong>نام کاربری</strong>
+                </td>
+                <td class="text-center">@user.UserName</td>
+                <td class="text-center">
+                    <a asp-controller="UserProfile"
+                       asp-action="AdminEdit"
+                       asp-route-id="@user.Id"
+                       class="btn btn-info btn-xs">
+                        ویرایش مشخصات
+                        <span aria-hidden="true" class="fa fa-edit"></span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-user-circle-o"></span>
+                    <strong>وضعیت کاربری</strong>
+                </td>
+                <td class="text-center">
+                    @if (user.IsActive)
+                    {
+                        <span class="label label-success">فعال</span>
+                    }
+                    else
+                    {
+                        <span class="label label-warning">غیرفعال</span>
+                    }
+                </td>
+                <td class="text-center">
+                    <form method="post"
+                          asp-controller="UsersManager"
+                          asp-action="ChangeUserStat"
+                          role="form"
+                          data-ajax="true"
+                          data-ajax-alert-confirm="وضعیت کاربری @user.DisplayName تغییر کند؟"
+                          data-ajax-begin="dataAjaxBegin"
+                          data-ajax-success="dataAjaxSuccess"
+                          data-ajax-failure="dataAjaxFailure"
+                          data-ajax-update="#usercard-@user.Id">
+                        <input name="userId" value="@user.Id" type="hidden" />
+                        @if (user.IsActive)
+                        {
+                            <input name="activate" value="false" type="hidden" />
+                            <button type="submit" class="btn btn-danger btn-xs">
+                                غیرفعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-down"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <input name="activate" value="true" type="hidden" />
+                            <button type="submit" class="btn btn-info btn-xs">
+                                فعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                            </button>
+                        }
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-envelope"></span>
+                    <strong>
+                        وضعیت ایمیل
+                    </strong>
+                </td>
+                <td class="text-center">
+                    @if (user.EmailConfirmed)
+                    {
+                        <span class="label label-success">تائید شده</span>
+                    }
+                    else
+                    {
+                        <span class="label label-warning">تائید نشده</span>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (!user.EmailConfirmed)
+                    {
+                        <form method="post"
+                              asp-controller="UsersManager"
+                              asp-action="ActivateUserEmailStat"
+                              role="form"
+                              data-ajax="true"
+                              data-ajax-begin="dataAjaxBegin"
+                              data-ajax-success="dataAjaxSuccess"
+                              data-ajax-failure="dataAjaxFailure"
+                              data-ajax-update="#usercard-@user.Id">
+                            <input name="userId" value="@user.Id" type="hidden" />
+                            <button type="submit" class="btn btn-info btn-xs">
+                                تائید شود
+                                <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-lock"></span>
+                    <strong>
+                        امکان قفل شدن اکانت
+                    </strong>
+                </td>
+                <td class="text-center">
+                    @if (user.LockoutEnabled)
+                    {
+                        <span class="label label-success">فعال</span>
+                    }
+                    else
+                    {
+                        <span class="label label-warning">غیرفعال</span>
+                    }
+                </td>
+                <td class="text-center">
+                    <form method="post"
+                          asp-controller="UsersManager"
+                          asp-action="ChangeUserLockoutMode"
+                          role="form"
+                          data-ajax="true"
+                          data-ajax-begin="dataAjaxBegin"
+                          data-ajax-success="dataAjaxSuccess"
+                          data-ajax-failure="dataAjaxFailure"
+                          data-ajax-update="#usercard-@user.Id">
+                        <input name="userId" value="@user.Id" type="hidden" />
+                        @if (user.LockoutEnabled)
+                        {
+                            <input name="activate" value="false" type="hidden" />
+                            <button type="submit" class="btn btn-danger btn-xs">
+                                غیرفعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-down"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <input name="activate" value="true" type="hidden" />
+                            <button type="submit" class="btn btn-info btn-xs">
+                                فعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                            </button>
+                        }
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-calendar-check-o"></span>
+                    <strong>
+                        زمان خاتمه قفل شدن اکانت
+                    </strong>
+                </td>
+                <td class="text-center">
+                    @if (user.LockoutEnd != null)
+                    {
+                        @user.LockoutEnd.Value.ToFriendlyPersianDateTextify().ToPersianNumbers()
+                    }
+                </td>
+                <td class="text-center">
+                    @if (user.LockoutEnd != null)
+                    {
+                        <form method="post"
+                              asp-controller="UsersManager"
+                              asp-action="EndUserLockout"
+                              role="form"
+                              data-ajax="true"
+                              data-ajax-begin="dataAjaxBegin"
+                              data-ajax-success="dataAjaxSuccess"
+                              data-ajax-failure="dataAjaxFailure"
+                              data-ajax-update="#usercard-@user.Id">
+                            <input name="userId" value="@user.Id" type="hidden" />
+                            <button type="submit" class="btn btn-info btn-xs">
+                                رفع قفل
+                                <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span aria-hidden="true" class="fa fa-user-secret"></span>
+                    <strong>
+                        اعتبارسنجی دو مرحله‌ای
+                    </strong>
+                </td>
+                <td class="text-center">
+                    @if (user.TwoFactorEnabled)
+                    {
+                        <span class="label label-success">فعال</span>
+                    }
+                    else
+                    {
+                        <span class="label label-warning">غیرفعال</span>
+                    }
+                </td>
+                <td class="text-center">
+                    <form method="post"
+                          asp-controller="UsersManager"
+                          asp-action="ChangeUserTwoFactorAuthenticationStat"
+                          role="form"
+                          data-ajax="true"
+                          data-ajax-begin="dataAjaxBegin"
+                          data-ajax-success="dataAjaxSuccess"
+                          data-ajax-failure="dataAjaxFailure"
+                          data-ajax-update="#usercard-@user.Id">
+                        <input name="userId" value="@user.Id" type="hidden" />
+                        @if (user.TwoFactorEnabled)
+                        {
+                            <input name="activate" value="false" type="hidden" />
+                            <button type="submit" class="btn btn-danger btn-xs">
+                                غیرفعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-down"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <input name="activate" value="true" type="hidden" />
+                            <button type="submit" class="btn btn-info btn-xs">
+                                فعال شود
+                                <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                            </button>
+                        }
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
+            <tr>
+                <th class="text-center">
+                    <span aria-hidden="true" class="fa fa-id-badge"></span>
+                    نقش‌های سیستم
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <form method="post"
+                          asp-controller="UsersManager"
+                          asp-action="ChangeUserRoles"
+                          role="form"
+                          data-ajax="true"
+                          data-ajax-begin="dataAjaxBegin"
+                          data-ajax-success="dataAjaxSuccess"
+                          data-ajax-failure="dataAjaxFailure"
+                          data-ajax-update="#usercard-@user.Id">
+                        <input name="userId" value="@user.Id" type="hidden" />
+                        @foreach (var role in Model.Roles)
+                        {
+                            var selected = user.Roles.Any(userRole => userRole.RoleId == role.Id) ? "checked" : "";
+                            <div>
+                                <input type="checkbox" name="roleIds" value="@role.Id" @selected />
+                                @role.Name
+                            </div>
+                        }
+                        <button type="submit" class="btn btn-info btn-xs top10">
+                            اعمال تغییرات نقش‌ها
+                            <span aria-hidden="true" class="fa fa-thumbs-up"></span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<RoleAndUsersCountViewModel>
+
+<table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
+    <tr>
+        <th class="text-center">نام نقش</th>
+        <th class="text-center">تعداد اعضاء</th>
+        <th class="text-center">مدیریت نقش</th>
+        <th class="text-center">مدیریت اعضای نقش</th>
+        <th class="text-center">مدیریت دسترسی‌های پویای نقش</th>
+    </tr>
+    @if (!Model.Any())
+            {
+        <tr>
+            <td colspan="3" class="text-center">نقشی یافت نشد</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            var role = item.Role;
+            <tr>
+                <td class="text-center">@role.Name</td>
+                <td class="text-center">@item.UsersCount</td>
+                <td class="text-center">
+                    <a href="#" id="btnEdit-@role.Id" data-edit-id="@role.Id" class="btn btn-sm btn-primary">ویرایش</a>
+                    <a href="#" id="btnDelete-@role.Id" data-delete-id="@role.Id" class="btn btn-sm btn-danger">حذف</a>
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-info" asp-action="UsersInRole" asp-route-id="@role.Id">
+                        مشاهده و تغییر لیست اعضاء
+                    </a>
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-success" asp-action="Index" asp-controller="DynamicRoleClaimsManager" asp-route-id="@role.Id">
+                        مشاهده و تغییر لیست دسترسی‌های پویا
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+</table>

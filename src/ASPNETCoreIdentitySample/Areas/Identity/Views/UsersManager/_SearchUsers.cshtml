@@ -1,0 +1,159 @@
+﻿@model SearchUsersViewModel
+@{
+    int? searchResultsCount = Model?.PagedUsersList?.Users.Count;
+    var resultIsActive = searchResultsCount.HasValue ? "active" : "";
+}
+<div id="SearchUsers">
+    <div class="panel panel-default top30">
+        <div class="panel-body">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation">
+                    <a href="#search" aria-controls="search" role="tab" data-toggle="tab">جستجوی کاربران</a>
+                </li>
+                <li role="presentation" class="@resultIsActive">
+                    <a href="#searchResults" aria-controls="searchResults" role="tab" data-toggle="tab">
+                        نتیجه‌ی جستجو
+                        @if (searchResultsCount.HasValue)
+                        {
+                            <span class="label label-success pull-left right5">@searchResultsCount.Value.ToPersianNumbers()</span>
+                        }
+                    </a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="search">
+                    <form asp-controller="UsersManager"
+                          asp-action="SearchUsers"
+                          method="post"
+                          class="form-horizontal top30"
+                          data-ajax="true"
+                          data-ajax-begin="dataAjaxBegin"
+                          data-ajax-success="dataAjaxSuccess"
+                          data-ajax-failure="dataAjaxFailure"
+                          data-ajax-update="#SearchUsers">
+                        @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+                        <div class="form-group">
+                            <label asp-for="TextToFind" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input dir="rtl" asp-for="TextToFind" class="form-control col-md-4" />
+                                <span class="optional-label">(اختیاری)</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MaxNumberOfRows" class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
+                                <input dir="rtl" asp-for="MaxNumberOfRows" class="form-control col-md-1" />
+                                <span asp-validation-for="MaxNumberOfRows" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-1 form-group">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-10">
+                                <h5>بر اساس:</h5>
+                                <hr />
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsPartOfEmail" />
+                                        <label asp-for="IsPartOfEmail"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsUserId" />
+                                        <label asp-for="IsUserId"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsPartOfName" />
+                                        <label asp-for="IsPartOfName"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsPartOfLastName" />
+                                        <label asp-for="IsPartOfLastName"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsPartOfUserName" />
+                                        <label asp-for="IsPartOfUserName"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="IsPartOfLocation" />
+                                        <label asp-for="IsPartOfLocation"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="HasEmailConfirmed" />
+                                        <label asp-for="HasEmailConfirmed"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="UserIsActive" />
+                                        <label asp-for="UserIsActive"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="ShowAllUsers" />
+                                        <label asp-for="ShowAllUsers"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="UserIsLockedOut" />
+                                        <label asp-for="UserIsLockedOut"></label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-md-4">
+                                        <input asp-for="HasTwoFactorEnabled" />
+                                        <label asp-for="HasTwoFactorEnabled"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-1 col-md-11">
+                                <button type="submit" class="btn btn-info col-md-2 top15">جستجو</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div role="tabpanel" class="tab-pane @resultIsActive" id="searchResults">
+                    @if (Model.PagedUsersList != null)
+                    {
+                        if (Model.PagedUsersList.Users.Any())
+                        {
+                            foreach (var user in Model.PagedUsersList.Users)
+                            {
+                                <div id="usercard-@user.Id">
+                                    @{ await Html.RenderPartialAsync(@"~/Areas/Identity/Views/UserCard/_UserCardItem.cshtml",
+                                       new UserCardItemViewModel
+                                       {
+                                           User = user,
+                                           ShowAdminParts = true,
+                                           Roles = Model.PagedUsersList.Roles,
+                                           ActiveTab = UserCardItemActiveTab.UserInfo
+                                       }).ConfigureAwait(false); }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning top30">کاربری یافت نشد.</div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

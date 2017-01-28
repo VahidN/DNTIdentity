@@ -1,0 +1,45 @@
+﻿@inject IUsersPhotoService PhotoService
+
+@{
+    var displayName = User.Identity.GetUserDisplayName();
+    var photoUrl = PhotoService.GetCurrentUserPhotoUrl();
+}
+
+<ul class="nav navbar-nav">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <img class="img-circle userImage" src="@photoUrl" alt="@displayName" asp-append-version="true"
+                 onerror="this.style.visibility = 'hidden';this.width=0; this.height=0;" />
+            <span class="author">@displayName</span>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a asp-controller="UserCard" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="left5 fa fa-user" aria-hidden="true"></span>
+                    برگه‌ی کاربری من
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a asp-controller="UserProfile" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="left5 fa fa-cog" aria-hidden="true"></span>
+                    تنظیمات کاربری من
+                </a>
+            </li>
+            <li>
+                <a asp-controller="ChangePassword" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="left5 fa fa-asterisk" aria-hidden="true"></span>
+                    تغییر کلمه‌ی عبور
+                </a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a asp-controller="Login" asp-action="LogOff" asp-area="@AreaConstants.IdentityArea">
+                    <span class="left5 fa fa-sign-out" aria-hidden="true"></span>
+                    خروج
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "یافت نشد!";
+    this.Context.Response.StatusCode = (int)HttpStatusCode.Gone;
+}
+
+<div class="top20">
+    <div class="alert alert-warning">
+        <h1><span aria-hidden="true" class="fa fa-warning"></span>خطا</h1>
+        <h3>اطلاعات درخواستی یافت نشد.</h3>
+    </div>
+</div>

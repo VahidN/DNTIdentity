@@ -1,0 +1,86 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "ورود";
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        <form asp-controller="Login"
+              asp-action="Index"
+              asp-route-returnurl="@ViewData["ReturnUrl"]"
+              method="post"
+              autocomplete = "off"
+              class="form-horizontal">
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            <div class="form-group">
+                <label asp-for="Username" class="col-md-2 control-label"></label>
+                <div class="controls col col-md-10">
+                    <div class="input-group col-md-4">
+                        <span class="input-group-addon">
+                            <span class="fa fa-user"></span>
+                        </span>
+                        <input asp-for="Username" autocomplete="off" dir="ltr" class="form-control col-md-4" />
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="col-md-2 control-label"></label>
+                <div class="controls col col-md-10">
+                    <div class="input-group col-md-4">
+                        <span class="input-group-addon">
+                            <span class="fa fa-asterisk"></span>
+                        </span>
+                        <input asp-for="Password" dir="ltr" class="form-control col-md-4" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col col-md-2 control-label">
+                    کد امنیتی
+                </label>
+                <div class="controls col col-md-10">
+                    <dnt-captcha asp-captcha-generator-max="9000"
+                                 asp-captcha-generator-min="1"
+                                 asp-captcha-generator-language="Persian"
+                                 asp-font-name="Tahoma"
+                                 asp-font-size="20"
+                                 asp-fore-color="black"
+                                 asp-back-color="#ccc"
+                                 asp-text-box-class="text-box single-line form-control col-md-4"
+                                 asp-text-box-template="<div class='input-group col-md-4'><span class='input-group-addon'><span class='glyphicon glyphicon-lock'></span></span>{0}</div>"
+                                 asp-validation-message-class="text-danger"
+                                 asp-area-name="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                            @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-info col-md-2">ورود</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <footer class="panel-footer">
+        <p>
+            <a asp-action="Index" asp-controller="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">ثبت نام</a>
+        </p>
+        <p>
+            <a asp-action="Index" asp-controller="ForgotPassword">کلمه‌ی عبور خود را فراموش کرده‌اید؟</a>
+        </p>
+    </footer>
+</div>

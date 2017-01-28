@@ -1,0 +1,45 @@
+﻿@model UserCardItemViewModel
+
+@{
+    var user = Model.User;
+    var adminPartIsActive = Model.ActiveTab == UserCardItemActiveTab.UserAdmin ? "active" : "";
+    var userPartIsActive = Model.ActiveTab == UserCardItemActiveTab.UserInfo ? "active" : "";
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-body">
+        <div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>
+                        <a asp-action="Index" asp-controller="UserCard" asp-route-id="@user.Id">@user.DisplayName</a>
+                    </h2>
+                </div>
+            </div>
+            <div>
+                <ul class="nav nav-tabs top15" role="tablist">
+                    <li role="presentation" class="@userPartIsActive">
+                        <a href="#info-@user.Id" aria-controls="info-@user.Id" role="tab" data-toggle="tab">مشخصات</a>
+                    </li>
+                    @if (Model.ShowAdminParts)
+                    {
+                        <li role="presentation" class="@adminPartIsActive">
+                            <a href="#admin-@user.Id" aria-controls="admin-@user.Id" role="tab" data-toggle="tab">مدیریت کاربر</a>
+                        </li>
+                    }
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane @userPartIsActive" id="info-@user.Id">
+                        @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserInfoPart.cshtml", Model).ConfigureAwait(false); }
+                    </div>
+                    @if (Model.ShowAdminParts)
+                    {
+                        <div role="tabpanel" class="tab-pane @adminPartIsActive" id="admin-@user.Id">
+                            @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserAdminPart.cshtml", Model).ConfigureAwait(false); }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

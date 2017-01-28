@@ -1,0 +1,94 @@
+﻿@{
+    var pageTitle = ViewData["Title"] ?? "ASP.NET Core Identity Sample";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@pageTitle</title>
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header pull-left">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">DNT Identity</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="fa fa-home" aria-hidden="true"></span>
+                            خانه
+                        </a>
+                    </li>
+                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    await Html.RenderPartialAsync("_UserMenu").ConfigureAwait(false);
+                    await Html.RenderPartialAsync("_ReportsMenu").ConfigureAwait(false);
+                    if (User.IsInRole(ConstantRoles.Admin))
+                    {
+                        await Html.RenderPartialAsync("_AdminMenu").ConfigureAwait(false);
+                    }
+                }
+                else
+                {
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a asp-area="@AreaConstants.IdentityArea" asp-controller="Login" asp-action="Index">
+                                <span class="fa fa-sign-in" aria-hidden="true"></span>
+                                ورود
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-area="@AreaConstants.IdentityArea" asp-controller="Register" asp-action="Index">
+                                <span class="fa fa-plug" aria-hidden="true"></span>
+                                ثبت نام
+                            </a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <breadcrumb asp-homepage-title="خانه"
+                            asp-homepage-url="@Url.Action("Index", "Home")"
+                            asp-homepage-glyphicon="fa fa-home"></breadcrumb>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-9 col-md-push-3">
+                @RenderBody()
+            </div>
+            <div class="col-md-3 col-md-pull-9">
+                @{await Html.RenderPartialAsync("_SidebarMenu").ConfigureAwait(false);}
+            </div>
+        </div>
+    </div>
+    <footer id="footer" dir="ltr" class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            <div class="text-center footer-text">
+                <span class="copyright-text"><span class="fa fa-heart" style="color:DarkRed" aria-hidden="true"></span> <a href="http://www.dotnettips.info/" target="_blank">DNT, 2017</a></span>
+            </div>
+        </div>
+    </footer>
+    <script src="~/js/site.min.js" type="text/javascript" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false).ConfigureAwait(false)
+</body>
+
+</html>

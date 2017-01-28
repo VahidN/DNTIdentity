@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "تائید مشخصات کاربری";
+}
+
+<div class="panel panel-default top30">
+    <div class="panel-heading">
+        <h3 class="panel-title">@ViewData["Title"]</h3>
+    </div>
+    <div class="panel-body">
+        با تشکر.
+        اطلاعات کاربری شما با موفقیت تائید شدند.
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <span>لطفا جهت ورود به سیستم <a asp-controller="Login" asp-action="Index">اینجا</a> کلیک کنید.</span>
+        }
+    </div>
+</div>
