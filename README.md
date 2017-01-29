@@ -4,9 +4,6 @@
 =======
 
 
-</div>
-
-
 
 ![dnt-identity-02](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti02.png)
 
@@ -15,7 +12,6 @@
 ![dnt-identity-01](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti01.png)
 
 
-<div dir="rtl">
 
 
 دارای قسمت‌های 
@@ -97,4 +93,3 @@
 جزئیات و توضیحات بیشتر این موارد را می‌توانید در گروه [ASP.NET Core Identity](http://www.dotnettips.info/search/label/asp.net%20core%20identity) پیگیری نمائید.
 
 
-</div>
