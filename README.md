@@ -1,9 +1,8 @@
-﻿<div dir="rtl">
-
-
+﻿
 سفارشی سازی ASP.NET Core Identity 1.1 
 =======
 
+<div dir="rtl">
 
 
 ![dnt-identity-02](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti02.png)
