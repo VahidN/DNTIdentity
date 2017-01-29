@@ -1,8 +1,9 @@
-﻿
+﻿<div dir="rtl">
+
 سفارشی سازی ASP.NET Core Identity 1.1 
 =======
+</div>
 
-<div dir="rtl">
 
 
 ![dnt-identity-02](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti02.png)
@@ -11,6 +12,8 @@
 
 ![dnt-identity-01](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti01.png)
 
+
+<div dir="rtl">
 
 
 دارای قسمت‌های 
