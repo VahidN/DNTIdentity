@@ -1,0 +1,6 @@
+﻿@inject IOptionsSnapshot<SiteSettings> SiteSettings
+
+@if (SiteSettings.Value.Smtp.UsePickupFolder)
+{
+    <div>با توجه به تنظیم بودن استفاده‌ی از PickupFolder جهت ذخیره‌ی محلی ایمیل‌ها، این ایمیل را در مسیر @SiteSettings.Value.Smtp.PickupFolder می‌توانید مشاهده کنید.</div>
+}
