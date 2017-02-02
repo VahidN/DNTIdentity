@@ -17,7 +17,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public ApplicationRoleStore(
             IUnitOfWork uow,
-            IdentityErrorDescriber describer = null)
+            IdentityErrorDescriber describer)
             : base((ApplicationDbContext)uow, describer)
         {
             _uow = uow;
