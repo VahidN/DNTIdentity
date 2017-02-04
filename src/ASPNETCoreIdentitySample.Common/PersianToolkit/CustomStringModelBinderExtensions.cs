@@ -31,7 +31,8 @@ namespace ASPNETCoreIdentitySample.Common.PersianToolkit
         }
     }
 
-    public class CustomStringModelBinder : IModelBinder    {
+    public class CustomStringModelBinder : IModelBinder
+    {
         private readonly IModelBinder _fallbackBinder;
         public CustomStringModelBinder(IModelBinder fallbackBinder)
         {
@@ -40,9 +41,18 @@ namespace ASPNETCoreIdentitySample.Common.PersianToolkit
                 throw new ArgumentNullException(nameof(fallbackBinder));
             }
             _fallbackBinder = fallbackBinder;
-        }        public Task BindModelAsync(ModelBindingContext bindingContext)        {            if (bindingContext == null)            {                throw new ArgumentNullException(nameof(bindingContext));            }
+        }
 
-            var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);            if (valueProviderResult != ValueProviderResult.None)            {
+        public Task BindModelAsync(ModelBindingContext bindingContext)
+        {
+            if (bindingContext == null)
+            {
+                throw new ArgumentNullException(nameof(bindingContext));
+            }
+
+            var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            if (valueProviderResult != ValueProviderResult.None)
+            {
                 bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
                 var valueAsString = valueProviderResult.FirstValue;
@@ -56,7 +66,9 @@ namespace ASPNETCoreIdentitySample.Common.PersianToolkit
                 return Task.CompletedTask;
             }
 
-            return _fallbackBinder.BindModelAsync(bindingContext);        }    }
+            return _fallbackBinder.BindModelAsync(bindingContext);
+        }
+    }
 
     public static class CustomStringModelBinderExtensions
     {
