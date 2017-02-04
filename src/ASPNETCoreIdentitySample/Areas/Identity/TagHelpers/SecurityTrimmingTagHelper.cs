@@ -1,5 +1,7 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
@@ -33,6 +35,9 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
         [HtmlAttributeName("asp-controller")]
         public string Controller { get; set; }
 
+        [ViewContext, HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             context.CheckArgumentIsNull(nameof(context));
@@ -41,7 +46,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
             // don't render the <security-trimming> tag.
             output.TagName = null;
 
-            if(_securityTrimmingService.CanCurrentUserAccess(Area, Controller, Action))
+            if (!ViewContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                // suppress the output and generate nothing.
+                output.SuppressOutput();
+            }
+
+            if (_securityTrimmingService.CanCurrentUserAccess(Area, Controller, Action))
             {
                 // fine, do nothing.
                 return;
