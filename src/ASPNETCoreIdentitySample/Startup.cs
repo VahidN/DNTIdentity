@@ -1,4 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
+using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Services.Identity.Logger;
@@ -44,7 +45,10 @@ namespace ASPNETCoreIdentitySample
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
 
-            services.AddMvc().AddJsonOptions(jsonOptions =>
+            services.AddMvc(options =>
+            {
+                options.UseCustomStringModelBinder();
+            }).AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
