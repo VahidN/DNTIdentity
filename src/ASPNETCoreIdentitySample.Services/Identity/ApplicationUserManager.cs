@@ -244,7 +244,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             if (!string.IsNullOrWhiteSpace(model.TextToFind))
             {
-                model.TextToFind = model.TextToFind.ApplyCorrectYeKe(); //todo:?? interceptors
+                model.TextToFind = model.TextToFind.ApplyCorrectYeKe();
 
                 if (model.IsPartOfEmail)
                 {

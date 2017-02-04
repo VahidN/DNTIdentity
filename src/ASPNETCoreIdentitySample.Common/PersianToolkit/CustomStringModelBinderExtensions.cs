@@ -72,6 +72,9 @@ namespace ASPNETCoreIdentitySample.Common.PersianToolkit
 
     public static class CustomStringModelBinderExtensions
     {
+        /// <summary>
+        /// یکدست کردن «ی» و «ک» در برنامه
+        /// </summary>
         public static MvcOptions UseCustomStringModelBinder(this MvcOptions options)
         {
             if (options == null)
