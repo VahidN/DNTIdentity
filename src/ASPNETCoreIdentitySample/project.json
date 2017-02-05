@@ -8,7 +8,7 @@
         "cloudscribe.Web.Pagination": "1.1.1",
         "DNTBreadCrumb.Core": "1.1.0",
         "DNTCaptcha.Core": "1.0.1",
-        "DNTPersianUtils.Core": "1.4.0",
+        "DNTPersianUtils.Core": "1.5.0",
         "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
         "Microsoft.AspNetCore.Diagnostics": "1.1.0",
         "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.1.0",
