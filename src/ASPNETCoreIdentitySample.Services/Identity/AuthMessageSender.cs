@@ -69,6 +69,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                         client.LocalDomain = smtpConfigValue.LocalDomain;
                     }
                     await client.ConnectAsync(smtpConfigValue.Server, smtpConfigValue.Port, SecureSocketOptions.None).ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(smtpConfigValue.Username) &&
+                        !string.IsNullOrWhiteSpace(smtpConfigValue.Password))
+                    {
+                        await client.AuthenticateAsync(smtpConfigValue.Username, smtpConfigValue.Password).ConfigureAwait(false);
+                    }
                     await client.SendAsync(emailMessage).ConfigureAwait(false);
                     await client.DisconnectAsync(true).ConfigureAwait(false);
                 }
