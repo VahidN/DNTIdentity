@@ -16,6 +16,9 @@ namespace ASPNETCoreIdentitySample.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// More info: http://www.dotnettips.info/post/2446
+        /// </summary>
         [BreadCrumb(Title = "ایندکس", Order = 2, GlyphIcon = "fa fa-navicon")]
         public IActionResult Index(int? id)
         {

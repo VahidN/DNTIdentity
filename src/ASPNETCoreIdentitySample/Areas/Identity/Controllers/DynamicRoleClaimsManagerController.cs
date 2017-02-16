@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2581
+    /// </summary>
     [Authorize(Roles = ConstantRoles.Admin)]
     [Area(AreaConstants.IdentityArea)]
     [BreadCrumb(Title = "مدیریت نقش‌های پویا", UseDefaultRouteUrl = true, Order = 0)]

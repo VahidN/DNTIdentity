@@ -8,6 +8,9 @@ using System.Security.Claims;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2581
+    /// </summary>
     public class SecurityTrimmingService : ISecurityTrimmingService
     {
         private readonly HttpContext _httpContext;

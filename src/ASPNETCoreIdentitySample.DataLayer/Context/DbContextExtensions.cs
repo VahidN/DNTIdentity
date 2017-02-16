@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2510
+    /// </summary>
     public static class DbContextExtensions
     {
         public static void RunScopedContext<T>(this IServiceProvider serviceProvider, Action<IUnitOfWork, T> callback)

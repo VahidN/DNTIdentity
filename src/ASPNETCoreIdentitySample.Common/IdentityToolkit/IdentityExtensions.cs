@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ASPNETCoreIdentitySample.Common.IdentityToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2580
+    /// And http://www.dotnettips.info/post/2579
+    /// </summary>
     public static class IdentityExtensions
     {
         public static void AddErrorsFromResult(this ModelStateDictionary modelStat, IdentityResult result)

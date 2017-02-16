@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Routing;
 
 namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2518
+    /// </summary>
     public static class AjaxExtensions
     {
         private const string RequestedWithHeader = "X-Requested-With";

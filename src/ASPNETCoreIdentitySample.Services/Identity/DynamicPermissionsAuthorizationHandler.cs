@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
-
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2581
+    /// </summary>
     public class DynamicPermissionRequirement : IAuthorizationRequirement
     {
     }

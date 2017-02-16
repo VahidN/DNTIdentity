@@ -17,6 +17,11 @@ using System;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2577
+    /// and http://www.dotnettips.info/post/2578
+    /// plus http://www.dotnettips.info/post/2491
+    /// </summary>
     public abstract class ApplicationDbContextBase :
         IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
         IUnitOfWork

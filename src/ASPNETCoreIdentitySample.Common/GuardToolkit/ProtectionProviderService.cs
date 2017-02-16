@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ASPNETCoreIdentitySample.Common.GuardToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2519
+    /// </summary>
     public static class ProtectionProviderServiceExtensions
     {
         public static IServiceCollection AddProtectionProviderService(this IServiceCollection services)
@@ -18,6 +21,7 @@ namespace ASPNETCoreIdentitySample.Common.GuardToolkit
 
     /// <summary>
     /// Add it as services.AddSingleton(IProtectionProvider, ProtectionProvider)
+    /// More info: http://www.dotnettips.info/post/2519
     /// </summary>
     public interface IProtectionProviderService
     {

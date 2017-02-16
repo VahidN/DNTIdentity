@@ -15,6 +15,9 @@ using System;
 
 namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2573
+    /// </summary>
     public interface IMvcActionsDiscoveryService
     {
         ICollection<MvcControllerViewModel> MvcControllers { get; }

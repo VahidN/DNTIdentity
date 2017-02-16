@@ -15,6 +15,10 @@ using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2577
+    /// And http://www.dotnettips.info/post/2578
+    /// </summary>
     public class IdentityDbInitializer : IIdentityDbInitializer
     {
         private readonly IOptionsSnapshot<SiteSettings> _adminUserSeedOptions;

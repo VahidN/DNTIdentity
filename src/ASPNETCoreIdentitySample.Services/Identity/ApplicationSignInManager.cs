@@ -10,6 +10,9 @@ using ASPNETCoreIdentitySample.Common.GuardToolkit;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2578
+    /// </summary>
     public class ApplicationSignInManager :
         SignInManager<User>,
         IApplicationSignInManager

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2527
+    /// And http://www.dotnettips.info/post/2581
+    /// </summary>
     [HtmlTargetElement("security-trimming")]
     public class SecurityTrimmingTagHelper : TagHelper
     {

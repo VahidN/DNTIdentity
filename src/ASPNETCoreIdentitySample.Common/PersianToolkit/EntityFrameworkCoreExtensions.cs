@@ -6,6 +6,10 @@ using DNTPersianUtils.Core;
 
 namespace ASPNETCoreIdentitySample.Common.PersianToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/465
+    /// And http://www.dotnettips.info/post/2507
+    /// </summary>
     public static class EntityFrameworkCoreExtensions
     {
         public static void ApplyCorrectYeKe(this DbContext dbContext)

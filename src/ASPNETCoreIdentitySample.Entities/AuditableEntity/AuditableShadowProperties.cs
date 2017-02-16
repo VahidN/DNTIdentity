@@ -8,6 +8,10 @@ using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 
 namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2577
+    /// and http://www.dotnettips.info/post/2578
+    /// </summary>
     public static class AuditableShadowProperties
     {
         public static readonly Func<object, string> EFPropertyCreatedByBrowserName =
@@ -72,6 +76,9 @@ namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
             }
         }
 
+        /// <summary>
+        /// More info: http://www.dotnettips.info/post/2507
+        /// </summary>
         public static void SetAuditableEntityPropertyValues(
             this ChangeTracker changeTracker,
             IHttpContextAccessor httpContextAccessor)

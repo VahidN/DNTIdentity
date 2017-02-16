@@ -8,6 +8,9 @@ using System;
 
 namespace ASPNETCoreIdentitySample.Common.PersianToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2583
+    /// </summary>
     public class CustomStringModelBinderProvider : IModelBinderProvider
     {
         public IModelBinder GetBinder(ModelBinderProviderContext context)

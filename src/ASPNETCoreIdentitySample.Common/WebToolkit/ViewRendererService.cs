@@ -14,6 +14,9 @@ using System;
 
 namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2564
+    /// </summary>
     public static class RazorViewToStringRendererExtensions
     {
         public static IServiceCollection AddRazorViewRenderer(this IServiceCollection services)
@@ -24,6 +27,9 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
         }
     }
 
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2564
+    /// </summary>
     public interface IViewRendererService
     {
         Task<string> RenderViewToStringAsync(string viewNameOrPath);

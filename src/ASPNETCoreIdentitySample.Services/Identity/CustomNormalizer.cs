@@ -7,6 +7,9 @@ using DNTPersianUtils.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2579
+    /// </summary>
     public class CustomNormalizer : UpperInvariantLookupNormalizer
     {
         public override string Normalize(string key)

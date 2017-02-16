@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentitySample.Controllers
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2581
+    /// </summary>
     [Authorize(Policy = ConstantPolicies.DynamicPermission)]
     [BreadCrumb(UseDefaultRouteUrl = true, Order = 0)]
     [DisplayName("کنترلر نمونه با سطح دسترسی پویا")]

@@ -12,6 +12,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 {
     /// <summary>
     /// Customizing claims transformation in ASP.NET Core Identity
+    /// More info: http://www.dotnettips.info/post/2580
     /// </summary>
     public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, Role>
     {

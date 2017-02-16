@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2555
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public sealed class UploadFileExtensionsAttribute : ValidationAttribute
     {

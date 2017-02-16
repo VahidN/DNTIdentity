@@ -13,6 +13,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 {
     /// <summary>
     /// Extending the Built-in Password Validation
+    /// More info: http://www.dotnettips.info/post/2579
     /// </summary>
     public class CustomPasswordValidator : PasswordValidator<User>
     {

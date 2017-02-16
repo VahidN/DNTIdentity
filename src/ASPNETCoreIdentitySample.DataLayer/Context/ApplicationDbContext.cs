@@ -10,6 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2577
+    /// and http://www.dotnettips.info/post/2578
+    /// </summary>
     public class ApplicationDbContext : ApplicationDbContextBase
     {
         public ApplicationDbContext(

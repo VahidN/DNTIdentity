@@ -21,6 +21,9 @@ using System;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2578
+    /// </summary>
     public class ApplicationUserManager :
         UserManager<User>,
         IApplicationUserManager

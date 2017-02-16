@@ -2,6 +2,9 @@
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2582
+    /// </summary>
     public class CustomIdentityErrorDescriber : IdentityErrorDescriber
     {
         public override IdentityError ConcurrencyFailure()

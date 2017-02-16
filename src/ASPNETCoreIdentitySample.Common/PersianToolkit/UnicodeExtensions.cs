@@ -5,6 +5,9 @@ using System.Text;
 
 namespace ASPNETCoreIdentitySample.Common.PersianToolkit
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2162
+    /// </summary>
     public static class UnicodeExtensions
     {
         public static string RemoveDiacritics(this string text)
