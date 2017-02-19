@@ -3,6 +3,7 @@ using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
+using ASPNETCoreIdentitySample.ViewModels.Identity;
 
 namespace ASPNETCoreIdentitySample.Controllers
 {
@@ -19,6 +20,12 @@ namespace ASPNETCoreIdentitySample.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Index(RoleViewModel model)
+        {
+            return View(model);
         }
 
         [DisplayName("گزارش از لیست محصولات")]

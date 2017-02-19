@@ -1,4 +1,5 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using System;
+using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -38,7 +39,17 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var controller = actionDescriptor.RouteValues["controller"];
             var action = actionDescriptor.RouteValues["action"];
 
-            if(_securityTrimmingService.CanCurrentUserAccess(area, controller, action))
+            // How to access form values from an AuthorizationHandler
+            if (mvcContext.HttpContext.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase))
+            {
+                foreach (var item in mvcContext.HttpContext.Request.Form)
+                {
+                    var formField = item.Key;
+                    var formFieldValue = item.Value;
+                }
+            }
+
+            if (_securityTrimmingService.CanCurrentUserAccess(area, controller, action))
             {
                 context.Succeed(requirement);
             }
