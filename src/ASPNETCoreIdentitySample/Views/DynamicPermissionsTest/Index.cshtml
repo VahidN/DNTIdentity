@@ -6,3 +6,29 @@
     <a href="#" class="close" data-dismiss="alert">×</a>
     @ViewData["Title"] : @ViewContext.ActionDescriptor.DisplayName
 </div>
+
+<button type="submit" onclick="postData()" class="btn btn-info">
+    ارسال جهت مشاهده request.DeserializeJsonBodyAsAsync
+</button>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function postData() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Index","DynamicPermissionsTest")',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    Id: 1,
+                    Name: 'Name1'
+                }),
+                success: function (result) {
+                    console.log('Data received: ');
+                    console.log(result);
+                }
+            });
+        }
+    </script>
+}

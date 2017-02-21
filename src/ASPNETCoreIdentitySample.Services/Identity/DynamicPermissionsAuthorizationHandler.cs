@@ -1,9 +1,11 @@
-﻿using System;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using ASPNETCoreIdentitySample.ViewModels.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
+using System;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -24,14 +26,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             _securityTrimmingService.CheckArgumentIsNull(nameof(_securityTrimmingService));
         }
 
-        protected override Task HandleRequirementAsync(
+        protected override async Task HandleRequirementAsync(
              AuthorizationHandlerContext context,
              DynamicPermissionRequirement requirement)
         {
             var mvcContext = context.Resource as AuthorizationFilterContext;
             if (mvcContext == null)
             {
-                return Task.CompletedTask;
+                return;
             }
 
             var actionDescriptor = mvcContext.ActionDescriptor;
@@ -40,12 +42,24 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var action = actionDescriptor.RouteValues["action"];
 
             // How to access form values from an AuthorizationHandler
-            if (mvcContext.HttpContext.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase))
+            var request = mvcContext.HttpContext.Request;
+            if (request.Method.Equals("post", StringComparison.OrdinalIgnoreCase))
             {
-                foreach (var item in mvcContext.HttpContext.Request.Form)
+                if (request.IsAjaxRequest() && request.ContentType.Contains("application/json"))
                 {
-                    var formField = item.Key;
-                    var formFieldValue = item.Value;
+                    var model = await request.DeserializeJsonBodyAsAsync<RoleViewModel>().ConfigureAwait(false);
+                    if (model != null)
+                    {
+
+                    }
+                }
+                else
+                {
+                    foreach (var item in request.Form)
+                    {
+                        var formField = item.Key;
+                        var formFieldValue = item.Value;
+                    }
                 }
             }
 
@@ -57,8 +71,6 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 context.Fail();
             }
-
-            return Task.CompletedTask;
         }
     }
 }

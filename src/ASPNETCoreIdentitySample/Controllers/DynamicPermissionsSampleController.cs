@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using ASPNETCoreIdentitySample.Services.Identity;
+using ASPNETCoreIdentitySample.ViewModels.Identity;
 using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,12 @@ namespace ASPNETCoreIdentitySample.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Index(RoleViewModel model)
+        {
+            return View(model);
         }
 
         [DisplayName("گزارش از لیست کتاب‌ها")]

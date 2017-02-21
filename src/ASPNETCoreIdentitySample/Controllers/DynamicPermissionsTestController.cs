@@ -22,10 +22,10 @@ namespace ASPNETCoreIdentitySample.Controllers
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Index(RoleViewModel model)
+        [HttpPost]
+        public IActionResult Index([FromBody]RoleViewModel model)
         {
-            return View(model);
+            return Json(model);
         }
 
         [DisplayName("گزارش از لیست محصولات")]

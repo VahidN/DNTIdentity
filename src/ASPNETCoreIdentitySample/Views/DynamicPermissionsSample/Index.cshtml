@@ -16,6 +16,11 @@
     <div class="panel-body">
         <form asp-controller="DynamicPermissionsSample"
               asp-action="Index"
+              role="form"
+              data-ajax="true"
+              data-ajax-begin="dataAjaxBegin"
+              data-ajax-success="dataAjaxSuccess"
+              data-ajax-failure="dataAjaxFailure"
               method="post"
               class="form-horizontal">
             @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
