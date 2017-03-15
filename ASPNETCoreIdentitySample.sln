@@ -1,30 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7F5327A5-3F27-4820-9E8D-F773088C5EE3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0019AFF-2787-4260-B68A-54B4F0D79A48}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample", "src\ASPNETCoreIdentitySample\ASPNETCoreIdentitySample.xproj", "{1AA49CE6-0F6B-484A-B776-415A7721059D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample", "src\ASPNETCoreIdentitySample\ASPNETCoreIdentitySample.csproj", "{1AA49CE6-0F6B-484A-B776-415A7721059D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.Services", "src\ASPNETCoreIdentitySample.Services\ASPNETCoreIdentitySample.Services.xproj", "{0904D5BD-39F3-456D-9AA6-DF8C9F91ED4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.Services", "src\ASPNETCoreIdentitySample.Services\ASPNETCoreIdentitySample.Services.csproj", "{0904D5BD-39F3-456D-9AA6-DF8C9F91ED4B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.ViewModels", "src\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.xproj", "{69DB6363-BDF6-48DA-9839-9E59FD0F4E70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.ViewModels", "src\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj", "{69DB6363-BDF6-48DA-9839-9E59FD0F4E70}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.Entities", "src\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.xproj", "{B156B8AD-D49C-459E-B860-D0AA79DA57F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.Entities", "src\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj", "{B156B8AD-D49C-459E-B860-D0AA79DA57F9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.DataLayer", "src\ASPNETCoreIdentitySample.DataLayer\ASPNETCoreIdentitySample.DataLayer.xproj", "{D352183B-7962-46B6-8ED2-02E75581CEFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.DataLayer", "src\ASPNETCoreIdentitySample.DataLayer\ASPNETCoreIdentitySample.DataLayer.csproj", "{D352183B-7962-46B6-8ED2-02E75581CEFB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.MsTests", "src\ASPNETCoreIdentitySample.MsTests\ASPNETCoreIdentitySample.MsTests.xproj", "{032F18C5-7C54-4BB0-ABE8-7EAC9C39CAF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.MsTests", "src\ASPNETCoreIdentitySample.MsTests\ASPNETCoreIdentitySample.MsTests.csproj", "{032F18C5-7C54-4BB0-ABE8-7EAC9C39CAF3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ASPNETCoreIdentitySample.Common", "src\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.xproj", "{DC7E315D-CF58-45D3-81B1-02CA547B48F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.Common", "src\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj", "{DC7E315D-CF58-45D3-81B1-02CA547B48F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
