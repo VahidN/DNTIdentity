@@ -1,2 +1,2 @@
-dotnet ef --configuration Release --startup-project ../ASPNETCoreIdentitySample/ database update
+dotnet ef --startup-project ../ASPNETCoreIdentitySample/ database update
 pause
