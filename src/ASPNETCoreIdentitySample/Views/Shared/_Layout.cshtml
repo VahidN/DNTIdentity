@@ -65,7 +65,7 @@
         <div class="row">
             <div class="col-md-12">
                 <breadcrumb asp-homepage-title="خانه"
-                            asp-homepage-url="@Url.Action("Index", "Home")"
+                            asp-homepage-url="@Url.Action("Index", "Home", values: new { area = "" })"
                             asp-homepage-glyphicon="fa fa-home"></breadcrumb>
             </div>
         </div>
