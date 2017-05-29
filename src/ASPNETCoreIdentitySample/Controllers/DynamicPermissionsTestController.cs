@@ -22,7 +22,7 @@ namespace ASPNETCoreIdentitySample.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost] // More info: http://www.dotnettips.info/post/2468/
         public IActionResult Index([FromBody]RoleViewModel model)
         {
             return Json(model);
