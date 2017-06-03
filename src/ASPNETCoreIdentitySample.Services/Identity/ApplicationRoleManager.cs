@@ -221,6 +221,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                                                     .Select(roleClaim => roleClaim.ClaimValue)
                                                     .ToList();
 
+            if (selectedRoleClaimValues == null)
+            {
+                selectedRoleClaimValues = new List<string>();
+            }
             var newClaimValuesToAdd = selectedRoleClaimValues.Except(currentRoleClaimValues).ToList();
             foreach (var claimValue in newClaimValuesToAdd)
             {

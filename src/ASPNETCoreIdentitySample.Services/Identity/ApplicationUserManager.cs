@@ -381,6 +381,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             var currentUserRoleIds = user.Roles.Select(x => x.RoleId).ToList();
 
+            if (selectedRoleIds == null)
+            {
+                selectedRoleIds = new List<int>();
+            }
             var newRolesToAdd = selectedRoleIds.Except(currentUserRoleIds).ToList();
             foreach (var roleId in newRolesToAdd)
             {
