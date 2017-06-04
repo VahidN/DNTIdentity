@@ -29,7 +29,15 @@
         {
             <div class="panel panel-default top30">
                 <div class="panel-heading">
-                    <h3 class="panel-title">@controller.ControllerDisplayName</h3>
+                    <h3 class="panel-title">
+                        @{
+                            var displayName = controller.ControllerDisplayName;
+                            if(string.IsNullOrWhiteSpace(displayName))
+                            {
+                                displayName = controller.ToString();
+                            }
+                        }
+                        @displayName</h3>
                 </div>
                 <ul class="list-group">
                     @foreach (var action in controller.MvcActions.OrderBy(x => x.ActionDisplayName))
@@ -39,9 +47,14 @@
                                               roleClaim.ClaimValue == action.ActionId);
                         var selected = isSelected ? "checked" : "";
                         var selectedClass = isSelected ? "list-group-item-success" : "";
+                        var actionDisplayName = action.ActionDisplayName;
+                        if(string.IsNullOrWhiteSpace(actionDisplayName))
+                        {
+                            actionDisplayName = $"{action}::{action.ActionId}";
+                        }
                         <li class="list-group-item @selectedClass" role="presentation">
                             <input type="checkbox" name="actionIds" value="@action.ActionId" @selected />
-                            @action.ActionDisplayName
+                            @actionDisplayName
                         </li>
                     }
                 </ul>
