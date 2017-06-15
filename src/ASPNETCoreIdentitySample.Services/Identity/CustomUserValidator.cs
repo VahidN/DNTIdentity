@@ -39,8 +39,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
             // Extending the built-in validator
-            validateEmail(user, errors);
-            validateUserName(user, errors);
+            if (!string.IsNullOrWhiteSpace(user.Email)) validateEmail(user, errors);
+            if (!string.IsNullOrWhiteSpace(user.UserName)) validateUserName(user, errors);
+
 
             return !errors.Any() ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
         }

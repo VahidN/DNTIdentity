@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label asp-for="Username" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Username" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="Username" onblur="UsernameRemoteValidation()" class="form-control col-md-4" />
                     <span asp-validation-for="Username" class="text-danger"></span>
                     <span class="optional-label">(جهت لاگین)</span>
                 </div>
@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label asp-for="Email" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="Email" onblur="EmailRemoteValidation()" class="form-control col-md-4" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
@@ -71,8 +71,7 @@
                                  asp-back-color="#ccc"
                                  asp-text-box-class="text-box single-line form-control col-md-4"
                                  asp-text-box-template="<div class='input-group col-md-4'><span class='input-group-addon'><span class='glyphicon glyphicon-lock'></span></span>{0}</div>"
-                                 asp-validation-message-class="text-danger"
-                                 />
+                                 asp-validation-message-class="text-danger" />
                 </div>
             </div>
 
@@ -88,10 +87,11 @@
 @section Scripts
 {
     <script type="text/javascript">
-        function triggerRemoteValidation() {
+        function UsernameRemoteValidation() {
             $('#@nameof(RegisterViewModel.Username)').removeData('previousValue');
             $('form').validate().element('#@nameof(RegisterViewModel.Username)');
-
+        }
+        function EmailRemoteValidation() {
             $('#@nameof(RegisterViewModel.Email)').removeData('previousValue');
             $('form').validate().element('#@nameof(RegisterViewModel.Email)');
         }
