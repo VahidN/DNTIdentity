@@ -63,10 +63,22 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         /// </summary>
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> ValidateUsername(string username, string email)
+        public async Task<IActionResult> ValidateUsername(string email)
         {
             var result = await _userValidator.ValidateAsync(
-                (UserManager<User>)_userManager, new User { UserName = username, Email = email }).ConfigureAwait(false);
+                (UserManager<User>)_userManager, new User { Email = email }).ConfigureAwait(false);
+            return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
+        }
+
+        /// <summary>
+        /// For [Remote] validation
+        /// </summary>
+        [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> ValidateEmail(string username)
+        {
+            var result = await _userValidator.ValidateAsync(
+                (UserManager<User>)_userManager, new User { UserName = username }).ConfigureAwait(false);
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 

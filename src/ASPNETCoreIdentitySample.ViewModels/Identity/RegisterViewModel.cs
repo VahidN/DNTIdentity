@@ -7,8 +7,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity
     {
         [Required(ErrorMessage = "(*)")]
         [Display(Name = "نام کاربری")]
-        [Remote("ValidateUsername", "Register",
-            AdditionalFields = nameof(Email) + "," + ViewModelConstants.AntiForgeryToken, HttpMethod = "POST")]
+        [Remote("ValidateUsername", "Register", HttpMethod = "POST")]
         [RegularExpression("^[a-zA-Z_]*$", ErrorMessage = "لطفا تنها از حروف انگلیسی استفاده نمائید")]
         public string Username { get; set; }
 
@@ -27,8 +26,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "(*)")]
-        [Remote("ValidateUsername", "Register",
-            AdditionalFields = nameof(Username) + "," + ViewModelConstants.AntiForgeryToken, HttpMethod = "POST")]
+        [Remote("ValidateUsername", "Register", HttpMethod = "POST")]
         [EmailAddress(ErrorMessage = "لطفا آدرس ایمیل معتبری را وارد نمائید.")]
         [Display(Name = "ایمیل")]
         public string Email { get; set; }
