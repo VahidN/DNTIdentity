@@ -11,6 +11,8 @@ namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
     /// <summary>
     /// More info: http://www.dotnettips.info/post/2577
     /// and http://www.dotnettips.info/post/2578
+    /// and http://www.dotnettips.info/post/2507
+    /// and http://www.dotnettips.info/post/2232
     /// </summary>
     public static class AuditableShadowProperties
     {
