@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
@@ -172,6 +173,11 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
                 default:
                     throw new NotSupportedException("Please set the ActiveDatabase in appsettings.json file.");
             }
+
+            optionsBuilder.ConfigureWarnings(warnings =>
+            {
+                warnings.Log(CoreEventId.IncludeIgnoredWarning);
+            });
         }
 
         protected void SetShadowProperties()
