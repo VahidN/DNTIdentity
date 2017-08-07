@@ -1,0 +1,11 @@
+{ 
+  "author": "VahidN <http://www.dotnettips.info/>", 
+  "classifications": [ "MVC", ".NET Core", "ASP.NET Core" ],  
+  "name": "Empty DNT.Identity project", 
+  "identity": "DNT.Identity", 
+  "shortName": "dntidentity", 
+  "tags": { 
+    "language": "C#" 
+  }, 
+  "sourceName": "ASPNETCoreIdentitySample" 
+}
