@@ -1,6 +1,6 @@
 ﻿<div dir="rtl">
 
-سفارشی سازی ASP.NET Core Identity 1.1 
+سفارشی سازی ASP.NET Core Identity 2.0 
 =======
 
 

@@ -118,6 +118,7 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
                                         return attributeNamespace != typeof(CompilerGeneratedAttribute).Namespace &&
                                                attributeNamespace != typeof(DebuggerStepThroughAttribute).Namespace;
                                     })
+                                    .Cast<Attribute>()
                                    .ToList();
         }
 

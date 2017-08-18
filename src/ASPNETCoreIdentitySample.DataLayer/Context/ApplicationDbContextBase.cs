@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
@@ -155,7 +156,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
             switch (siteSettingsValue.ActiveDatabase)
             {
                 case ActiveDatabase.InMemoryDatabase:
-                    optionsBuilder.UseInMemoryDatabase();
+                    optionsBuilder.UseInMemoryDatabase(siteSettingsValue.ConnectionStrings.LocalDb.InitialCatalog);
                     break;
 
                 case ActiveDatabase.LocalDb:

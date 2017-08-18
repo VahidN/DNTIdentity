@@ -40,7 +40,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             ILogger<ApplicationRoleManager> logger,
             IHttpContextAccessor contextAccessor,
             IUnitOfWork uow) :
-            base((RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>)store, roleValidators, keyNormalizer, errors, logger, contextAccessor)
+            base((RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>)store, roleValidators, keyNormalizer, errors, logger)
         {
             _store = store;
             _store.CheckArgumentIsNull(nameof(_store));

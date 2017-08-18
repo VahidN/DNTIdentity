@@ -1,5 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Entities.AuditableEntity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +12,7 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
     /// and http://www.dotnettips.info/post/2578
     /// plus http://www.dotnettips.info/post/2559
     /// </summary>
-    public class User : IdentityUser<int, UserClaim, UserRole, UserLogin>, IAuditableEntity
+    public class User : IdentityUser<int>, IAuditableEntity
     {
         public User()
         {
@@ -54,5 +54,11 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
         public virtual ICollection<UserUsedPassword> UserUsedPasswords { get; set; }
 
         public virtual ICollection<UserToken> UserTokens { get; set; }
+
+        public virtual ICollection<UserRole> Roles { get; set; }
+
+        public virtual ICollection<UserLogin> Logins { get; set; }
+
+        public virtual ICollection<UserClaim> Claims { get; set; }
     }
 }

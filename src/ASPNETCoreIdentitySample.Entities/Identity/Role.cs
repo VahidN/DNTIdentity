@@ -1,5 +1,6 @@
-﻿using ASPNETCoreIdentitySample.Entities.AuditableEntity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using ASPNETCoreIdentitySample.Entities.AuditableEntity;
+using Microsoft.AspNetCore.Identity;
 
 namespace ASPNETCoreIdentitySample.Entities.Identity
 {
@@ -7,7 +8,7 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
     /// More info: http://www.dotnettips.info/post/2577
     /// and http://www.dotnettips.info/post/2578
     /// </summary>
-    public class Role : IdentityRole<int, UserRole, RoleClaim>, IAuditableEntity
+    public class Role : IdentityRole<int>, IAuditableEntity
     {
         public Role()
         {
@@ -26,5 +27,9 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
         }
 
         public string Description { get; set; }
+
+        public virtual ICollection<UserRole> Users { get; set; }
+
+        public virtual ICollection<RoleClaim> Claims { get; set; }
     }
 }

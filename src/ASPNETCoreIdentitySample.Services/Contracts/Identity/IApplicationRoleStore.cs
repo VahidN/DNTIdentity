@@ -15,22 +15,17 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         #region BaseClass
 
         /// <summary>
-        /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
-        /// </summary>
-        /// <value>
-        /// True if changes should be automatically persisted, otherwise false. Its default value is true.
-        /// </value>
-        bool AutoSaveChanges { get; set; }
-
-        /// <summary>
-        /// Gets the database context for this store.
-        /// </summary>
-        ApplicationDbContext Context { get; }
-
-        /// <summary>
         /// Gets or sets the <see cref="IdentityErrorDescriber"/> for any error that occurred with the current operation.
         /// </summary>
         IdentityErrorDescriber ErrorDescriber { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
+        /// </summary>
+        /// <value>
+        /// True if changes should be automatically persisted, otherwise false.
+        /// </value>
+        bool AutoSaveChanges { get; set; }
 
         /// <summary>
         /// A navigation property for the roles the store contains.
@@ -44,13 +39,13 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="claim">The claim to add to the role.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task AddClaimAsync(Role role, Claim claim, CancellationToken cancellationToken = default(CancellationToken));
+        /// Task AddClaimAsync(Role role, Claim claim, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Converts the provided <paramref name="id"/> to a strongly typed key object.
         /// </summary>
         /// <param name="id">The id to convert.</param>
-        /// <returns>An instance of TKey representing the provided <paramref name="id"/>.</returns>
+        /// <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>        
         int ConvertIdFromString(string id);
 
         /// <summary>
@@ -65,7 +60,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="role">The role to create in the store.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that represents the <see cref="IdentityResult"/> of the asynchronous query.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> that represents the <see cref="IdentityResult"/> of the asynchronous query.</returns>        
         Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -75,6 +70,31 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="Task{TResult}"/> that represents the <see cref="IdentityResult"/> of the asynchronous query.</returns>
         Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the ID for a role from the store as an asynchronous operation.
+        /// </summary>
+        /// <param name="role">The role whose ID should be returned.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>A <see cref="Task{TResult}"/> that contains the ID of the role.</returns>
+        Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Gets the name of a role from the store as an asynchronous operation.
+        /// </summary>
+        /// /// <param name="role">The role whose name should be returned.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>A <see cref="Task{TResult}"/> that contains the name of the role.</returns>
+        Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Sets the name of a role in the store as an asynchronous operation.
+        /// </summary>
+        /// <param name="role">The role whose name should be set.</param>
+        /// <param name="roleName">The name of the role.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
+        Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Finds the role who has the specified ID as an asynchronous operation.
@@ -105,16 +125,8 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="role">The role whose normalized name should be retrieved.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that contains the name of the role.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> that contains the name of the role.</returns>        
         Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Gets the ID for a role from the store as an asynchronous operation.
-        /// </summary>
-        /// <param name="role">The role whose ID should be returned.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that contains the ID of the role.</returns>
-        Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Removes the <paramref name="claim"/> given from the specified <paramref name="role"/>.
@@ -131,24 +143,15 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="role">The role whose normalized name should be set.</param>
         /// <param name="normalizedName">The normalized name to set</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
+        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>        
         Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken = default(CancellationToken));
-
-        /// <summary>
-        /// Sets the name of a role in the store as an asynchronous operation.
-        /// </summary>
-        /// <param name="role">The role whose name should be set.</param>
-        /// <param name="roleName">The name of the role.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates a role in a store as an asynchronous operation.
         /// </summary>
         /// <param name="role">The role to update in the store.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that represents the <see cref="IdentityResult"/> of the asynchronous query.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> that represents the <see cref="IdentityResult"/> of the asynchronous query.</returns>        
         Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken = default(CancellationToken));
 
         #endregion

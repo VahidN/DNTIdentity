@@ -186,5 +186,23 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 Description = "کاربر دارای نقش '{0}' نیست."
             };
         }
+
+        public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
+        {
+            return new IdentityError
+            {
+                Code = nameof(PasswordRequiresUniqueChars),
+                Description = "کلمه‌ی عبور بايد حداقل داراى {0} حرف متفاوت باشد."
+            };
+        }
+
+        public override IdentityError RecoveryCodeRedemptionFailed()
+        {
+            return new IdentityError
+            {
+                Code = nameof(RecoveryCodeRedemptionFailed),
+                Description = "بازيابى با شكست مواجه شد."
+            };
+        }
     }
 }

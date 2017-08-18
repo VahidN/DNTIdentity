@@ -19,25 +19,15 @@ namespace ASPNETCoreIdentitySample
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { set; get; }
-
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                                .SetBasePath(env.ContentRootPath)
-                                .AddInMemoryCollection(new[]
-                                {
-                                    new KeyValuePair<string,string>("the-key", "the-value")
-                                })
-                                .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
-                                .AddJsonFile($"appsettings.{env}.json", optional: true)
-                                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
+
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IConfigurationRoot>(provider => { return Configuration; });
             services.Configure<SiteSettings>(options => Configuration.Bind(options));
 
             services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
@@ -48,6 +38,7 @@ namespace ASPNETCoreIdentitySample
             services.AddMvc(options =>
             {
                 options.UseCustomStringModelBinder();
+                options.AllowEmptyInputInBodyModelBinding = true;
             }).AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;

@@ -1,5 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Entities.AuditableEntity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ASPNETCoreIdentitySample.Entities.Identity
 {

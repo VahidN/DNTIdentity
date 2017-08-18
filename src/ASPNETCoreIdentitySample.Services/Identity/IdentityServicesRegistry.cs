@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Security.Principal;
 using System;
+using System.Threading.Tasks;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -84,12 +85,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             services.AddIdentity<User, Role>(identityOptions =>
             {
-                var provider = services.BuildServiceProvider();
-                enableIimmediateLogout(identityOptions);
                 setPasswordOptions(identityOptions.Password, siteSettings);
                 setSignInOptions(identityOptions.SignIn, siteSettings);
                 setUserOptions(identityOptions.User);
-                setCookieOptions(provider, identityOptions.Cookies, siteSettings);
                 setLockoutOptions(identityOptions.Lockout, siteSettings);
             }).AddUserStore<ApplicationUserStore>()
               .AddUserManager<ApplicationUserManager>()
@@ -101,6 +99,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity
               //.AddEntityFrameworkStores<ApplicationDbContext, int>()
               .AddDefaultTokenProviders()
               .AddTokenProvider<ConfirmEmailDataProtectorTokenProvider<User>>(EmailConfirmationTokenProviderName);
+
+            services.ConfigureApplicationCookie(identityOptionsCookies =>
+            {
+                var provider = services.BuildServiceProvider();
+                setApplicationCookieOptions(provider, identityOptionsCookies, siteSettings);
+            });
+
+            enableIimmediateLogout(services);
         }
 
         /// <summary>
@@ -108,11 +114,15 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         /// </summary>
         public static void UseCustomIdentityServices(this IApplicationBuilder app)
         {
-            app.UseIdentity();
+            app.UseAuthentication();
 
-            var identityDbInitialize = app.ApplicationServices.GetService<IIdentityDbInitializer>();
-            identityDbInitialize.Initialize();
-            identityDbInitialize.SeedData();
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var identityDbInitialize = scope.ServiceProvider.GetService<IIdentityDbInitializer>();
+                identityDbInitialize.Initialize();
+                identityDbInitialize.SeedData();
+            }
         }
 
         private static void addConfirmEmailDataProtectorTokenOptions(this IServiceCollection services, SiteSettings siteSettings)
@@ -143,10 +153,23 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             });
         }
 
-        private static void enableIimmediateLogout(IdentityOptions identityOptions)
+        private static void enableIimmediateLogout(IServiceCollection services)
         {
-            identityOptions.SecurityStampValidationInterval = TimeSpan.Zero;
-            // enables immediate logout, after updating the user's stat.
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                // enables immediate logout, after updating the user's stat.
+                options.ValidationInterval = TimeSpan.Zero;
+                options.OnRefreshingPrincipal = principalContext =>
+                {
+                    // Invoked when the default security stamp validator replaces the user's ClaimsPrincipal in the cookie.
+
+                    //var newId = new ClaimsIdentity();
+                    //newId.AddClaim(new Claim("PreviousName", principalContext.CurrentPrincipal.Identity.Name));
+                    //principalContext.NewPrincipal.AddIdentity(newId);
+
+                    return Task.FromResult(0);
+                };
+            });
         }
 
         private static SiteSettings getSiteSettings(this IServiceCollection services)
@@ -159,21 +182,21 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             return siteSettings;
         }
 
-        private static void setCookieOptions(IServiceProvider provider, IdentityCookieOptions identityOptionsCookies, SiteSettings siteSettings)
+        private static void setApplicationCookieOptions(IServiceProvider provider, CookieAuthenticationOptions identityOptionsCookies, SiteSettings siteSettings)
         {
-            identityOptionsCookies.ApplicationCookie.CookieName = siteSettings.CookieOptions.CookieName;
-            identityOptionsCookies.ApplicationCookie.CookieHttpOnly = true;
-            identityOptionsCookies.ApplicationCookie.ExpireTimeSpan = siteSettings.CookieOptions.ExpireTimeSpan;
-            identityOptionsCookies.ApplicationCookie.SlidingExpiration = siteSettings.CookieOptions.SlidingExpiration;
-            identityOptionsCookies.ApplicationCookie.LoginPath = siteSettings.CookieOptions.LoginPath;
-            identityOptionsCookies.ApplicationCookie.LogoutPath = siteSettings.CookieOptions.LogoutPath;
-            identityOptionsCookies.ApplicationCookie.AccessDeniedPath = siteSettings.CookieOptions.AccessDeniedPath;
-            identityOptionsCookies.ApplicationCookie.AutomaticChallenge = true; // For Policy-Based Authorization Handler
-            identityOptionsCookies.ApplicationCookie.AutomaticAuthenticate = true;
+            identityOptionsCookies.Cookie.Name = siteSettings.CookieOptions.CookieName;
+            identityOptionsCookies.Cookie.HttpOnly = true;
+            identityOptionsCookies.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            identityOptionsCookies.Cookie.SameSite = SameSiteMode.Lax;
+            identityOptionsCookies.ExpireTimeSpan = siteSettings.CookieOptions.ExpireTimeSpan;
+            identityOptionsCookies.SlidingExpiration = siteSettings.CookieOptions.SlidingExpiration;
+            identityOptionsCookies.LoginPath = siteSettings.CookieOptions.LoginPath;
+            identityOptionsCookies.LogoutPath = siteSettings.CookieOptions.LogoutPath;
+            identityOptionsCookies.AccessDeniedPath = siteSettings.CookieOptions.AccessDeniedPath;
 
             var ticketStore = provider.GetService<ITicketStore>();
             ticketStore.CheckArgumentIsNull(nameof(ticketStore));
-            identityOptionsCookies.ApplicationCookie.SessionStore = ticketStore; // To manage large identity cookies
+            identityOptionsCookies.SessionStore = ticketStore; // To manage large identity cookies
         }
 
         private static void setLockoutOptions(LockoutOptions identityOptionsLockout, SiteSettings siteSettings)

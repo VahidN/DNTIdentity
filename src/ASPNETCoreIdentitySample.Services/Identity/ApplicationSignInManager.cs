@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using ASPNETCoreIdentitySample.Common.GuardToolkit;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -22,14 +23,16 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         private readonly IUserClaimsPrincipalFactory<User> _claimsFactory;
         private readonly IOptions<IdentityOptions> _optionsAccessor;
         private readonly ILogger<ApplicationSignInManager> _logger;
+        private readonly IAuthenticationSchemeProvider _schemes;
 
         public ApplicationSignInManager(
             IApplicationUserManager userManager,
             IHttpContextAccessor contextAccessor,
             IUserClaimsPrincipalFactory<User> claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
-            ILogger<ApplicationSignInManager> logger)
-            : base((UserManager<User>)userManager, contextAccessor, claimsFactory, optionsAccessor, logger)
+            ILogger<ApplicationSignInManager> logger,
+            IAuthenticationSchemeProvider schemes)
+            : base((UserManager<User>)userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes)
         {
             _userManager = userManager;
             _userManager.CheckArgumentIsNull(nameof(_userManager));
@@ -45,9 +48,37 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             _logger = logger;
             _logger.CheckArgumentIsNull(nameof(_logger));
+
+            _schemes = schemes;
+            _schemes.CheckArgumentIsNull(nameof(_schemes));
         }
 
         #region BaseClass
+
+        Task<bool> IApplicationSignInManager.IsLockedOut(User user)
+        {
+            return base.IsLockedOut(user);
+        }
+
+        Task<SignInResult> IApplicationSignInManager.LockedOut(User user)
+        {
+            return base.LockedOut(user);
+        }
+
+        Task<SignInResult> IApplicationSignInManager.PreSignInCheck(User user)
+        {
+            return base.PreSignInCheck(user);
+        }
+
+        Task IApplicationSignInManager.ResetLockout(User user)
+        {
+            return base.ResetLockout(user);
+        }
+
+        Task<SignInResult> IApplicationSignInManager.SignInOrTwoFactorAsync(User user, bool isPersistent, string loginProvider, bool bypassTwoFactor)
+        {
+            return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
+        }
 
         #endregion
 

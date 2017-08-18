@@ -101,6 +101,16 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         #region BaseClass
 
+        string IApplicationUserManager.CreateTwoFactorRecoveryCode()
+        {
+            return base.CreateTwoFactorRecoveryCode();
+        }
+
+        Task<PasswordVerificationResult> IApplicationUserManager.VerifyPasswordAsync(IUserPasswordStore<User> store, User user, string password)
+        {
+            return base.VerifyPasswordAsync(store, user, password);
+        }
+
         public override async Task<IdentityResult> CreateAsync(User user)
         {
             var result = await base.CreateAsync(user).ConfigureAwait(false);
@@ -202,6 +212,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 return !int.TryParse(userId, out result) ? (int?)null : result;
             }
         }
+
+        IPasswordHasher<User> IApplicationUserManager.PasswordHasher { get => base.PasswordHasher; set => base.PasswordHasher = value; }
+
+        IList<IUserValidator<User>> IApplicationUserManager.UserValidators => base.UserValidators;
+
+        IList<IPasswordValidator<User>> IApplicationUserManager.PasswordValidators => base.PasswordValidators;
+
+        IQueryable<User> IApplicationUserManager.Users => base.Users;
 
         public string GetCurrentUserName()
         {
