@@ -73,6 +73,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.Mappings
                 builder.Property(e => e.Id).HasMaxLength(449);
                 builder.Property(e => e.Value).IsRequired();
             });
+
+            modelBuilder.Entity<AppDataProtectionKey>(builder =>
+            {
+                builder.ToTable("AppDataProtectionKeys");
+                builder.HasIndex(e => e.FriendlyName).IsUnique();
+            });
         }
     }
 }

@@ -5,12 +5,26 @@ using System.Collections.Generic;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 {
-    public partial class V2017_08_18_1157 : Migration
+    public partial class V2017_09_01_1515 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
                 name: "dbo");
+
+            migrationBuilder.CreateTable(
+                name: "AppDataProtectionKeys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FriendlyName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    XmlData = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppDataProtectionKeys", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AppLogItems",
@@ -346,6 +360,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppDataProtectionKeys_FriendlyName",
+                table: "AppDataProtectionKeys",
+                column: "FriendlyName",
+                unique: true,
+                filter: "[FriendlyName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AppRoleClaims_RoleId",
                 table: "AppRoleClaims",
                 column: "RoleId");
@@ -403,6 +424,9 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AppDataProtectionKeys");
+
             migrationBuilder.DropTable(
                 name: "AppLogItems");
 

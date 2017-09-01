@@ -11,8 +11,8 @@ using System;
 namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("13960527072822_V2017_08_18_1157")]
-    partial class V2017_08_18_1157
+    [Migration("13960610104609_V2017_09_01_1515")]
+    partial class V2017_09_01_1515
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,6 +56,24 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppDataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FriendlyName");
+
+                    b.Property<string>("XmlData");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FriendlyName")
+                        .IsUnique()
+                        .HasFilter("[FriendlyName] IS NOT NULL");
+
+                    b.ToTable("AppDataProtectionKeys");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppLogItem", b =>

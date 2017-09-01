@@ -5,6 +5,7 @@
     <AssemblyName>ASPNETCoreIdentitySample</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>ASPNETCoreIdentitySample</PackageId>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*;Areas\**\*.cshtml">

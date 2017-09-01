@@ -16,6 +16,11 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -82,6 +87,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             services.AddScoped<IUsersPhotoService, UsersPhotoService>();
             services.AddScoped<ISecurityTrimmingService, SecurityTrimmingService>();
             services.AddScoped<IAppLogItemsService, AppLogItemsService>();
+            services.addCustomDataProtection(siteSettings);
 
             services.AddIdentity<User, Role>(identityOptions =>
             {
@@ -115,7 +121,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public static void UseCustomIdentityServices(this IApplicationBuilder app)
         {
             app.UseAuthentication();
+            app.callDbInitializer();
+        }
 
+        private static void callDbInitializer(this IApplicationBuilder app)
+        {
             var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
@@ -248,6 +258,31 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         private static void setUserOptions(UserOptions identityOptionsUser)
         {
             identityOptionsUser.RequireUniqueEmail = true;
+        }
+
+        private static void addCustomDataProtection(this IServiceCollection services, SiteSettings siteSettings)
+        {
+            services.AddScoped<IXmlRepository, DataProtectionKeyService>();
+            services.AddSingleton<IConfigureOptions<KeyManagementOptions>>(serviceProvider =>
+            {
+                return new ConfigureOptions<KeyManagementOptions>(options =>
+                {
+                    var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
+                    using (var scope = scopeFactory.CreateScope())
+                    {
+                        options.XmlRepository = scope.ServiceProvider.GetService<IXmlRepository>();
+                    }
+                });
+            });
+            services
+                .AddDataProtection()
+                .SetDefaultKeyLifetime(siteSettings.CookieOptions.ExpireTimeSpan)
+                .SetApplicationName(siteSettings.CookieOptions.CookieName)
+                .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
+                {
+                    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+                    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+                });
         }
     }
 }

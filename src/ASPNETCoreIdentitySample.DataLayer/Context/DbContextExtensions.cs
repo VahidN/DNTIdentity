@@ -29,5 +29,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
                 }
             }
         }
+
+        public static T RunScopedContext<T>(this IServiceProvider serviceProvider, Func<IUnitOfWork, T> callback)
+        {
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>())
+                {
+                    return callback(context);
+                }
+            }
+        }
     }
 }

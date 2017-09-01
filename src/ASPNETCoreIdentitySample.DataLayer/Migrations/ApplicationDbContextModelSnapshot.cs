@@ -57,6 +57,24 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppDataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FriendlyName");
+
+                    b.Property<string>("XmlData");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FriendlyName")
+                        .IsUnique()
+                        .HasFilter("[FriendlyName] IS NOT NULL");
+
+                    b.ToTable("AppDataProtectionKeys");
+                });
+
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppLogItem", b =>
                 {
                     b.Property<int>("Id")

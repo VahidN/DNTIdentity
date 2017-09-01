@@ -53,6 +53,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
 
         public virtual DbSet<AppLogItem> AppLogItems { get; set; }
         public virtual DbSet<AppSqlCache> AppSqlCache { get; set; }
+        public virtual DbSet<AppDataProtectionKey> AppDataProtectionKeys { get; set; }
 
         public void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
         {
