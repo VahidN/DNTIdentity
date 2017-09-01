@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.DataProtection.Repositories;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
+    /// <summary>
+    /// More info: http://www.dotnettips.info/post/2717/
+    /// </summary>
     public class DataProtectionKeyService : IXmlRepository
     {
         private readonly IServiceProvider _serviceProvider;
