@@ -1,9 +1,7 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Services.Identity.Logger;
-using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Builder;
@@ -12,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.IO;
+using ASPNETCoreIdentitySample.IocConfig;
+using ASPNETCoreIdentitySample.DataLayer.Context;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -30,10 +29,16 @@ namespace ASPNETCoreIdentitySample
         {
             services.Configure<SiteSettings>(options => Configuration.Bind(options));
 
-            services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
-
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
+
+            var siteSettings = services.GetSiteSettings();
+            services.AddRequiredEfInternalServices(siteSettings); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
+            services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
+            {
+                optionsBuilder.SetDbContextOptions(siteSettings);
+                optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
+            });
 
             services.AddMvc(options =>
             {

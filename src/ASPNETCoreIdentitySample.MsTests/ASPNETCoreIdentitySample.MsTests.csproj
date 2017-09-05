@@ -18,6 +18,7 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Services\ASPNETCoreIdentitySample.Services.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.IocConfig\ASPNETCoreIdentitySample.IocConfig.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />

@@ -11,8 +11,8 @@ using System;
 namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("13960610104609_V2017_09_01_1515")]
-    partial class V2017_09_01_1515
+    [Migration("13960614080128_V2017_09_05_1230")]
+    partial class V2017_09_05_1230
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

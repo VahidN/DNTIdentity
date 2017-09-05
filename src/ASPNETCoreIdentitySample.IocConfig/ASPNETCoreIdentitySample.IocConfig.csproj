@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.DataLayer\ASPNETCoreIdentitySample.DataLayer.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.Services\ASPNETCoreIdentitySample.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+  </ItemGroup>
+</Project>

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.Ms
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.Common", "src\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj", "{DC7E315D-CF58-45D3-81B1-02CA547B48F8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASPNETCoreIdentitySample.IocConfig", "src\ASPNETCoreIdentitySample.IocConfig\ASPNETCoreIdentitySample.IocConfig.csproj", "{DC7E315D-CF58-45D3-81B1-02CA547B48F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

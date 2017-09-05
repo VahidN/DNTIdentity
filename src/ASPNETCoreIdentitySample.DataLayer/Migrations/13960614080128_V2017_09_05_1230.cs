@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 {
-    public partial class V2017_09_01_1515 : Migration
+    public partial class V2017_09_05_1230 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

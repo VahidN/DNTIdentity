@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System;
 using Microsoft.AspNetCore.Hosting.Internal;
+using ASPNETCoreIdentitySample.IocConfig;
 
 namespace ASPNETCoreIdentitySample.MsTests
 {
