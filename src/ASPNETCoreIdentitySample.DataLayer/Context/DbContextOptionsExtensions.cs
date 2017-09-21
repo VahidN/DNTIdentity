@@ -64,6 +64,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
             optionsBuilder.ConfigureWarnings(warnings =>
             {
                 warnings.Log(CoreEventId.IncludeIgnoredWarning);
+				warnings.Log(RelationalEventId.QueryClientEvaluationWarning);
             });
         }
 
