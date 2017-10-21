@@ -23,25 +23,26 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             _userManager.CheckArgumentIsNull(nameof(_userManager));
         }
 
-        public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
+        public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
             var identity = principal.Identity as ClaimsIdentity;
             if (identity == null)
             {
-                return Task.FromResult(principal);
+                return principal;
             }
 
-            var claims = addExistingUserClaims(identity);
+            var claims = await addExistingUserClaims(identity).ConfigureAwait(false);
             identity.AddClaims(claims);
 
-            return Task.FromResult(principal);
+            return principal;
         }
 
-        private IEnumerable<Claim> addExistingUserClaims(IIdentity identity)
+        private async Task<IEnumerable<Claim>> addExistingUserClaims(IIdentity identity)
         {
             var claims = new List<Claim>();
-            var existingUserClaims = _userManager.Users.Include(u => u.Claims)
-                                                 .SingleOrDefault(u => u.UserName == identity.Name);
+            var existingUserClaims = await _userManager.Users.Include(u => u.Claims)
+                                                 .FirstOrDefaultAsync(u => u.UserName == identity.Name)
+                                                 .ConfigureAwait(false);
             if (existingUserClaims == null)
             {
                 return claims;
