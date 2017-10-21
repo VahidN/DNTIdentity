@@ -27,13 +27,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             ILogger<ApplicationClaimsTransformation> logger)
         {
             _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
+            _userManager.CheckArgumentIsNull(nameof(userManager));
 
             _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
+            _roleManager.CheckArgumentIsNull(nameof(roleManager));
 
             _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(_roleManager));
+            _logger.CheckArgumentIsNull(nameof(logger));
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
