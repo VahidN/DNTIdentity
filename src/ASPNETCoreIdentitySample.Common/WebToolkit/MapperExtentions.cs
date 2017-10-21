@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
@@ -10,7 +11,7 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
     {
         public static async Task<T> DeserializeJsonBodyAsAsync<T>(this HttpContext context)
         {
-            using (var bodyReader = new StreamReader(context.Request.Body))
+            using (var bodyReader = new StreamReader(context.Request.Body, Encoding.UTF8))
             {
                 var body = await bodyReader.ReadToEndAsync().ConfigureAwait(false);
                 context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(body));
@@ -26,11 +27,21 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
 
         public static async Task<string> ReadBodyAsString(this HttpRequest request)
         {
-            using (var bodyReader = new StreamReader(request.Body))
+            using (var bodyReader = new StreamReader(request.Body, Encoding.UTF8))
             {
                 var body = await bodyReader.ReadToEndAsync().ConfigureAwait(false);
                 request.Body = new MemoryStream(Encoding.UTF8.GetBytes(body));
                 return body;
+            }
+        }
+
+        public static async Task<Dictionary<string, string>> DeserializeJsonBodyAsDictionaryAsync(this HttpContext httpContext)
+        {
+            using (var bodyReader = new StreamReader(httpContext.Request.Body, Encoding.UTF8))
+            {
+                var body = await bodyReader.ReadToEndAsync().ConfigureAwait(false);
+                httpContext.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(body));
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(body);
             }
         }
     }
