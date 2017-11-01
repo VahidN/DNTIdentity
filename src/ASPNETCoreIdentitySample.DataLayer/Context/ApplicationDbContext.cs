@@ -17,6 +17,8 @@ using ASPNETCoreIdentitySample.Entities;
 using ASPNETCoreIdentitySample.DataLayer.Mappings;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using ASPNETCoreIdentitySample.FluentAPIBase;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context
 {
@@ -156,8 +158,6 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
 
         #endregion
 
-        public virtual DbSet<Category> Categories { set; get; }
-        public virtual DbSet<Product> Products { set; get; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -171,18 +171,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
             builder.AddCustomIdentityMappings(siteSettings.Value);
 
             // Custom application mappings
-            builder.Entity<Category>(build =>
-            {
-                build.Property(category => category.Name).HasMaxLength(450).IsRequired();
-                build.Property(category => category.Title).IsRequired();
-            });
-
-            builder.Entity<Product>(build =>
-            {
-                build.Property(product => product.Name).HasMaxLength(450).IsRequired();
-                build.HasOne(product => product.Category)
-                       .WithMany(category => category.Products);
-            });
+            var asm = typeof(Entities.Identity.User).GetTypeInfo().Assembly;
+            builder.AddEntityConfigurationsFromAssembly(asm);
 
 
             // This should be placed here, at the end.

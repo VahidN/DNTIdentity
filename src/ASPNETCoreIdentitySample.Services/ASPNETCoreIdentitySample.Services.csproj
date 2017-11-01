@@ -8,9 +8,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.BaseService\ASPNETCoreIdentitySample.BaseService.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.DataLayer\ASPNETCoreIdentitySample.DataLayer.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.PdfService\ASPNETCoreIdentitySample.PdfService.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -22,5 +22,9 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
         public UserAvatarImageOptions UserAvatarImageOptions { get; set; }
         public string[] EmailsBanList { get; set; }
         public string[] PasswordsBanList { get; set; }
+        public string PdfServiceBackgroundImage { get; set; }
+        public string PdfServiceFontName { get; set; }
+        public string ServerFilesRootPath { get; set; }
+        public string ServerImagesRootPath { get; set; }
     }
 }

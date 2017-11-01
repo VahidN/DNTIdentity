@@ -1,2 +1,2 @@
-dotnet ef --startup-project ../ASPNETCoreIdentitySample/ database update
+dotnet ef --startup-project ../PayPing.Invoicing.Api/ database update
 pause

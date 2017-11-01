@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.FluentAPIBase\ASPNETCoreIdentitySample.FluentAPIBase.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ASPNETCoreIdentitySample.BaseService.Contracts;
+using ASPNETCoreIdentitySample.BaseService;
+using ASPNETCoreIdentitySample.PdfService;
 
 namespace ASPNETCoreIdentitySample.IocConfig
 {
@@ -62,6 +65,12 @@ namespace ASPNETCoreIdentitySample.IocConfig
             services.AddScoped<IUsersPhotoService, UsersPhotoService>();
             services.AddScoped<ISecurityTrimmingService, SecurityTrimmingService>();
             services.AddScoped<IAppLogItemsService, AppLogItemsService>();
+
+            services.AddScoped<IBaseCompressHelper, BaseCompressHelper>();
+            services.AddScoped<IBaseFileService, EfBaseFileService>();
+            services.AddScoped<IFileInsertService, EfFileInsertService>();
+            services.AddScoped<IImageInsertService, EfImageInsertService>();
+            services.AddScoped<IPdfEditorService, PdfEditorService>();
 
             return services;
         }

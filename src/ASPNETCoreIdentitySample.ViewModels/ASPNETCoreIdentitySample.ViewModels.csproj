@@ -11,6 +11,7 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="cloudscribe.Web.Pagination" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0" />

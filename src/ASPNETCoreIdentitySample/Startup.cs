@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
+using Microsoft.Net.Http.Headers;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -27,6 +28,8 @@ namespace ASPNETCoreIdentitySample
 
         public void ConfigureServices(IServiceCollection services)
         {
+            AutoMapperServiceConfiguration.ConfigureBase();
+
             services.Configure<SiteSettings>(options => Configuration.Bind(options));
 
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
@@ -65,6 +68,17 @@ namespace ASPNETCoreIdentitySample
 
             app.UseExceptionHandler("/error/index/500");
             app.UseStatusCodePagesWithReExecute("/error/index/{0}");
+
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    const int durationInSeconds = 86400;//One Week 604800 // one day 86400
+                    ctx.Context.Response.Headers[HeaderNames.CacheControl] =
+                        "public,max-age=" + durationInSeconds;
+                }
+            });
 
             // Serve wwwroot as root
             app.UseFileServer();
