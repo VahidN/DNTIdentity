@@ -14,6 +14,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
     /// <summary>
     ///  To register it: services.AddScoped<IClaimsTransformation, ApplicationClaimsTransformation>();
     ///  How to add existing db user's claims to the user's active directory claims.
+    /// More info: http://www.dotnettips.info/post/2762
     /// </summary>
     public class ApplicationClaimsTransformation : IClaimsTransformation
     {
@@ -39,7 +40,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
             var identity = principal.Identity as ClaimsIdentity;
-            if (identity == null)
+            if (identity == null || !isNTLM(identity))
             {
                 return principal;
             }
@@ -84,6 +85,12 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 foreach (var roleName in roles)
                 {
                     claims.Add(new Claim(Options.RoleClaimType, roleName));
+
+                    if (isNTLM(identity))
+                    {
+                        claims.Add(new Claim(ClaimTypes.GroupSid, roleName));
+                    }
+
                     if (_roleManager.SupportsRoleClaims)
                     {
                         var role = await _roleManager.FindByNameAsync(roleName).ConfigureAwait(false);
@@ -96,6 +103,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             }
 
             return claims;
+        }
+
+        private static bool isNTLM(IIdentity identity)
+        {
+            return identity.AuthenticationType == "NTLM";
         }
     }
 }
