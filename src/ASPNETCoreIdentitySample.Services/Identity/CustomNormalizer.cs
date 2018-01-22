@@ -51,6 +51,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             }
 
             var emailDomain = emailParts[1];
+            emailDomain = emailDomain.Replace("googlemail.com", "gmail.com");
 
             string[] domainsAllowedDots =
             {
