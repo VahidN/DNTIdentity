@@ -38,7 +38,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             }
 
             var model = await _appLogItemsService.GetPagedAppLogItemsAsync(
-                pageNumber, itemsPerPage, sort == "desc" ? SortOrder.Descending : SortOrder.Ascending, logLevel).ConfigureAwait(false);
+                pageNumber, itemsPerPage, sort == "desc" ? SortOrder.Descending : SortOrder.Ascending, logLevel);
             model.LogLevel = logLevel;
             model.Paging.CurrentPage = pageNumber;
             model.Paging.ItemsPerPage = itemsPerPage;
@@ -49,7 +49,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogItemDelete(int id)
         {
-            await _appLogItemsService.DeleteAsync(id).ConfigureAwait(false);
+            await _appLogItemsService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -57,7 +57,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogDeleteAll(string logLevel = "")
         {
-            await _appLogItemsService.DeleteAllAsync(logLevel).ConfigureAwait(false);
+            await _appLogItemsService.DeleteAllAsync(logLevel);
             return RedirectToAction(nameof(Index));
         }
 
@@ -66,7 +66,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> LogDeleteOlderThan(string logLevel = "", int days = 5)
         {
             var cutoffUtc = DateTimeOffset.UtcNow.AddDays(-days);
-            await _appLogItemsService.DeleteOlderThanAsync(cutoffUtc, logLevel).ConfigureAwait(false);
+            await _appLogItemsService.DeleteOlderThanAsync(cutoffUtc, logLevel);
             return RedirectToAction(nameof(Index));
         }
     }

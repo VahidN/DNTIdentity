@@ -4,7 +4,7 @@
     ViewData["Title"] = "مدیریت کاربران";
 }
 
-@{ await Html.RenderPartialAsync(@"~/Areas/Identity/Views/UsersManager/_SearchUsers.cshtml", new SearchUsersViewModel()).ConfigureAwait(false); }
+@{ await Html.RenderPartialAsync(@"~/Areas/Identity/Views/UsersManager/_SearchUsers.cshtml", new SearchUsersViewModel()); }
 
 @if (Model.Users.Any())
 {
@@ -18,7 +18,7 @@
                                        ShowAdminParts = true,
                                        Roles = Model.Roles,
                                        ActiveTab = UserCardItemActiveTab.UserInfo
-                                   }).ConfigureAwait(false); }
+                                   }); }
         </div>
     }
 }

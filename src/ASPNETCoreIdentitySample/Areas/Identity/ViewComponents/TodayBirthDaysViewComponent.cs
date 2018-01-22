@@ -16,8 +16,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var usersList = await _siteStatService.GetTodayBirthdayListAsync().ConfigureAwait(false);
-            var usersAverageAge = await _siteStatService.GetUsersAverageAge().ConfigureAwait(false);
+            var usersList = await _siteStatService.GetTodayBirthdayListAsync();
+            var usersAverageAge = await _siteStatService.GetUsersAverageAge();
 
             return View(viewName: "~/Areas/Identity/Views/Shared/Components/TodayBirthDays/Default.cshtml",
                         model: new TodayBirthDaysViewModel

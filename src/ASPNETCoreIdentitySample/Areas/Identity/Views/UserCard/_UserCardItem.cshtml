@@ -30,12 +30,12 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane @userPartIsActive" id="info-@user.Id">
-                        @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserInfoPart.cshtml", Model).ConfigureAwait(false); }
+                        @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserInfoPart.cshtml", Model); }
                     </div>
                     @if (Model.ShowAdminParts)
                     {
                         <div role="tabpanel" class="tab-pane @adminPartIsActive" id="admin-@user.Id">
-                            @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserAdminPart.cshtml", Model).ConfigureAwait(false); }
+                            @{ await Html.RenderPartialAsync("~/Areas/Identity/Views/UserCard/_UserAdminPart.cshtml", Model); }
                         </div>
                     }
                 </div>

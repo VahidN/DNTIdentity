@@ -92,7 +92,7 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
                     new TempDataDictionary(actionContext.HttpContext, _tempDataProvider),
                     output,
                     new HtmlHelperOptions());
-                await view.RenderAsync(viewContext).ConfigureAwait(false);
+                await view.RenderAsync(viewContext);
                 return output.ToString();
             }
         }

@@ -23,7 +23,7 @@
               data-ajax-failure="dataAjaxFailure"
               method="post"
               class="form-horizontal">
-            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary"); }
             <div class="form-group">
                 <label asp-for="Name" class="col-md-2 control-label"></label>
                 <div class="col-md-10">

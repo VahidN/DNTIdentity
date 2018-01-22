@@ -48,7 +48,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View("Error");
             }
 
-            var role = await _roleManager.FindRoleIncludeRoleClaimsAsync(id.Value).ConfigureAwait(false);
+            var role = await _roleManager.FindRoleIncludeRoleClaimsAsync(id.Value);
             if (role == null)
             {
                 return View("NotFound");
@@ -69,7 +69,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             var result = await _roleManager.AddOrUpdateRoleClaimsAsync(
                 roleId: model.RoleId,
                 roleClaimType: ConstantPolicies.DynamicPermissionClaimType,
-                selectedRoleClaimValues: model.ActionIds).ConfigureAwait(false);
+                selectedRoleClaimValues: model.ActionIds);
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));

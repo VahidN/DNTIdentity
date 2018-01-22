@@ -33,7 +33,7 @@
                           data-ajax-success="dataAjaxSuccess"
                           data-ajax-failure="dataAjaxFailure"
                           data-ajax-update="#SearchUsers">
-                        @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+                        @{ await Html.RenderPartialAsync("_CustomValidationSummary"); }
                         <div class="form-group">
                             <label asp-for="TextToFind" class="col-md-2 control-label"></label>
                             <div class="col-md-10">
@@ -143,7 +143,7 @@
                                            ShowAdminParts = true,
                                            Roles = Model.PagedUsersList.Roles,
                                            ActiveTab = UserCardItemActiveTab.UserInfo
-                                       }).ConfigureAwait(false); }
+                                       }); }
                                 </div>
                             }
                         }

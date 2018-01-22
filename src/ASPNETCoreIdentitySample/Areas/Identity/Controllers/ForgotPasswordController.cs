@@ -66,14 +66,14 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ValidatePassword(string password, string email)
         {
-            var user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return Json("ایمیل وارد شده معتبر نیست.");
             }
 
             var result = await _passwordValidator.ValidateAsync(
-                (UserManager<User>)_userManager, user, password).ConfigureAwait(false);
+                (UserManager<User>)_userManager, user, password);
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
@@ -85,13 +85,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email).ConfigureAwait(false);
-                if (user == null || !await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
                 {
                     return View("Error");
                 }
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 await _emailSender.SendEmailAsync(
                    email: model.Email,
                    subject: "بازیابی کلمه‌ی عبور",
@@ -103,7 +103,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                         EmailSignature = _siteOptions.Value.Smtp.FromName,
                         MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
                     })
-                    .ConfigureAwait(false);
+                    ;
 
                 return View("ForgotPasswordConfirmation");
             }
@@ -125,14 +125,14 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email).ConfigureAwait(false);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password).ConfigureAwait(false);
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(ResetPasswordConfirmation));

@@ -60,7 +60,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                                     .Where(x => x.BirthDate.HasValue && x.IsActive)
                                     .OrderBy(x => x.BirthDate)
                                     .ToListAsync()
-                                    .ConfigureAwait(false);
+                                    ;
 
             var count = users.Count;
             if (count == 0)
@@ -81,9 +81,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public async Task UpdateUserLastVisitDateTimeAsync(ClaimsPrincipal claimsPrincipal)
         {
-            var user = await _userManager.GetUserAsync(claimsPrincipal).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(claimsPrincipal);
             user.LastVisitDateTime = DateTimeOffset.UtcNow;
-            await _userManager.UpdateAsync(user).ConfigureAwait(false);
+            await _userManager.UpdateAsync(user);
         }
     }
 }

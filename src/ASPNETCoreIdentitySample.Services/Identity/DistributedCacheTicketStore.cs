@@ -26,7 +26,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task<string> StoreAsync(AuthenticationTicket ticket)
         {
             var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
-            await RenewAsync(key, ticket).ConfigureAwait(false);
+            await RenewAsync(key, ticket);
             return key;
         }
 
@@ -50,7 +50,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public async Task<AuthenticationTicket> RetrieveAsync(string key)
         {
-            var value = await _cache.GetAsync(key).ConfigureAwait(false);
+            var value = await _cache.GetAsync(key);
             return value != null ? _ticketSerializer.Deserialize(value) : null;
         }
 

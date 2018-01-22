@@ -56,7 +56,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Username).ConfigureAwait(false);
+                var user = await _userManager.FindByNameAsync(model.Username);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "نام کاربری و یا کلمه‌ی عبور وارد شده معتبر نیستند.");
@@ -70,7 +70,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 }
 
                 if (_siteOptions.Value.EnableEmailConfirmation &&
-                    !await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false))
+                    !await _userManager.IsEmailConfirmedAsync(user))
                 {
                     ModelState.AddModelError("", "لطفا به پست الکترونیک خود مراجعه کرده و ایمیل خود را تائید کنید!");
                     return View(model);
@@ -80,7 +80,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                         model.Username,
                                         model.Password,
                                         model.RememberMe,
-                                        lockoutOnFailure: true).ConfigureAwait(false);
+                                        lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, $"{model.Username} logged in.");
@@ -121,9 +121,9 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         public async Task<IActionResult> LogOff()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name).ConfigureAwait(false);
-            await _signInManager.SignOutAsync().ConfigureAwait(false);
-            await _userManager.UpdateSecurityStampAsync(user).ConfigureAwait(false);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            await _signInManager.SignOutAsync();
+            await _userManager.UpdateSecurityStampAsync(user);
 
             _logger.LogInformation(4, $"{user.UserName} logged out.");
 

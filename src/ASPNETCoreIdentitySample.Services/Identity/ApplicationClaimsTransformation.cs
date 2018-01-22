@@ -45,7 +45,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 return principal;
             }
 
-            var claims = await addExistingUserClaimsAsync(identity).ConfigureAwait(false);
+            var claims = await addExistingUserClaimsAsync(identity);
             identity.AddClaims(claims);
 
             return principal;
@@ -56,7 +56,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var claims = new List<Claim>();
             var user = await _userManager.Users.Include(u => u.Claims)
                                                  .FirstOrDefaultAsync(u => u.UserName == identity.Name)
-                                                 .ConfigureAwait(false);
+                                                 ;
             if (user == null)
             {
                 _logger.LogError($"Couldn't find {identity.Name}.");
@@ -71,17 +71,17 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             if (_userManager.SupportsUserSecurityStamp)
             {
                 claims.Add(new Claim(Options.SecurityStampClaimType,
-                    await _userManager.GetSecurityStampAsync(user).ConfigureAwait(false)));
+                    await _userManager.GetSecurityStampAsync(user)));
             }
 
             if (_userManager.SupportsUserClaim)
             {
-                claims.AddRange(await _userManager.GetClaimsAsync(user).ConfigureAwait(false));
+                claims.AddRange(await _userManager.GetClaimsAsync(user));
             }
 
             if (_userManager.SupportsUserRole)
             {
-                var roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+                var roles = await _userManager.GetRolesAsync(user);
                 foreach (var roleName in roles)
                 {
                     claims.Add(new Claim(Options.RoleClaimType, roleName));
@@ -93,10 +93,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
                     if (_roleManager.SupportsRoleClaims)
                     {
-                        var role = await _roleManager.FindByNameAsync(roleName).ConfigureAwait(false);
+                        var role = await _roleManager.FindByNameAsync(roleName);
                         if (role != null)
                         {
-                            claims.AddRange(await _roleManager.GetClaimsAsync(role).ConfigureAwait(false));
+                            claims.AddRange(await _roleManager.GetClaimsAsync(role));
                         }
                     }
                 }

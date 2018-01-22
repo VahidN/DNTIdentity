@@ -44,7 +44,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return PartialView("_Create");
             }
 
-            var role = await _roleManager.FindByIdAsync(model.Id).ConfigureAwait(false);
+            var role = await _roleManager.FindByIdAsync(model.Id);
             if (role == null)
             {
                 ModelState.AddModelError("", RoleNotFound);
@@ -60,7 +60,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var role = await _roleManager.FindByIdAsync(model.Id).ConfigureAwait(false);
+                var role = await _roleManager.FindByIdAsync(model.Id);
                 if (role == null)
                 {
                     ModelState.AddModelError("", RoleNotFound);
@@ -68,7 +68,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 else
                 {
                     role.Name = model.Name;
-                    var result = await _roleManager.UpdateAsync(role).ConfigureAwait(false);
+                    var result = await _roleManager.UpdateAsync(role);
                     if (result.Succeeded)
                     {
                         return Json(new { success = true });
@@ -86,7 +86,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _roleManager.CreateAsync(new Role(model.Name)).ConfigureAwait(false);
+                var result = await _roleManager.CreateAsync(new Role(model.Name));
                 if (result.Succeeded)
                 {
                     return Json(new { success = true });
@@ -104,7 +104,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return PartialView("_Delete");
             }
 
-            var role = await _roleManager.FindByIdAsync(model.Id).ConfigureAwait(false);
+            var role = await _roleManager.FindByIdAsync(model.Id);
             if (role == null)
             {
                 ModelState.AddModelError("", RoleNotFound);
@@ -118,14 +118,14 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(RoleViewModel model)
         {
-            var role = await _roleManager.FindByIdAsync(model.Id).ConfigureAwait(false);
+            var role = await _roleManager.FindByIdAsync(model.Id);
             if (role == null)
             {
                 ModelState.AddModelError("", RoleNotFound);
             }
             else
             {
-                var result = await _roleManager.DeleteAsync(role).ConfigureAwait(false);
+                var result = await _roleManager.DeleteAsync(role);
                 if (result.Succeeded)
                 {
                     return Json(new { success = true });
@@ -149,7 +149,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 recordsPerPage: DefaultPageSize,
                 sortByField: field,
                 sortOrder: order,
-                showAllUsers: true).ConfigureAwait(false);
+                showAllUsers: true);
 
             model.Paging.CurrentPage = page.Value;
             model.Paging.ItemsPerPage = DefaultPageSize;

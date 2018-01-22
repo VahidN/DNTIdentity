@@ -60,7 +60,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.Identity.GetUserId<int>();
-            var passwordChangeDate = await _usedPasswordsService.GetLastUserPasswordChangeDateAsync(userId).ConfigureAwait(false);
+            var passwordChangeDate = await _usedPasswordsService.GetLastUserPasswordChangeDateAsync(userId);
             return View(model: new ChangePasswordViewModel
             {
                 LastUserPasswordChangeDate = passwordChangeDate
@@ -74,9 +74,9 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ValidatePassword(string newPassword)
         {
-            var user = await _userManager.GetCurrentUserAsync().ConfigureAwait(false);
+            var user = await _userManager.GetCurrentUserAsync();
             var result = await _passwordValidator.ValidateAsync(
-                (UserManager<User>)_userManager, user, newPassword).ConfigureAwait(false);
+                (UserManager<User>)_userManager, user, newPassword);
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
@@ -89,19 +89,19 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View(model);
             }
 
-            var user = await _userManager.GetCurrentUserAsync().ConfigureAwait(false);
+            var user = await _userManager.GetCurrentUserAsync();
             if (user == null)
             {
                 return View("NotFound");
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword).ConfigureAwait(false);
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
-                await _userManager.UpdateSecurityStampAsync(user).ConfigureAwait(false);
+                await _userManager.UpdateSecurityStampAsync(user);
 
                 // reflect the changes in the Identity cookie
-                await _signInManager.RefreshSignInAsync(user).ConfigureAwait(false);
+                await _signInManager.RefreshSignInAsync(user);
 
                 await _emailSender.SendEmailAsync(
                            email: user.Email,
@@ -112,7 +112,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                User = user,
                                EmailSignature = _siteOptions.Value.Smtp.FromName,
                                MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                           }).ConfigureAwait(false);
+                           });
 
                 return RedirectToAction(nameof(Index), "UserCard", routeValues: new { id = user.Id });
             }

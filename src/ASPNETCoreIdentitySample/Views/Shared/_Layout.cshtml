@@ -34,11 +34,11 @@
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    await Html.RenderPartialAsync("_UserMenu").ConfigureAwait(false);
-                    await Html.RenderPartialAsync("_ReportsMenu").ConfigureAwait(false);
+                    await Html.RenderPartialAsync("_UserMenu");
+                    await Html.RenderPartialAsync("_ReportsMenu");
                     if (User.IsInRole(ConstantRoles.Admin))
                     {
-                        await Html.RenderPartialAsync("_AdminMenu").ConfigureAwait(false);
+                        await Html.RenderPartialAsync("_AdminMenu");
                     }
                 }
                 else
@@ -76,7 +76,7 @@
                 @RenderBody()
             </div>
             <div class="col-md-3 col-md-pull-9">
-                @{await Html.RenderPartialAsync("_SidebarMenu").ConfigureAwait(false);}
+                @{await Html.RenderPartialAsync("_SidebarMenu");}
             </div>
         </div>
     </div>
@@ -88,7 +88,7 @@
         </div>
     </footer>
     <script src="~/js/site.min.js" type="text/javascript" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false).ConfigureAwait(false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

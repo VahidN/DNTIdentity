@@ -62,7 +62,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             }
 
             // First use the built-in validator
-            var result = await base.ValidateAsync(manager, user, password).ConfigureAwait(false);
+            var result = await base.ValidateAsync(manager, user, password);
             errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
             // Extending the built-in validator
@@ -86,7 +86,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 return IdentityResult.Failed(errors.ToArray());
             }
 
-            if (await _usedPasswordsService.IsPreviouslyUsedPasswordAsync(user, password).ConfigureAwait(false))
+            if (await _usedPasswordsService.IsPreviouslyUsedPasswordAsync(user, password))
             {
                 errors.Add(new IdentityError
                 {

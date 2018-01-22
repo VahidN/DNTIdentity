@@ -16,7 +16,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int numbersToTake, int minutesToTake, bool showMoreItemsLink)
         {
-            var usersList = await _siteStatService.GetOnlineUsersListAsync(numbersToTake, minutesToTake).ConfigureAwait(false);
+            var usersList = await _siteStatService.GetOnlineUsersListAsync(numbersToTake, minutesToTake);
             return View(viewName: "~/Areas/Identity/Views/Shared/Components/OnlineUsers/Default.cshtml",
                         model: new OnlineUsersViewModel
                         {

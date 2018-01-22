@@ -47,7 +47,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 if (request.IsAjaxRequest() && request.ContentType.Contains("application/json"))
                 {
-                    var model = await request.DeserializeJsonBodyAsAsync<RoleViewModel>().ConfigureAwait(false);
+                    var model = await request.DeserializeJsonBodyAsAsync<RoleViewModel>();
                     if (model != null)
                     {
 

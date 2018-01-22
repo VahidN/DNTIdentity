@@ -44,8 +44,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public override async Task ValidateAsync(CookieValidatePrincipalContext context)
         {
-            await base.ValidateAsync(context).ConfigureAwait(false);
-            await updateUserLastVisitDateTimeAsync(context).ConfigureAwait(false);
+            await base.ValidateAsync(context);
+            await updateUserLastVisitDateTimeAsync(context);
         }
 
         private async Task updateUserLastVisitDateTimeAsync(CookieValidatePrincipalContext context)
@@ -66,7 +66,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var timeElapsed = currentUtc.Subtract(issuedUtc.Value);
             if (timeElapsed > UpdateLastModifiedDate)
             {
-                await _siteStatService.UpdateUserLastVisitDateTimeAsync(context.Principal).ConfigureAwait(false);
+                await _siteStatService.UpdateUserLastVisitDateTimeAsync(context.Principal);
             }
         }
     }

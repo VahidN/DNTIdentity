@@ -88,15 +88,15 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View("Error");
             }
 
-            var user = await _userManager.FindByIdAsync(id.ToString()).ConfigureAwait(false);
-            return await renderForm(user, isAdminEdit: true).ConfigureAwait(false);
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            return await renderForm(user, isAdminEdit: true);
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetCurrentUserAsync().ConfigureAwait(false);
-            return await renderForm(user, isAdminEdit: false).ConfigureAwait(false);
+            var user = await _userManager.GetCurrentUserAsync();
+            return await renderForm(user, isAdminEdit: false);
         }
 
         [HttpPost]
@@ -118,7 +118,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                     return View("Error");
                 }
 
-                var user = await _userManager.FindByIdAsync(pid).ConfigureAwait(false);
+                var user = await _userManager.FindByIdAsync(pid);
                 if (user == null)
                 {
                     return View("NotFound");
@@ -132,28 +132,28 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
                 updateUserBirthDate(model, user);
 
-                if (!await updateUserName(model, user).ConfigureAwait(false))
+                if (!await updateUserName(model, user))
                 {
                     return View(viewName: nameof(Index), model: model);
                 }
 
-                if (!await updateUserAvatarImage(model, user).ConfigureAwait(false))
+                if (!await updateUserAvatarImage(model, user))
                 {
                     return View(viewName: nameof(Index), model: model);
                 }
 
-                if (!await updateUserEmail(model, user).ConfigureAwait(false))
+                if (!await updateUserEmail(model, user))
                 {
                     return View(viewName: nameof(Index), model: model);
                 }
 
-                var updateResult = await _userManager.UpdateAsync(user).ConfigureAwait(false);
+                var updateResult = await _userManager.UpdateAsync(user);
                 if (updateResult.Succeeded)
                 {
                     if (!model.IsAdminEdit)
                     {
                         // reflect the changes in the current user's Identity cookie
-                        await _signInManager.RefreshSignInAsync(user).ConfigureAwait(false);
+                        await _signInManager.RefreshSignInAsync(user);
                     }
 
                     await _emailSender.SendEmailAsync(
@@ -165,7 +165,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                User = user,
                                EmailSignature = _siteOptions.Value.Smtp.FromName,
                                MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                           }).ConfigureAwait(false);
+                           });
 
                     return RedirectToAction(nameof(Index), "UserCard", routeValues: new { id = user.Id });
                 }
@@ -188,11 +188,11 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return Json("اطلاعات وارد شده معتبر نیست.");
             }
 
-            var user = await _userManager.FindByIdAsync(pid).ConfigureAwait(false);
+            var user = await _userManager.FindByIdAsync(pid);
             user.UserName = username;
             user.Email = email;
 
-            var result = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user).ConfigureAwait(false);
+            var result = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
@@ -228,7 +228,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 Pid = _protectionProviderService.Encrypt(user.Id.ToString()),
                 IsEmailPublic = user.IsEmailPublic,
                 TwoFactorEnabled = user.TwoFactorEnabled,
-                IsPasswordTooOld = await _usedPasswordsService.IsLastUserPasswordTooOldAsync(user.Id).ConfigureAwait(false)
+                IsPasswordTooOld = await _usedPasswordsService.IsLastUserPasswordTooOldAsync(user.Id)
             };
 
             if (user.BirthDate.HasValue)
@@ -263,7 +263,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 var filePath = Path.Combine(uploadsRootFolder, photoFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await photoFile.CopyToAsync(fileStream).ConfigureAwait(false);
+                    await photoFile.CopyToAsync(fileStream);
                 }
                 user.PhotoFileName = photoFileName;
             }
@@ -276,7 +276,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             {
                 user.Email = model.Email;
                 var userValidator =
-                    await _userValidator.ValidateAsync((UserManager<User>)_userManager, user).ConfigureAwait(false);
+                    await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
                 if (!userValidator.Succeeded)
                 {
                     ModelState.AddModelError("", userValidator.DumpErrors(useHtmlNewLine: true));
@@ -285,7 +285,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
                 user.EmailConfirmed = false;
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _emailSender.SendEmailAsync(
                     email: user.Email,
                     subject: "لطفا اکانت خود را تائید کنید",
@@ -296,7 +296,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                         EmailConfirmationToken = code,
                         EmailSignature = _siteOptions.Value.Smtp.FromName,
                         MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                    }).ConfigureAwait(false);
+                    });
             }
 
             return true;
@@ -308,7 +308,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             {
                 user.UserName = model.UserName;
                 var userValidator =
-                    await _userValidator.ValidateAsync((UserManager<User>)_userManager, user).ConfigureAwait(false);
+                    await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
                 if (!userValidator.Succeeded)
                 {
                     ModelState.AddModelError("", userValidator.DumpErrors(useHtmlNewLine: true));

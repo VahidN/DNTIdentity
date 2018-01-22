@@ -113,40 +113,40 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public override async Task<IdentityResult> CreateAsync(User user)
         {
-            var result = await base.CreateAsync(user).ConfigureAwait(false);
+            var result = await base.CreateAsync(user);
             if (result.Succeeded)
             {
-                await _usedPasswordsService.AddToUsedPasswordsListAsync(user).ConfigureAwait(false);
+                await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
             }
             return result;
         }
 
         public override async Task<IdentityResult> CreateAsync(User user, string password)
         {
-            var result = await base.CreateAsync(user, password).ConfigureAwait(false);
+            var result = await base.CreateAsync(user, password);
             if (result.Succeeded)
             {
-                await _usedPasswordsService.AddToUsedPasswordsListAsync(user).ConfigureAwait(false);
+                await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
             }
             return result;
         }
 
         public override async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
         {
-            var result = await base.ChangePasswordAsync(user, currentPassword, newPassword).ConfigureAwait(false);
+            var result = await base.ChangePasswordAsync(user, currentPassword, newPassword);
             if (result.Succeeded)
             {
-                await _usedPasswordsService.AddToUsedPasswordsListAsync(user).ConfigureAwait(false);
+                await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
             }
             return result;
         }
 
         public override async Task<IdentityResult> ResetPasswordAsync(User user, string token, string newPassword)
         {
-            var result = await base.ResetPasswordAsync(user, token, newPassword).ConfigureAwait(false);
+            var result = await base.ResetPasswordAsync(user, token, newPassword);
             if (result.Succeeded)
             {
-                await _usedPasswordsService.AddToUsedPasswordsListAsync(user).ConfigureAwait(false);
+                await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
             }
             return result;
         }
@@ -190,7 +190,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task<User> GetCurrentUserAsync()
         {
             return _currentUserInScope ??
-                (_currentUserInScope = await GetUserAsync(_contextAccessor.HttpContext.User).ConfigureAwait(false));
+                (_currentUserInScope = await GetUserAsync(_contextAccessor.HttpContext.User));
         }
 
         public string GetCurrentUserId()
@@ -228,13 +228,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public async Task<bool> HasPasswordAsync(int userId)
         {
-            var user = await FindByIdAsync(userId.ToString()).ConfigureAwait(false);
+            var user = await FindByIdAsync(userId.ToString());
             return user?.PasswordHash != null;
         }
 
         public async Task<bool> HasPhoneNumberAsync(int userId)
         {
-            var user = await FindByIdAsync(userId.ToString()).ConfigureAwait(false);
+            var user = await FindByIdAsync(userId.ToString());
             return user?.PhoneNumber != null;
         }
 
@@ -243,7 +243,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             if (userId == null)
                 return TextToImage.EMailToImage("?");
 
-            var user = await FindByIdAsync(userId.Value.ToString()).ConfigureAwait(false);
+            var user = await FindByIdAsync(userId.Value.ToString());
             if (user == null)
                 return TextToImage.EMailToImage("?");
 
@@ -322,10 +322,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 Paging =
                 {
-                    TotalItems = await query.CountAsync().ConfigureAwait(false)
+                    TotalItems = await query.CountAsync()
                 },
-                Users = await query.Skip(skipRecords).Take(model.MaxNumberOfRows).ToListAsync().ConfigureAwait(false),
-                Roles = await _roles.ToListAsync().ConfigureAwait(false)
+                Users = await query.Skip(skipRecords).Take(model.MaxNumberOfRows).ToListAsync(),
+                Roles = await _roles.ToListAsync()
             };
         }
 
@@ -356,16 +356,16 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 Paging =
                 {
-                    TotalItems = await query.CountAsync().ConfigureAwait(false)
+                    TotalItems = await query.CountAsync()
                 },
-                Users = await query.Skip(skipRecords).Take(recordsPerPage).ToListAsync().ConfigureAwait(false),
-                Roles = await _roles.ToListAsync().ConfigureAwait(false)
+                Users = await query.Skip(skipRecords).Take(recordsPerPage).ToListAsync(),
+                Roles = await _roles.ToListAsync()
             };
         }
 
         public async Task<IdentityResult> UpdateUserAndSecurityStampAsync(int userId, Action<User> action)
         {
-            var user = await FindByIdIncludeUserRolesAsync(userId).ConfigureAwait(false);
+            var user = await FindByIdIncludeUserRolesAsync(userId);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError
@@ -377,17 +377,17 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             action(user);
 
-            var result = await UpdateAsync(user).ConfigureAwait(false);
+            var result = await UpdateAsync(user);
             if (!result.Succeeded)
             {
                 return result;
             }
-            return await UpdateSecurityStampAsync(user).ConfigureAwait(false);
+            return await UpdateSecurityStampAsync(user);
         }
 
         public async Task<IdentityResult> AddOrUpdateUserRolesAsync(int userId, IList<int> selectedRoleIds, Action<User> action = null)
         {
-            var user = await FindByIdIncludeUserRolesAsync(userId).ConfigureAwait(false);
+            var user = await FindByIdIncludeUserRolesAsync(userId);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError
@@ -421,12 +421,12 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             action?.Invoke(user);
 
-            var result = await UpdateAsync(user).ConfigureAwait(false);
+            var result = await UpdateAsync(user);
             if (!result.Succeeded)
             {
                 return result;
             }
-            return await UpdateSecurityStampAsync(user).ConfigureAwait(false);
+            return await UpdateSecurityStampAsync(user);
         }
 
         #endregion

@@ -35,8 +35,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public async Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model)
         {
-            var message = await _viewRendererService.RenderViewToStringAsync(viewNameOrPath, model).ConfigureAwait(false);
-            await SendEmailAsync(email, subject, message).ConfigureAwait(false);
+            var message = await _viewRendererService.RenderViewToStringAsync(viewNameOrPath, model);
+            await SendEmailAsync(email, subject, message);
         }
 
         public async Task SendEmailAsync(string email, string subject, string message)
@@ -72,14 +72,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                     {
                         client.LocalDomain = smtpConfigValue.LocalDomain;
                     }
-                    await client.ConnectAsync(smtpConfigValue.Server, smtpConfigValue.Port, SecureSocketOptions.None).ConfigureAwait(false);
+                    await client.ConnectAsync(smtpConfigValue.Server, smtpConfigValue.Port, SecureSocketOptions.None);
                     if (!string.IsNullOrWhiteSpace(smtpConfigValue.Username) &&
                         !string.IsNullOrWhiteSpace(smtpConfigValue.Password))
                     {
-                        await client.AuthenticateAsync(smtpConfigValue.Username, smtpConfigValue.Password).ConfigureAwait(false);
+                        await client.AuthenticateAsync(smtpConfigValue.Username, smtpConfigValue.Password);
                     }
-                    await client.SendAsync(emailMessage).ConfigureAwait(false);
-                    await client.DisconnectAsync(true).ConfigureAwait(false);
+                    await client.SendAsync(emailMessage);
+                    await client.DisconnectAsync(true);
                 }
             }
         }

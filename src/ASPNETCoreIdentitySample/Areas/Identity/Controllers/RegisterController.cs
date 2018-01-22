@@ -66,7 +66,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> ValidateUsername(string username, string email)
         {
             var result = await _userValidator.ValidateAsync(
-                (UserManager<User>)_userManager, new User { UserName = username, Email = email }).ConfigureAwait(false);
+                (UserManager<User>)_userManager, new User { UserName = username, Email = email });
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
@@ -78,7 +78,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> ValidatePassword(string password, string username)
         {
             var result = await _passwordValidator.ValidateAsync(
-                (UserManager<User>)_userManager, new User { UserName = username }, password).ConfigureAwait(false);
+                (UserManager<User>)_userManager, new User { UserName = username }, password);
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
@@ -90,13 +90,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View("Error");
             }
 
-            var user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return View("NotFound");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code).ConfigureAwait(false);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
             return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
         }
 
@@ -126,14 +126,14 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName
                 };
-                var result = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(false);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(3, $"{user.UserName} created a new account with password.");
 
                     if (_siteOptions.Value.EnableEmailConfirmation)
                     {
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         //ControllerExtensions.ShortControllerName<RegisterController>(), //todo: use everywhere .................
 
                         await _emailSender.SendEmailAsync(
@@ -146,7 +146,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                EmailConfirmationToken = code,
                                EmailSignature = _siteOptions.Value.Smtp.FromName,
                                MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                           }).ConfigureAwait(false);
+                           });
 
                         return RedirectToAction(nameof(ConfirmYourEmail));
                     }

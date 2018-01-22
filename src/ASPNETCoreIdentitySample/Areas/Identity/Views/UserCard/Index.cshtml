@@ -4,4 +4,4 @@
     ViewData["Title"] = $"برگه مشخصات {Model.User.DisplayName}";
 }
 
-@{ await Html.RenderPartialAsync("_UserCardItem", Model).ConfigureAwait(false);  }
+@{ await Html.RenderPartialAsync("_UserCardItem", Model);  }

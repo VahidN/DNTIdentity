@@ -40,7 +40,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public override async Task<ClaimsPrincipal> CreateAsync(User user)
         {
-            var principal = await base.CreateAsync(user).ConfigureAwait(false); // adds all `Options.ClaimsIdentity.RoleClaimType -> Role Claims` automatically + `Options.ClaimsIdentity.UserIdClaimType -> userId` & `Options.ClaimsIdentity.UserNameClaimType -> userName`
+            var principal = await base.CreateAsync(user); // adds all `Options.ClaimsIdentity.RoleClaimType -> Role Claims` automatically + `Options.ClaimsIdentity.UserIdClaimType -> userId` & `Options.ClaimsIdentity.UserNameClaimType -> userName`
             addCustomClaims(user, principal);
             return principal;
         }

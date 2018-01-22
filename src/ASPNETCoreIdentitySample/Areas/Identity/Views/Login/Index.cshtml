@@ -15,7 +15,7 @@
               method="post"
               autocomplete = "off"
               class="form-horizontal">
-            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary"); }
             <div class="form-group">
                 <label asp-for="Username" class="col-md-2 control-label"></label>
                 <div class="controls col col-md-10">

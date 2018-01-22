@@ -138,10 +138,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 Paging =
                 {
-                    TotalItems = await query.CountAsync().ConfigureAwait(false)
+                    TotalItems = await query.CountAsync()
                 },
-                Users = await query.Skip(skipRecords).Take(recordsPerPage).ToListAsync().ConfigureAwait(false),
-                Roles = await Roles.ToListAsync().ConfigureAwait(false)
+                Users = await query.Skip(skipRecords).Take(recordsPerPage).ToListAsync(),
+                Roles = await Roles.ToListAsync()
             };
         }
 
@@ -207,7 +207,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             string roleClaimType,
             IList<string> selectedRoleClaimValues)
         {
-            var role = await FindRoleIncludeRoleClaimsAsync(roleId).ConfigureAwait(false);
+            var role = await FindRoleIncludeRoleClaimsAsync(roleId);
             if (role == null)
             {
                 return IdentityResult.Failed(new IdentityError
@@ -247,7 +247,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 }
             }
 
-            return await UpdateAsync(role).ConfigureAwait(false);
+            return await UpdateAsync(role);
         }
 
         private int getCurrentUserId() => _contextAccessor.HttpContext.User.Identity.GetUserId<int>();

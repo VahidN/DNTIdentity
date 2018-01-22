@@ -42,7 +42,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View("Error");
             }
 
-            var user = await _userManager.FindByIdIncludeUserRolesAsync(id.Value).ConfigureAwait(false);
+            var user = await _userManager.FindByIdIncludeUserRolesAsync(id.Value);
             if (user == null)
             {
                 return View("NotFound");
@@ -52,7 +52,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             {
                 User = user,
                 ShowAdminParts = User.IsInRole(ConstantRoles.Admin),
-                Roles = await _roleManager.GetAllCustomRolesAsync().ConfigureAwait(false),
+                Roles = await _roleManager.GetAllCustomRolesAsync(),
                 ActiveTab = UserCardItemActiveTab.UserInfo
             };
             return View(model);
@@ -66,7 +66,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return NotFound();
             }
 
-            var fileContents = await _userManager.GetEmailImageAsync(id).ConfigureAwait(false);
+            var fileContents = await _userManager.GetEmailImageAsync(id);
             return new FileContentResult(fileContents, "image/png");
         }
 

@@ -53,14 +53,14 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [BreadCrumb(Title = "ارسال کد", Order = 1)]
         public async Task<IActionResult> SendCode(string returnUrl = null, bool rememberMe = false)
         {
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync().ConfigureAwait(false);
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 return View("NotFound");
             }
 
             var tokenProvider = "Email";
-            var code = await _userManager.GenerateTwoFactorTokenAsync(user, tokenProvider).ConfigureAwait(false);
+            var code = await _userManager.GenerateTwoFactorTokenAsync(user, tokenProvider);
             if (string.IsNullOrWhiteSpace(code))
             {
                 return View("Error");
@@ -75,7 +75,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                    Token = code,
                                    EmailSignature = _siteOptions.Value.Smtp.FromName,
                                    MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                               }).ConfigureAwait(false);
+                               });
 
             return RedirectToAction(
                 nameof(VerifyCode),
@@ -92,7 +92,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> VerifyCode(string provider, bool rememberMe, string returnUrl = null)
         {
             // Require that the user has already logged in via username/password or external login
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync().ConfigureAwait(false);
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 return View("NotFound");
@@ -117,7 +117,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 model.Provider,
                 model.Code,
                 model.RememberMe,
-                model.RememberBrowser).ConfigureAwait(false);
+                model.RememberBrowser);
 
             if (result.Succeeded)
             {

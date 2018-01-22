@@ -27,7 +27,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task<string> StoreAsync(AuthenticationTicket ticket)
         {
             var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
-            await RenewAsync(key, ticket).ConfigureAwait(false);
+            await RenewAsync(key, ticket);
             return key;
         }
 

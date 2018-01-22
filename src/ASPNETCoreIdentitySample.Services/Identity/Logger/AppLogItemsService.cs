@@ -40,11 +40,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 
         public async Task DeleteAsync(int logItemId)
         {
-            var itemToRemove = await _appLogItems.FirstOrDefaultAsync(x => x.Id.Equals(logItemId)).ConfigureAwait(false);
+            var itemToRemove = await _appLogItems.FirstOrDefaultAsync(x => x.Id.Equals(logItemId));
             if (itemToRemove != null)
             {
                 _appLogItems.Remove(itemToRemove);
-                await _uow.SaveChangesAsync().ConfigureAwait(false);
+                await _uow.SaveChangesAsync();
             }
         }
 
@@ -89,9 +89,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             {
                 Paging =
                 {
-                    TotalItems = await query.CountAsync().ConfigureAwait(false)
+                    TotalItems = await query.CountAsync()
                 },
-                AppLogItems = await query.Skip(offset).Take(pageSize).ToListAsync().ConfigureAwait(false)
+                AppLogItems = await query.Skip(offset).Take(pageSize).ToListAsync()
             };
         }
     }

@@ -25,7 +25,7 @@
               method="post"
               enctype="multipart/form-data"
               class="form-horizontal">
-            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary"); }
             <div class="form-group">
                 <label asp-for="FirstName" class="col-md-2 control-label"></label>
                 <div class="col-md-10">

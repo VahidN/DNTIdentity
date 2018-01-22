@@ -104,7 +104,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
             var thisMethodName = nameof(SeedDatabaseWithAdminUserAsync);
 
-            var adminUser = await _applicationUserManager.FindByNameAsync(name).ConfigureAwait(false);
+            var adminUser = await _applicationUserManager.FindByNameAsync(name);
             if (adminUser != null)
             {
                 _logger.LogInformation($"{thisMethodName}: adminUser already exists.");
@@ -112,11 +112,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             }
 
             //Create the `Admin` Role if it does not exist
-            var adminRole = await _roleManager.FindByNameAsync(roleName).ConfigureAwait(false);
+            var adminRole = await _roleManager.FindByNameAsync(roleName);
             if (adminRole == null)
             {
                 adminRole = new Role(roleName);
-                var adminRoleResult = await _roleManager.CreateAsync(adminRole).ConfigureAwait(false);
+                var adminRoleResult = await _roleManager.CreateAsync(adminRole);
                 if (adminRoleResult == IdentityResult.Failed())
                 {
                     _logger.LogError($"{thisMethodName}: adminRole CreateAsync failed. {adminRoleResult.DumpErrors()}");
@@ -136,21 +136,21 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 IsEmailPublic = true,
                 LockoutEnabled = true
             };
-            var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password).ConfigureAwait(false);
+            var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password);
             if (adminUserResult == IdentityResult.Failed())
             {
                 _logger.LogError($"{thisMethodName}: adminUser CreateAsync failed. {adminUserResult.DumpErrors()}");
                 return IdentityResult.Failed();
             }
 
-            var setLockoutResult = await _applicationUserManager.SetLockoutEnabledAsync(adminUser, enabled: false).ConfigureAwait(false);
+            var setLockoutResult = await _applicationUserManager.SetLockoutEnabledAsync(adminUser, enabled: false);
             if (setLockoutResult == IdentityResult.Failed())
             {
                 _logger.LogError($"{thisMethodName}: adminUser SetLockoutEnabledAsync failed. {setLockoutResult.DumpErrors()}");
                 return IdentityResult.Failed();
             }
 
-            var addToRoleResult = await _applicationUserManager.AddToRoleAsync(adminUser, adminRole.Name).ConfigureAwait(false);
+            var addToRoleResult = await _applicationUserManager.AddToRoleAsync(adminUser, adminRole.Name);
             if (addToRoleResult == IdentityResult.Failed())
             {
                 _logger.LogError($"{thisMethodName}: adminUser AddToRoleAsync failed. {addToRoleResult.DumpErrors()}");

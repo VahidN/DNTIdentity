@@ -35,7 +35,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public override async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
         {
             // First use the built-in validator
-            var result = await base.ValidateAsync(manager, user).ConfigureAwait(false);
+            var result = await base.ValidateAsync(manager, user);
             var errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
             // Extending the built-in validator

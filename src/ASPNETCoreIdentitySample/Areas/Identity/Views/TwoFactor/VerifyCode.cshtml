@@ -14,7 +14,7 @@
                 <li>
                     هم اکنون ایمیلی حاوی یک کد امنیتی جدید، به صندوق پست الکترونیک شما ارسال گردید.
                     لطفا این کد را در فرم جاری، وارد و ارسال نمائید.
-                    @{ await Html.RenderPartialAsync("_PickupFolder").ConfigureAwait(false); }
+                    @{ await Html.RenderPartialAsync("_PickupFolder"); }
                 </li>
                 <li>
                     گزینه‌ی «به‌خاطر سپاری مرورگر جاری» به این معنا است که تنها بر روی این کامپیوتر و مرورگر، در دفعات آتی لاگین به سیستم،‌ نیازی به ورود اطلاعات کد امنیتی دو مرحله‌ای نخواهید داشت.
@@ -27,7 +27,7 @@
               asp-route-returnurl="@ViewData["ReturnUrl"]"
               method="post"
               class="form-horizontal">
-            @{ await Html.RenderPartialAsync("_CustomValidationSummary").ConfigureAwait(false); }
+            @{ await Html.RenderPartialAsync("_CustomValidationSummary"); }
             <input asp-for="Provider" type="hidden" />
             <input asp-for="RememberMe" type="hidden" />
             <h4>@ViewData["Status"]</h4>

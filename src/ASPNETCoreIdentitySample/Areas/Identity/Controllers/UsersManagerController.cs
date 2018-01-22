@@ -43,13 +43,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 {
                     user.EmailConfirmed = true;
                     thisUser = user;
-                }).ConfigureAwait(false);
+                });
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -62,13 +62,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 {
                     user.LockoutEnabled = activate;
                     thisUser = user;
-                }).ConfigureAwait(false);
+                });
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -77,13 +77,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         {
             User thisUser = null;
             var result = await _userManager.AddOrUpdateUserRolesAsync(
-                userId, roleIds, user => thisUser = user).ConfigureAwait(false);
+                userId, roleIds, user => thisUser = user);
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -96,13 +96,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                         {
                             user.IsActive = activate;
                             thisUser = user;
-                        }).ConfigureAwait(false);
+                        });
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -115,13 +115,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 {
                     user.TwoFactorEnabled = activate;
                     thisUser = user;
-                }).ConfigureAwait(false);
+                });
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -134,13 +134,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 {
                     user.LockoutEnd = null;
                     thisUser = user;
-                }).ConfigureAwait(false);
+                });
             if (!result.Succeeded)
             {
                 return BadRequest(error: result.DumpErrors(useHtmlNewLine: true));
             }
 
-            return await returnUserCardPartialView(thisUser).ConfigureAwait(false);
+            return await returnUserCardPartialView(thisUser);
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
@@ -151,7 +151,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 recordsPerPage: DefaultPageSize,
                 sortByField: field,
                 sortOrder: order,
-                showAllUsers: true).ConfigureAwait(false);
+                showAllUsers: true);
 
             model.Paging.CurrentPage = page.Value;
             model.Paging.ItemsPerPage = DefaultPageSize;
@@ -170,7 +170,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         {
             var pagedUsersList = await _userManager.GetPagedUsersListAsync(
                 pageNumber: 0,
-                model: model).ConfigureAwait(false);
+                model: model);
 
             pagedUsersList.Paging.CurrentPage = 1;
             pagedUsersList.Paging.ItemsPerPage = model.MaxNumberOfRows;
@@ -182,7 +182,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         private async Task<IActionResult> returnUserCardPartialView(User thisUser)
         {
-            var roles = await _roleManager.GetAllCustomRolesAsync().ConfigureAwait(false);
+            var roles = await _roleManager.GetAllCustomRolesAsync();
             return PartialView(@"~/Areas/Identity/Views/UserCard/_UserCardItem.cshtml",
                 new UserCardItemViewModel
                 {
