@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -42,6 +43,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
+        [NoBrowserCache]
         public IActionResult Index(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
