@@ -123,11 +123,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         public async Task<IActionResult> LogOff()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = User.Identity.IsAuthenticated ? await _userManager.FindByNameAsync(User.Identity.Name) : null;
             await _signInManager.SignOutAsync();
-            await _userManager.UpdateSecurityStampAsync(user);
-
-            _logger.LogInformation(4, $"{user.UserName} logged out.");
+            if (user != null)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                _logger.LogInformation(4, $"{user.UserName} logged out.");
+            }
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

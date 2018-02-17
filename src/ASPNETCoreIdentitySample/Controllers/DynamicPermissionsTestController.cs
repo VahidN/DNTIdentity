@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 
 namespace ASPNETCoreIdentitySample.Controllers
 {
@@ -13,6 +14,7 @@ namespace ASPNETCoreIdentitySample.Controllers
     [Authorize(Policy = ConstantPolicies.DynamicPermission)]
     [BreadCrumb(UseDefaultRouteUrl = true, Order = 0)]
     [DisplayName("کنترلر آزمایشی با سطح دسترسی پویا")]
+    // [NoBrowserCache]
     public class DynamicPermissionsTestController : Controller
     {
         [DisplayName("ایندکس")]

@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using System.IO;
 using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
+using ASPNETCoreIdentitySample.Services.Identity;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -44,6 +46,7 @@ namespace ASPNETCoreIdentitySample
             {
                 options.UseCustomStringModelBinder();
                 options.AllowEmptyInputInBodyModelBinding = true;
+                // options.Filters.Add(new NoBrowserCacheAttribute());
             }).AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
@@ -81,6 +84,8 @@ namespace ASPNETCoreIdentitySample
 
             // Adds all of the ASP.NET Core Identity related initializations at once.
             app.UseCustomIdentityServices();
+
+            // app.UseNoBrowserCache();
 
             app.UseMvc(routes =>
             {
