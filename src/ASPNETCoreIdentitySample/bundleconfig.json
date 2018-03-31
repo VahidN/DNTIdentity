@@ -3,20 +3,26 @@
     {
         "outputFileName": "wwwroot/css/site.min.css",
         "inputFiles": [
-            "bower_components/bootstrap/dist/css/bootstrap.min.css",
-            "bower_components/bootstrap-rtl/dist/css/bootstrap-rtl.min.css",
-            "bower_components/components-font-awesome/css/font-awesome.min.css",
+            "node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.min.css",
+            "node_modules/components-font-awesome/css/fa-solid.min.css",
+            "node_modules/components-font-awesome/css/fontawesome.min.css",
             "content/custom.css"
-        ]
+        ],
+        "minify": {
+            "enabled": false,
+            "renameLocals": false,
+            "adjustRelativePaths": false
+        }
     },
     {
         "outputFileName": "wwwroot/js/site.min.js",
         "inputFiles": [
-            "bower_components/jquery/dist/jquery.min.js",
-            "bower_components/jquery-validation/dist/jquery.validate.min.js",
-            "bower_components/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
-            "bower_components/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js",
-            "bower_components/bootstrap/dist/js/bootstrap.min.js",
+            "node_modules/jquery/dist/jquery.min.js",
+            "node_modules/jquery-validation/dist/jquery.validate.min.js",
+            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
+            "node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js",
+            "node_modules/bootstrap/dist/js/bootstrap.min.js",
             "scripts/jquery.bootstrap-modal-confirm.js",
             "scripts/jquery.bootstrap-modal-alert.js",
             "scripts/jquery.bootstrap-modal-ajax-form.js",

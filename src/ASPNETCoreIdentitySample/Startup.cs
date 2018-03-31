@@ -70,14 +70,8 @@ namespace ASPNETCoreIdentitySample
             app.UseStatusCodePagesWithReExecute("/error/index/{0}");
 
             // Serve wwwroot as root
-            app.UseFileServer();
-
             app.UseFileServer(new FileServerOptions
             {
-                // Set root of file server
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "bower_components")),
-                // Only react to requests that match this path
-                RequestPath = "/bower_components",
                 // Don't expose file system
                 EnableDirectoryBrowsing = false
             });

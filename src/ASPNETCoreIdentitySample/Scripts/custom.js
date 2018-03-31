@@ -6,8 +6,8 @@
 //-----------------------------------------------bootstrap
 $(document).ready(function () {
     $('ul.nav.navbar-nav, ul.list-group, ul.nav.nav-tabs').find('a[href="' + location.pathname + '"]')
-                          .closest('li')
-                          .addClass('active');
+        .closest('li')
+        .addClass('active');
 
 });
 
@@ -72,8 +72,7 @@ function defrm() {
 }
 if (window.top !== window.self) {
     try {
-        if (window.top.location.host)
-        { /* will throw */ }
+        if (window.top.location.host) { /* will throw */ }
         else {
             defrm(); /* chrome */
         }
@@ -87,7 +86,7 @@ if (window.top !== window.self) {
 function dataAjaxBegin() {
     $.bootstrapModalAlert({
         caption: 'شروع انجام عملیات',
-        body: '<div class="alert alert-info"> <span class="fa fa-thumbs-up" aria-hidden="true"></span> درحال ارسال اطلاعات به سرور. لطفا اندکی تامل نمائید. </div>'
+        body: '<div class="alert alert-info"> <span class="fas fa-thumbs-up" aria-hidden="true"></span> درحال ارسال اطلاعات به سرور. لطفا اندکی تامل نمائید. </div>'
     });
     return true;
 }
@@ -95,7 +94,7 @@ function dataAjaxBegin() {
 function dataAjaxSuccess(data, status, xhr) {
     $.bootstrapModalAlert({
         caption: 'تائید انجام عملیات',
-        body: '<div class="alert alert-success"> <span class="fa fa-thumbs-up" aria-hidden="true"></span> عملیات درخواستی با موفقیت انجام شد.</div>'
+        body: '<div class="alert alert-success"> <span class="fas fa-thumbs-up" aria-hidden="true"></span> عملیات درخواستی با موفقیت انجام شد.</div>'
     });
 }
 
@@ -107,7 +106,7 @@ function dataAjaxFailure(xhr, status, error) {
 
     $.bootstrapModalAlert({
         caption: 'خطا در انجام عملیات',
-        body: '<div class="alert alert-danger"> <span class="fa fa-thumbs-down" aria-hidden="true"></span> ' + xhr.responseText + '</div>'
+        body: '<div class="alert alert-danger"> <span class="fas fa-thumbs-down" aria-hidden="true"></span> ' + xhr.responseText + '</div>'
     });
 }
 //-----------------------Ajax forms
@@ -115,8 +114,8 @@ function dataAjaxFailure(xhr, status, error) {
 //--------------------- Set dir rtl
 function checkRTL(s) {
     var ltrChars = 'A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF' + '\u2C00-\uFB1C\uFDFE-\uFE6F\uFEFD-\uFFFF',
-    rtlChars = '\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC',
-    rtlDirCheck = new RegExp('^[^' + ltrChars + ']*[' + rtlChars + ']');
+        rtlChars = '\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC',
+        rtlDirCheck = new RegExp('^[^' + ltrChars + ']*[' + rtlChars + ']');
     return rtlDirCheck.test(s);
 }
 function setDirection(selector) {

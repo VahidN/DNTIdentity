@@ -27,7 +27,7 @@
                 <ul class="nav navbar-nav">
                     <li>
                         <a asp-area="" asp-controller="Home" asp-action="Index">
-                            <span class="fa fa-home" aria-hidden="true"></span>
+                            <span class="fas fa-home" aria-hidden="true"></span>
                             خانه
                         </a>
                     </li>
@@ -46,13 +46,13 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <a asp-area="@AreaConstants.IdentityArea" asp-controller="Login" asp-action="Index">
-                                <span class="fa fa-sign-in" aria-hidden="true"></span>
+                                <span class="fas fa-sign-in" aria-hidden="true"></span>
                                 ورود
                             </a>
                         </li>
                         <li>
                             <a asp-area="@AreaConstants.IdentityArea" asp-controller="Register" asp-action="Index">
-                                <span class="fa fa-plug" aria-hidden="true"></span>
+                                <span class="fas fa-plug" aria-hidden="true"></span>
                                 ثبت نام
                             </a>
                         </li>
@@ -66,7 +66,7 @@
             <div class="col-md-12">
                 <breadcrumb asp-homepage-title="خانه"
                             asp-homepage-url="@Url.Action("Index", "Home", values: new { area = "" })"
-                            asp-homepage-glyphicon="fa fa-home"></breadcrumb>
+                            asp-homepage-glyphicon="fas fa-home"></breadcrumb>
             </div>
         </div>
     </div>
@@ -83,7 +83,7 @@
     <footer id="footer" dir="ltr" class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
             <div class="text-center footer-text">
-                <span class="copyright-text"><span class="fa fa-heart" style="color:DarkRed" aria-hidden="true"></span> <a href="http://www.dotnettips.info/" target="_blank">DNT, 2017</a></span>
+                <span class="copyright-text"><span class="fas fa-heart" style="color:DarkRed" aria-hidden="true"></span> <a href="http://www.dotnettips.info/" target="_blank">DNT, 2017</a></span>
             </div>
         </div>
     </footer>
