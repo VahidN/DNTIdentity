@@ -10,10 +10,11 @@
             "content/custom.css"
         ],
         "minify": {
-            "enabled": false,
+            "enabled": true,
             "renameLocals": false,
             "adjustRelativePaths": false
-        }
+        },
+        "sourceMap": false
     },
     {
         "outputFileName": "wwwroot/js/site.min.js",
