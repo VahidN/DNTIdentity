@@ -1,6 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -15,6 +14,7 @@ using System;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTPersianUtils.Core;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -97,12 +97,12 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                    subject: "بازیابی کلمه‌ی عبور",
                    viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_PasswordReset.cshtml",
                    model: new PasswordResetViewModel
-                    {
-                        UserId = user.Id,
-                        Token = code,
-                        EmailSignature = _siteOptions.Value.Smtp.FromName,
-                        MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                    })
+                   {
+                       UserId = user.Id,
+                       Token = code,
+                       EmailSignature = _siteOptions.Value.Smtp.FromName,
+                       MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
+                   })
                     ;
 
                 return View("ForgotPasswordConfirmation");

@@ -1,12 +1,8 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
-using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -15,6 +11,7 @@ using System.Linq;
 using System;
 using Microsoft.AspNetCore.Hosting.Internal;
 using ASPNETCoreIdentitySample.IocConfig;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.MsTests
 {
@@ -43,9 +40,7 @@ namespace ASPNETCoreIdentitySample.MsTests
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
 
-            services.AddRazorViewRenderer();
-            services.AddMvcActionsDiscoveryService();
-            services.AddProtectionProviderService();
+            services.AddDNTCommonWeb();
             services.AddCloudscribePagination();
 
             _serviceProvider = services.BuildServiceProvider();
@@ -60,7 +55,7 @@ namespace ASPNETCoreIdentitySample.MsTests
         [TestMethod]
         public void Test_UserAdmin_Exists()
         {
-            _serviceProvider.RunScopedContext(context =>
+            _serviceProvider.RunScopedService<IUnitOfWork>(context =>
             {
                 var users = context.Set<User>();
                 Assert.IsTrue(users.Any(x => x.UserName == "Admin"));

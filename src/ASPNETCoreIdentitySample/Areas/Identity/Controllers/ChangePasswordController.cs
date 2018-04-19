@@ -1,6 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
@@ -14,13 +13,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
     [Authorize]
     [Area(AreaConstants.IdentityArea)]
     [BreadCrumb(Title = "تغییر کلمه‌ی عبور", UseDefaultRouteUrl = true, Order = 0)]
-    public class ChangePasswordController: Controller
+    public class ChangePasswordController : Controller
     {
         private readonly IEmailSender _emailSender;
         private readonly IApplicationUserManager _userManager;

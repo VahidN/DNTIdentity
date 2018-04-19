@@ -1,4 +1,5 @@
 ﻿using System;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Identity;
 
 namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
@@ -7,7 +8,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
     {
         public AdminUserSeed AdminUserSeed { get; set; }
         public Logging Logging { get; set; }
-        public Smtp Smtp { get; set; }
+        public SmtpConfig Smtp { get; set; }
         public Connectionstrings ConnectionStrings { get; set; }
         public bool EnableEmailConfirmation { get; set; }
         public TimeSpan EmailConfirmationTokenProviderLifespan { get; set; }

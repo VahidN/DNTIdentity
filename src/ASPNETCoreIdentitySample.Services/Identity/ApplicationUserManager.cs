@@ -1,12 +1,10 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using DNTPersianUtils.Core;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +16,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -241,16 +240,16 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task<byte[]> GetEmailImageAsync(int? userId)
         {
             if (userId == null)
-                return TextToImage.EMailToImage("?");
+                return "?".TextToImage(new TextToImageOptions());
 
             var user = await FindByIdAsync(userId.Value.ToString());
             if (user == null)
-                return TextToImage.EMailToImage("?");
+                return "?".TextToImage(new TextToImageOptions());
 
             if (!user.IsEmailPublic)
-                return TextToImage.EMailToImage("?");
+                return "?".TextToImage(new TextToImageOptions());
 
-            return TextToImage.EMailToImage(user.Email);
+            return user.Email.TextToImage(new TextToImageOptions());
         }
 
         public async Task<PagedUsersListViewModel> GetPagedUsersListAsync(SearchUsersViewModel model, int pageNumber)

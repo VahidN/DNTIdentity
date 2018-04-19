@@ -1,6 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -16,6 +15,7 @@ using System;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTPersianUtils.Core;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {

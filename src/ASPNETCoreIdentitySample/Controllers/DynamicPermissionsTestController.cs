@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 
 namespace ASPNETCoreIdentitySample.Controllers
 {

@@ -1,15 +1,9 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
-using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Options;
-using MimeKit.Text;
-using MimeKit;
-using System.IO;
 using System.Threading.Tasks;
-using System;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -20,68 +14,38 @@ namespace ASPNETCoreIdentitySample.Services.Identity
     public class AuthMessageSender : IEmailSender, ISmsSender
     {
         private readonly IOptionsSnapshot<SiteSettings> _smtpConfig;
-        private readonly IViewRendererService _viewRendererService;
+        private readonly IWebMailService _webMailService;
 
         public AuthMessageSender(
             IOptionsSnapshot<SiteSettings> smtpConfig,
-            IViewRendererService viewRendererService)
+            IWebMailService webMailService)
         {
             _smtpConfig = smtpConfig;
             _smtpConfig.CheckArgumentIsNull(nameof(_smtpConfig));
 
-            _viewRendererService = viewRendererService;
-            _viewRendererService.CheckArgumentIsNull(nameof(_viewRendererService));
+            _webMailService = webMailService;
+            _webMailService.CheckArgumentIsNull(nameof(webMailService));
         }
 
-        public async Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model)
+        public Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model)
         {
-            var message = await _viewRendererService.RenderViewToStringAsync(viewNameOrPath, model);
-            await SendEmailAsync(email, subject, message);
+            return _webMailService.SendEmailAsync(
+                _smtpConfig.Value.Smtp,
+                new[] { new MailAddress { ToName = "", ToAddress = email } },
+                subject,
+                viewNameOrPath,
+                model
+            );
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public Task SendEmailAsync(string email, string subject, string message)
         {
-            var emailMessage = new MimeMessage();
-
-            var smtpConfigValue = _smtpConfig.Value.Smtp;
-            smtpConfigValue.CheckArgumentIsNull(nameof(smtpConfigValue));
-
-            emailMessage.From.Add(new MailboxAddress(smtpConfigValue.FromName, smtpConfigValue.FromAddress));
-            emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart(TextFormat.Html)
-            {
-                Text = message
-            };
-
-
-            if (smtpConfigValue.UsePickupFolder)
-            {
-                using (var stream = new FileStream(
-                    Path.Combine(smtpConfigValue.PickupFolder, $"email-{Guid.NewGuid().ToString("N")}.eml"),
-                    FileMode.CreateNew))
-                {
-                    emailMessage.WriteTo(stream);
-                }
-            }
-            else
-            {
-                using (var client = new SmtpClient())
-                {
-                    if (!string.IsNullOrWhiteSpace(smtpConfigValue.LocalDomain))
-                    {
-                        client.LocalDomain = smtpConfigValue.LocalDomain;
-                    }
-                    await client.ConnectAsync(smtpConfigValue.Server, smtpConfigValue.Port, SecureSocketOptions.None);
-                    if (!string.IsNullOrWhiteSpace(smtpConfigValue.Username) &&
-                        !string.IsNullOrWhiteSpace(smtpConfigValue.Password))
-                    {
-                        await client.AuthenticateAsync(smtpConfigValue.Username, smtpConfigValue.Password);
-                    }
-                    await client.SendAsync(emailMessage);
-                    await client.DisconnectAsync(true);
-                }
-            }
+            return _webMailService.SendEmailAsync(
+                _smtpConfig.Value.Smtp,
+                new[] { new MailAddress { ToName = "", ToAddress = email } },
+                subject,
+                message
+            );
         }
 
         public Task SendSmsAsync(string number, string message)

@@ -1,6 +1,5 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Options;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {

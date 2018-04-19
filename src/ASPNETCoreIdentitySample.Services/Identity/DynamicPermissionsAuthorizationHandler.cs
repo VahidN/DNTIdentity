@@ -1,11 +1,12 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Threading.Tasks;
 using System;
+using DNTCommon.Web.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -47,7 +48,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 if (request.IsAjaxRequest() && request.ContentType.Contains("application/json"))
                 {
-                    var model = await request.DeserializeJsonBodyAsAsync<RoleViewModel>();
+                    var httpRequestInfoService = mvcContext.HttpContext.RequestServices.GetService<IHttpRequestInfoService>();
+                    var model = await httpRequestInfoService.DeserializeRequestJsonBodyAsAsync<RoleViewModel>();
                     if (model != null)
                     {
 

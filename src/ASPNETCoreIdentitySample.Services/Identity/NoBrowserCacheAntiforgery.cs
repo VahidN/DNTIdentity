@@ -1,6 +1,6 @@
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Antiforgery.Internal;
 using Microsoft.AspNetCore.Html;

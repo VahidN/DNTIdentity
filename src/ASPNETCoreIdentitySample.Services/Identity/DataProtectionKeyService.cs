@@ -7,6 +7,7 @@ using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.DataProtection.Repositories;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -25,18 +26,18 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public IReadOnlyCollection<XElement> GetAllElements()
         {
-            return _serviceProvider.RunScopedContext<ReadOnlyCollection<XElement>>(context =>
-            {
-                var dataProtectionKeys = context.Set<AppDataProtectionKey>();
-                return new ReadOnlyCollection<XElement>(dataProtectionKeys.Select(k => XElement.Parse(k.XmlData)).ToList());
-            });
+            return _serviceProvider.RunScopedService<ReadOnlyCollection<XElement>, IUnitOfWork>(context =>
+              {
+                  var dataProtectionKeys = context.Set<AppDataProtectionKey>();
+                  return new ReadOnlyCollection<XElement>(dataProtectionKeys.Select(k => XElement.Parse(k.XmlData)).ToList());
+              });
         }
 
         public void StoreElement(XElement element, string friendlyName)
         {
             // We need a separate context to call its SaveChanges several times,
             // without using the current request's context and changing its internal state.
-            _serviceProvider.RunScopedContext(context =>
+            _serviceProvider.RunScopedService<IUnitOfWork>(context =>
             {
                 var dataProtectionKeys = context.Set<AppDataProtectionKey>();
                 var entity = dataProtectionKeys.SingleOrDefault(k => k.FriendlyName == friendlyName);

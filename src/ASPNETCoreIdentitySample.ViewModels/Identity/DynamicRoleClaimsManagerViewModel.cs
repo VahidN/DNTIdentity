@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.ViewModels.Identity
 {

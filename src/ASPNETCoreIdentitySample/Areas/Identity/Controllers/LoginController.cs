@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {

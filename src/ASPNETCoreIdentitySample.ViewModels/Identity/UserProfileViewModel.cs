@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

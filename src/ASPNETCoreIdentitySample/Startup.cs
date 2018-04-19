@@ -1,20 +1,14 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.PersianToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
-using ASPNETCoreIdentitySample.Services.Identity.Logger;
+﻿using ASPNETCoreIdentitySample.Services.Identity.Logger;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
-using ASPNETCoreIdentitySample.Services.Identity;
-using Microsoft.AspNetCore.Rewrite;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -44,7 +38,7 @@ namespace ASPNETCoreIdentitySample
 
             services.AddMvc(options =>
             {
-                options.UseCustomStringModelBinder();
+                options.UseYeKeModelBinder();
                 options.AllowEmptyInputInBodyModelBinding = true;
                 // options.Filters.Add(new NoBrowserCacheAttribute());
             }).AddJsonOptions(jsonOptions =>
@@ -52,10 +46,8 @@ namespace ASPNETCoreIdentitySample
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
 
-            services.AddRazorViewRenderer();
+            services.AddDNTCommonWeb();
             services.AddDNTCaptcha();
-            services.AddMvcActionsDiscoveryService();
-            services.AddProtectionProviderService();
             services.AddCloudscribePagination();
         }
 

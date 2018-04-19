@@ -12,6 +12,7 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="DNTCommon.Web.Core" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" PrivateAssets="All" />

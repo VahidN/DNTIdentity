@@ -1,6 +1,7 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -105,7 +106,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             {
                 // We need a separate context for the logger to call its SaveChanges several times,
                 // without using the current request's context and changing its internal state.
-                _serviceProvider.RunScopedContext(context =>
+                _serviceProvider.RunScopedService<IUnitOfWork>(context =>
                 {
                     context.Set<AppLogItem>().Add(appLogItem);
                     context.SaveChanges();

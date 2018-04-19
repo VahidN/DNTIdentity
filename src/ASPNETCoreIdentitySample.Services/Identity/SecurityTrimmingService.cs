@@ -1,6 +1,6 @@
 ﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
