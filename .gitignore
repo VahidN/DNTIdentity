@@ -181,6 +181,7 @@ BundleArtifacts/
 
 # Others
 ClientBin/
+.idea/
 [Ss]tyle[Cc]op.*
 ~$*
 *~

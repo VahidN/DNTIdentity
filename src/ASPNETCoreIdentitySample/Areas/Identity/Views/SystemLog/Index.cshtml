@@ -69,7 +69,7 @@
         <a class="@GetButtonClass(Model.LogLevel, "")" role="button" asp-controller="SystemLog" asp-action="Index">All</a>
     </div>
 
-    @foreach (var item in Model.AppLogItems)
+    foreach (var item in Model.AppLogItems)
     {
         var userId = Uow.GetShadowPropertyValue(item, AuditableShadowProperties.CreatedByUserId);
         <div dir="ltr" class="panel @GetClassFromLogLevel(item.LogLevel) top30">
