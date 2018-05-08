@@ -15,7 +15,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
         public static IServiceCollection AddCustomDataProtection(
             this IServiceCollection services, SiteSettings siteSettings)
         {
-            services.AddScoped<IXmlRepository, DataProtectionKeyService>();
+            services.AddSingleton<IXmlRepository, DataProtectionKeyService>();
             services.AddSingleton<IConfigureOptions<KeyManagementOptions>>(serviceProvider =>
             {
                 return new ConfigureOptions<KeyManagementOptions>(options =>

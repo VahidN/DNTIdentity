@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using DNTCommon.Web.Core;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -44,7 +45,8 @@ namespace ASPNETCoreIdentitySample
             }).AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            });
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDNTCommonWeb();
             services.AddDNTCaptcha();
@@ -58,6 +60,12 @@ namespace ASPNETCoreIdentitySample
         {
             loggerFactory.AddDbLogger(serviceProvider: app.ApplicationServices, minLevel: LogLevel.Warning);
 
+            if (!env.IsDevelopment())
+            {
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
             app.UseExceptionHandler("/error/index/500");
             app.UseStatusCodePagesWithReExecute("/error/index/{0}");
 
@@ -70,6 +78,7 @@ namespace ASPNETCoreIdentitySample
 
             // Adds all of the ASP.NET Core Identity related initializations at once.
             app.UseCustomIdentityServices();
+            app.UseCookiePolicy();
 
             // app.UseNoBrowserCache();
 
