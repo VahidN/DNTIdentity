@@ -10,5 +10,5 @@
 </h2>
 
 <div id="gridcontainer" class="top30">
-    @{ await Html.RenderPartialAsync("_UsersList", Model); }
+    <partial name="_UsersList" model="Model" />
 </div>

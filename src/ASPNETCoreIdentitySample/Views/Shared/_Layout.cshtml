@@ -34,11 +34,11 @@
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    await Html.RenderPartialAsync("_UserMenu");
-                    await Html.RenderPartialAsync("_ReportsMenu");
+                    <partial name="_UserMenu" />
+                    <partial name="_ReportsMenu" />
                     if (User.IsInRole(ConstantRoles.Admin))
                     {
-                        await Html.RenderPartialAsync("_AdminMenu");
+                        <partial name="_AdminMenu" />
                     }
                 }
                 else
@@ -76,7 +76,7 @@
                 @RenderBody()
             </div>
             <div class="col-md-3 col-md-pull-9">
-                @{await Html.RenderPartialAsync("_SidebarMenu");}
+                <partial name="_SidebarMenu" />
             </div>
         </div>
     </div>
