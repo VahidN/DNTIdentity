@@ -88,6 +88,8 @@ namespace ASPNETCoreIdentitySample.IocConfig
             identityOptionsCookies.Cookie.HttpOnly = true;
             identityOptionsCookies.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             identityOptionsCookies.Cookie.SameSite = SameSiteMode.Lax;
+            identityOptionsCookies.Cookie.IsEssential = true; //  this cookie will always be stored regardless of the user's consent
+
             identityOptionsCookies.ExpireTimeSpan = siteSettings.CookieOptions.ExpireTimeSpan;
             identityOptionsCookies.SlidingExpiration = siteSettings.CookieOptions.SlidingExpiration;
             identityOptionsCookies.LoginPath = siteSettings.CookieOptions.LoginPath;
