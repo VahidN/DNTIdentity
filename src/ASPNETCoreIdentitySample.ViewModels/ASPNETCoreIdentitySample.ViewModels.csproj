@@ -13,8 +13,8 @@
   <ItemGroup>
     <PackageReference Include="DNTCommon.Web.Core" Version="1.2.0" />
     <PackageReference Include="cloudscribe.Web.Pagination" Version="2.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.0-rc1-final" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.0-rc1-final" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0-rc1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 </Project>

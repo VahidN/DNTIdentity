@@ -23,7 +23,7 @@
     <PackageReference Include="DNTBreadCrumb.Core" Version="1.6.0" />
     <PackageReference Include="DNTCaptcha.Core" Version="1.4.3" />
     <PackageReference Include="DNTCommon.Web.Core" Version="1.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
