@@ -38,9 +38,15 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             }
 
             var actionDescriptor = mvcContext.ActionDescriptor;
-            var area = actionDescriptor.RouteValues["area"];
-            var controller = actionDescriptor.RouteValues["controller"];
-            var action = actionDescriptor.RouteValues["action"];
+
+            actionDescriptor.RouteValues.TryGetValue("area", out var areaName);
+            var area = string.IsNullOrWhiteSpace(areaName) ? string.Empty : areaName;
+
+            actionDescriptor.RouteValues.TryGetValue("controller", out var controllerName);
+            var controller = string.IsNullOrWhiteSpace(controllerName) ? string.Empty : controllerName;
+
+            actionDescriptor.RouteValues.TryGetValue("action", out var actionName);
+            var action = string.IsNullOrWhiteSpace(actionName) ? string.Empty : actionName;
 
             // How to access form values from an AuthorizationHandler
             var request = mvcContext.HttpContext.Request;
