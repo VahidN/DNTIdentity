@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 {
-    public partial class V2018_06_01_0815 : Migration
+    public partial class V2018_06_30_1022 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
