@@ -1,10 +1,14 @@
 {
   "name": "dntcommon.web.core.testwebapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "client side resources of the project",
   "scripts": {},
-  "author": "",
+  "author": "VahidN",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VahidN/DNTIdentity.git"
+  },
   "dependencies": {
     "bootstrap": "^3.3.7",
     "bootstrap-rtl": "^3.3.4",
