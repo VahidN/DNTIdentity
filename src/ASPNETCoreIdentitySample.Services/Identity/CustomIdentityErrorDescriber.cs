@@ -192,7 +192,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             return new IdentityError
             {
                 Code = nameof(PasswordRequiresUniqueChars),
-                Description = "کلمه‌ی عبور بايد حداقل داراى {0} حرف متفاوت باشد."
+                Description = "کلمه‌ی عبور باید حداقل داراى {0} حرف متفاوت باشد."
             };
         }
 
@@ -201,7 +201,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             return new IdentityError
             {
                 Code = nameof(RecoveryCodeRedemptionFailed),
-                Description = "بازيابى با شكست مواجه شد."
+                Description = "بازیابى با شکست مواجه شد."
             };
         }
     }

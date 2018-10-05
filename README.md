@@ -1,6 +1,6 @@
 ﻿<div dir="rtl">
 
-سفارشی سازی ASP.NET Core Identity 2.1.1
+سفارشی سازی ASP.NET Core Identity 2.1.5
 =======
 
 
@@ -87,7 +87,7 @@
 
 
 
-پيش از مشاركت
+پیش از مشارکت
 ------
 [« آشنایی با ساختار یک Pull Request خوب »](http://www.dotnettips.info/post/2033)
 
@@ -96,5 +96,3 @@
 
 
 جزئیات و توضیحات بیشتر این موارد را می‌توانید در گروه [ASP.NET Core Identity](http://www.dotnettips.info/search/label/asp.net%20core%20identity) پیگیری نمائید.
-
-

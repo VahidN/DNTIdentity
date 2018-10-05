@@ -234,9 +234,9 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             if (user.BirthDate.HasValue)
             {
                 var pDateParts = user.BirthDate.Value.ToPersianYearMonthDay(DateTimeOffsetPart.DateTime);
-                userProfile.DateOfBirthYear = pDateParts.Item1;
-                userProfile.DateOfBirthMonth = pDateParts.Item2;
-                userProfile.DateOfBirthDay = pDateParts.Item3;
+                userProfile.DateOfBirthYear = pDateParts.Year;
+                userProfile.DateOfBirthMonth = pDateParts.Month;
+                userProfile.DateOfBirthDay = pDateParts.Day;
             }
 
             return View(viewName: nameof(Index), model: userProfile);
