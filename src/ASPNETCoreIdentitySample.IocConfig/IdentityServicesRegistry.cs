@@ -15,11 +15,11 @@ namespace ASPNETCoreIdentitySample.IocConfig
         public static void AddCustomIdentityServices(this IServiceCollection services)
         {
             var siteSettings = GetSiteSettings(services);
+            services.AddIdentityOptions(siteSettings);
             services.AddCustomServices();
             services.AddCustomTicketStore(siteSettings);
             services.AddDynamicPermissions();
             services.AddCustomDataProtection(siteSettings);
-            services.AddIdentityOptions(siteSettings);
         }
 
         /// <summary>

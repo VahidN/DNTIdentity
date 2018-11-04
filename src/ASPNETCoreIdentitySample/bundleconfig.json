@@ -4,10 +4,10 @@
         "outputFileName": "wwwroot/css/site.min.css",
         "inputFiles": [
             "node_modules/bootstrap/dist/css/bootstrap.min.css",
-            "node_modules/bootstrap-rtl/dist/css/bootstrap-rtl.min.css",
+            "Content/bootstrap-rtl.min.css",
             "node_modules/components-font-awesome/css/fa-solid.min.css",
             "node_modules/components-font-awesome/css/fontawesome.min.css",
-            "content/custom.css"
+            "Content/custom.css"
         ],
         "minify": {
             "enabled": true,
@@ -20,9 +20,10 @@
         "outputFileName": "wwwroot/js/site.min.js",
         "inputFiles": [
             "node_modules/jquery/dist/jquery.min.js",
+            "node_modules/popper.js/dist/umd/popper.min.js",
             "node_modules/jquery-validation/dist/jquery.validate.min.js",
             "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
-            "node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js",
+            "node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
             "node_modules/bootstrap/dist/js/bootstrap.min.js",
             "scripts/jquery.bootstrap-modal-confirm.js",
             "scripts/jquery.bootstrap-modal-alert.js",

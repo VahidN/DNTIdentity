@@ -3,11 +3,11 @@
     ViewData["Title"] = "اعتبارسنجی دو مرحله‌ای";
 }
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="alert alert-info">
             <a href="#" class="close" data-dismiss="alert">×</a>
             <ul>
@@ -25,29 +25,28 @@
         <form asp-controller="TwoFactor"
               asp-action="VerifyCode"
               asp-route-returnurl="@ViewData["ReturnUrl"]"
-              method="post"
-              class="form-horizontal">
+              method="post">
             <partial name="_CustomValidationSummary" />
             <input asp-for="Provider" type="hidden" />
             <input asp-for="RememberMe" type="hidden" />
             <h4>@ViewData["Status"]</h4>
             <hr />
-            <div class="form-group">
-                <label asp-for="Code" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Code" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input asp-for="Code" dir="ltr" class="form-control col col-md-4" />
+                    <input asp-for="Code" dir="ltr" class="form-control" />
                     <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col col-md-2 control-label"></label>
-                <div class="controls col col-md-10">
+            <div class="form-group row">
+                <label class=col-md-2 col-form-label text-md-left"></label>
+                <div class="col col-md-10">
                     <input asp-for="RememberBrowser" />
                     <label asp-for="RememberBrowser"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
                     <button type="submit" class="btn btn-info col-md-2">ارسال</button>
                 </div>
             </div>

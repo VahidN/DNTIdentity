@@ -1,8 +1,6 @@
 ﻿body {
     font-size: 14px;
     font-family: 'Samim',Tahoma;
-    padding-top: 90px;
-    padding-bottom: 50px;
     /*background: #F0F0F0 none repeat scroll 0 0;*/
     background: url(/images/pattern.jpg);
 }

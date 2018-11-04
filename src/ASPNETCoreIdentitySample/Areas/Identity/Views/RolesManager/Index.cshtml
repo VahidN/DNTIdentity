@@ -4,7 +4,7 @@
     ViewData["Title"] = "مدیریت نقش‌های سیستم";
 }
 
-<div class="alert alert-warning top30">
+<div class="alert alert-warning mt-5">
     <a href="#" class="close" data-dismiss="alert">×</a>
     <ul>
         <li>
@@ -26,14 +26,14 @@
     </ul>
 </div>
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <partial name="_AllRolesList" model="Model" />
     </div>
-    <footer class="panel-footer">
+    <footer class="card-footer">
         <a class="btn btn-success" href="#" id="btnCreate">ایجاد یک نقش جدید</a>
     </footer>
 </div>

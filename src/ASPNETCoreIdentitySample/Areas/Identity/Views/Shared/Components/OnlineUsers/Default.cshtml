@@ -6,11 +6,11 @@
     var usersCount = Model.NumbersToTake.ToPersianNumbers();
 }
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">
             <a asp-action="OnlineUsers" asp-controller="UserCard" asp-area="@AreaConstants.IdentityArea">
-                <span class="fas fa-group" aria-hidden="true"></span>
+                <span class="fas fa-object-group" aria-hidden="true"></span>
                 @if (Model.ShowMoreItemsLink)
                 {
                     <span>کاربران آنلاین در @minutes دقیقه قبل</span>
@@ -20,29 +20,31 @@
                     <span>@usersCount کاربر آنلاین در @minutes دقیقه قبل</span>
                 }
             </a>
-        </h3>
+        </h5>
     </div>
-    <ul id="voteslist" class="list-group">
+    <ul id="voteslist" class="list-group list-group-flush">
         @foreach (var user in Model.Users)
             {
                 var photoUrl = PhotoService.GetUserPhotoUrl(user.PhotoFileName);
-            <li class="list-group-item" role="presentation">
-                <img class="img-circle userImage" src="@photoUrl" alt="@user.DisplayName" asp-append-version="true"
+            <li class="list-group-item d-flex justify-content-between align-items-center" role="presentation">
+                <a asp-action="Index" asp-controller="UserCard" asp-area="@AreaConstants.IdentityArea" asp-route-id="@user.Id">
+                   <img class="img-thumbnail userImage" src="@photoUrl" alt="@user.DisplayName" asp-append-version="true"
                      onerror="this.style.visibility = 'hidden';this.width = 0;this.height = 0;" />
-                <a asp-action="Index" asp-controller="UserCard" asp-area="@AreaConstants.IdentityArea" asp-route-id="@user.Id">@user.DisplayName</a>
+                    @user.DisplayName
+                </a>
                 @if (!Model.ShowMoreItemsLink)
                 {
-                    <span class="badge pull-left">@user.LastVisitDateTime.Value.ToFriendlyPersianDateTextify()</span>
+                    <span class="badge badge-info badge-pill">@user.LastVisitDateTime.Value.ToFriendlyPersianDateTextify()</span>
                 }
             </li>
         }
     </ul>
     @if (Model.ShowMoreItemsLink && Model.Users.Any())
     {
-        <div class="panel-footer">
+        <div class="card-footer">
             <div class="row">
                 <div class="col-md-12">
-                    <a class="previous pagerSpan pull-left" asp-area="@AreaConstants.IdentityArea"
+                    <a class="previous pagerSpan float-left" asp-area="@AreaConstants.IdentityArea"
                        asp-action="OnlineUsers" asp-controller="UserCard">
                         بیشتر
                         <span aria-hidden="true">←</span>

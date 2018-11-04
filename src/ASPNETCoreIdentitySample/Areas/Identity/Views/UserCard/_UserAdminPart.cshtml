@@ -4,14 +4,19 @@
     var user = Model.User;
 }
 
-<div class="top30">
+<div class="mt-5">
+  <div class="row">
     <div class="col-md-7">
-        <table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
-            <tr>
+       <div class="table-responsive">
+        <table id="all-roles-list" class="table table-striped table-hover table-bordered">
+            <thead class="thead-light">
+              <tr>
                 <th class="text-center">ویژگی کاربری</th>
                 <th class="text-center">وضعیت</th>
                 <th class="text-center">اختیارات</th>
-            </tr>
+              </tr>
+            </thead>
+            <tbody>
             <tr>
                 <td>
                     <span aria-hidden="true" class="fas fa-user"></span>
@@ -22,7 +27,7 @@
                     <a asp-controller="UserProfile"
                        asp-action="AdminEdit"
                        asp-route-id="@user.Id"
-                       class="btn btn-info btn-xs">
+                       class="btn btn-info btn-sm">
                         ویرایش مشخصات
                         <span aria-hidden="true" class="fas fa-edit"></span>
                     </a>
@@ -36,11 +41,11 @@
                 <td class="text-center">
                     @if (user.IsActive)
                     {
-                        <span class="label label-success">فعال</span>
+                        <span class="badge badge-success badge-pill text-white">فعال</span>
                     }
                     else
                     {
-                        <span class="label label-warning">غیرفعال</span>
+                        <span class="badge badge-warning badge-pill text-white">غیرفعال</span>
                     }
                 </td>
                 <td class="text-center">
@@ -58,7 +63,7 @@
                         @if (user.IsActive)
                         {
                             <input name="activate" value="false" type="hidden" />
-                            <button type="submit" class="btn btn-danger btn-xs">
+                            <button type="submit" class="btn btn-danger btn-sm">
                                 غیرفعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-down"></span>
                             </button>
@@ -66,7 +71,7 @@
                         else
                         {
                             <input name="activate" value="true" type="hidden" />
-                            <button type="submit" class="btn btn-info btn-xs">
+                            <button type="submit" class="btn btn-info btn-sm">
                                 فعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                             </button>
@@ -84,11 +89,11 @@
                 <td class="text-center">
                     @if (user.EmailConfirmed)
                     {
-                        <span class="label label-success">تائید شده</span>
+                        <span class="badge badge-success badge-pill text-white">تائید شده</span>
                     }
                     else
                     {
-                        <span class="label label-warning">تائید نشده</span>
+                        <span class="badge badge-warning badge-pill text-white">تائید نشده</span>
                     }
                 </td>
                 <td class="text-center">
@@ -104,7 +109,7 @@
                               data-ajax-failure="dataAjaxFailure"
                               data-ajax-update="#usercard-@user.Id">
                             <input name="userId" value="@user.Id" type="hidden" />
-                            <button type="submit" class="btn btn-info btn-xs">
+                            <button type="submit" class="btn btn-info btn-sm">
                                 تائید شود
                                 <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                             </button>
@@ -122,11 +127,11 @@
                 <td class="text-center">
                     @if (user.LockoutEnabled)
                     {
-                        <span class="label label-success">فعال</span>
+                        <span class="badge badge-success badge-pill text-white">فعال</span>
                     }
                     else
                     {
-                        <span class="label label-warning">غیرفعال</span>
+                        <span class="badge badge-warning badge-pill text-white">غیرفعال</span>
                     }
                 </td>
                 <td class="text-center">
@@ -143,7 +148,7 @@
                         @if (user.LockoutEnabled)
                         {
                             <input name="activate" value="false" type="hidden" />
-                            <button type="submit" class="btn btn-danger btn-xs">
+                            <button type="submit" class="btn btn-danger btn-sm">
                                 غیرفعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-down"></span>
                             </button>
@@ -151,7 +156,7 @@
                         else
                         {
                             <input name="activate" value="true" type="hidden" />
-                            <button type="submit" class="btn btn-info btn-xs">
+                            <button type="submit" class="btn btn-info btn-sm">
                                 فعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                             </button>
@@ -185,7 +190,7 @@
                               data-ajax-failure="dataAjaxFailure"
                               data-ajax-update="#usercard-@user.Id">
                             <input name="userId" value="@user.Id" type="hidden" />
-                            <button type="submit" class="btn btn-info btn-xs">
+                            <button type="submit" class="btn btn-info btn-sm">
                                 رفع قفل
                                 <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                             </button>
@@ -203,11 +208,11 @@
                 <td class="text-center">
                     @if (user.TwoFactorEnabled)
                     {
-                        <span class="label label-success">فعال</span>
+                        <span class="badge badge-success badge-pill text-white">فعال</span>
                     }
                     else
                     {
-                        <span class="label label-warning">غیرفعال</span>
+                        <span class="badge badge-warning badge-pill text-white">غیرفعال</span>
                     }
                 </td>
                 <td class="text-center">
@@ -224,7 +229,7 @@
                         @if (user.TwoFactorEnabled)
                         {
                             <input name="activate" value="false" type="hidden" />
-                            <button type="submit" class="btn btn-danger btn-xs">
+                            <button type="submit" class="btn btn-danger btn-sm">
                                 غیرفعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-down"></span>
                             </button>
@@ -232,7 +237,7 @@
                         else
                         {
                             <input name="activate" value="true" type="hidden" />
-                            <button type="submit" class="btn btn-info btn-xs">
+                            <button type="submit" class="btn btn-info btn-sm">
                                 فعال شود
                                 <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                             </button>
@@ -240,17 +245,23 @@
                     </form>
                 </td>
             </tr>
+           </tbody>
         </table>
+       </div>
     </div>
     <div class="col-md-5">
-        <table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
-            <tr>
+       <div class="table-responsive">
+        <table id="all-roles-list" class="table table-striped table-hover table-bordered">
+            <thead class="thead-light">
+              <tr>
                 <th class="text-center">
                     <span aria-hidden="true" class="fas fa-id-badge"></span>
                     نقش‌های سیستم
                 </th>
-            </tr>
-            <tr>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
                 <td>
                     <form method="post"
                           asp-controller="UsersManager"
@@ -270,13 +281,16 @@
                                 @role.Name
                             </div>
                         }
-                        <button type="submit" class="btn btn-info btn-xs top10">
+                        <button type="submit" class="btn btn-info btn-sm top10">
                             اعمال تغییرات نقش‌ها
                             <span aria-hidden="true" class="fas fa-thumbs-up"></span>
                         </button>
                     </form>
                 </td>
-            </tr>
+              </tr>
+            </tbody>
         </table>
+       </div>
     </div>
+  </div>
 </div>

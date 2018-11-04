@@ -13,14 +13,14 @@
         {
             case "Error":
             case "Critical":
-                return "panel-danger";
+                return "bg-danger text-light";
 
             case "Warning":
-                return "panel-warning";
+                return "bg-warning text-light";
 
             case "Information":
             default:
-                return "panel-info";
+                return "bg-info text-light";
         }
     }
 
@@ -34,14 +34,14 @@
                 {
                     return "btn btn-danger";
                 }
-                return "btn btn-default";
+                return "btn btn-secondary";
 
             case "Warning":
                 if (buttonLogLevel == logLevel)
                 {
                     return "btn btn-warning";
                 }
-                return "btn btn-default";
+                return "btn btn-secondary";
 
             case "Information":
             case "":
@@ -50,16 +50,18 @@
                 {
                     return "btn btn-info";
                 }
-                return "btn btn-default";
+                return "btn btn-secondary";
         }
     }
 }
 
 <h2>@ViewData["Title"] <span class="label label-info">@Model.Paging.TotalItems.ToPersianNumbers()</span></h2>
 
+
 @if (Model.AppLogItems.Any())
 {
-    <div align="center" class="top20">
+  <div class="row justify-content-center">
+    <div class="mt-4 justify-content-center">
         <a class="@GetButtonClass(Model.LogLevel, "Critical")" role="button" asp-controller="SystemLog" asp-action="Index" asp-route-logLevel="Critical">Critical</a>
         <a class="@GetButtonClass(Model.LogLevel, "Error")" role="button" asp-controller="SystemLog" asp-action="Index" asp-route-logLevel="Error">Error</a>
         <a class="@GetButtonClass(Model.LogLevel, "Warning")" role="button" asp-controller="SystemLog" asp-action="Index" asp-route-logLevel="Warning">Warning</a>
@@ -68,21 +70,18 @@
         <a class="@GetButtonClass(Model.LogLevel, "Trace")" role="button" asp-controller="SystemLog" asp-action="Index" asp-route-logLevel="Trace">Trace</a>
         <a class="@GetButtonClass(Model.LogLevel, "")" role="button" asp-controller="SystemLog" asp-action="Index">All</a>
     </div>
-
-    foreach (var item in Model.AppLogItems)
+  </div>
+  <div class="row">
+    @foreach (var item in Model.AppLogItems)
     {
         var userId = Uow.GetShadowPropertyValue(item, AuditableShadowProperties.CreatedByUserId);
-        <div dir="ltr" class="panel @GetClassFromLogLevel(item.LogLevel) top30">
-            <div class="panel-heading">
-                <form role="form" class="form-inline" asp-controller="SystemLog" asp-action="LogItemDelete">
-                    <input type="hidden" id="id" name="id" value="@item.Id" />
-                    <input type="submit" value='حذف' class="btn btn-xs btn-danger pull-right" />
-                </form>
-                <h3 class="panel-title">
+        <div dir="ltr" class="card mt-5 text-left">
+            <div class="card-header @GetClassFromLogLevel(item.LogLevel)">
+                <h5 class="card-title" dir="ltr">
                     @item.LogLevel [@item.Logger]
-                </h3>
+                </h5>
             </div>
-            <div class="panel-body">
+            <div class="card-body" dir="ltr">
                 <div>URL: @item.Url</div>
                 <div>
                     <a asp-controller="UserCard" asp-action="Index" asp-route-id="@userId">
@@ -92,18 +91,23 @@
                 <pre>@item.Message</pre>
                 <pre>@item.StateJson</pre>
             </div>
-            <footer class="panel-footer">
-                <div>
+            <footer class="card-footer" dir="ltr">
+                <form role="form" class="form-inline" asp-controller="SystemLog" asp-action="LogItemDelete">
+                    <input type="hidden" id="id" name="id" value="@item.Id" />
+                    <input type="submit" value='حذف' class="btn btn-sm btn-danger text-right" />
+                <div class="mr-2">
                     <span>@item.CreatedDateTime.ToShortPersianDateTimeString()</span>
-                    <span class="pull-right">
+                    <span class="text-right">
                         @Uow.GetShadowPropertyValue(item, AuditableShadowProperties.CreatedByIp)
                     </span>
                 </div>
+                </form>
             </footer>
         </div>
     }
+    </div>
 
-    <div align="center">
+    <div class="row mt-4 justify-content-center">
         <cs-pager cs-paging-info="@Model.Paging"
                   asp-action="Index" asp-controller="SystemLog"
                   asp-route-logLevel="@Model.LogLevel"
@@ -114,25 +118,31 @@
                   cs-first-page-text="ابتدا"
                   cs-last-page-text="انتها"
                   cs-pager-li-current-class="active"
-                  cs-pager-li-non-active-class="disabled"></cs-pager>
+                  cs-pager-li-non-active-class="disabled"
+                  cs-pager-ul-class="pagination"
+                  cs-pager-li-current-class="page-item active"
+                  cs-pager-li-other-class="page-item"
+                  cs-pager-li-non-active-class="page-item disabled"
+                  cs-pager-link-current-class="page-link"
+                  cs-pager-link-other-class="page-link"></cs-pager>
     </div>
-    <div align="center">
+    <div class="row justify-content-center">
         <form role="form" class="form-inline" asp-controller="SystemLog" asp-action="LogDeleteAll">
-            <a asp-action="Index" class="btn btn-sm btn-default ">به روز رسانی</a>
+            <a asp-action="Index" class="btn btn-sm btn-secondary">به روز رسانی</a>
             <input type="hidden" asp-for="@Model.LogLevel" />
-            <input type="submit" value='حذف تمام رکوردهای لاگ' class="btn btn-sm btn-danger " />
+            <input type="submit" value='حذف تمام رکوردهای لاگ' class="btn btn-sm btn-danger ml-3" />
         </form>
-        <form role="form" class="form-inline" asp-controller="SystemLog" asp-action="LogDeleteOlderThan">
+        <form role="form" class="form-inline ml-3" asp-controller="SystemLog" asp-action="LogDeleteOlderThan">
             <input type="hidden" asp-for="@Model.LogLevel" />
-            <input type="submit" value='حذف رکوردهای قدیمی‌تر از' class="btn btn-sm btn-danger " />
-            <select class="form-control" name="days" id="days">
+            <input type="submit" value='حذف رکوردهای قدیمی‌تر از' class="btn btn-sm btn-danger" />
+            <select class="form-control ml-1" name="days" id="days">
                 <option>1</option>
                 <option>5</option>
                 <option>10</option>
                 <option>30</option>
                 <option>60</option>
             </select>
-            روز
+            <span class="ml-1">روز</span>
         </form>
     </div>
 }

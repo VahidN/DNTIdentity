@@ -5,41 +5,34 @@
     var photoUrl = PhotoService.GetCurrentUserPhotoUrl();
 }
 
-<ul class="nav navbar-nav">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img class="img-circle userImage" src="@photoUrl" alt="@displayName" asp-append-version="true"
+<div class="navbar-nav">
+    <div class="dropdown">
+        <a  class="nav-item nav-link dropdown-toggle" data-toggle="dropdown"
+           id="userDropdown" aria-haspopup="true"
+           aria-expanded="false" href="#">
+            <img class="img-thumbnail userImage" src="@photoUrl" alt="@displayName" asp-append-version="true"
                  onerror="this.style.visibility = 'hidden';this.width=0; this.height=0;" />
             <span class="author">@displayName</span>
-            <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu">
-            <li>
-                <a asp-controller="UserCard" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-user" aria-hidden="true"></span>
+        <div class="dropdown-menu" aria-labelledby="userDropdown">
+                <a class="dropdown-item" asp-controller="UserCard" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="mr-1 fas fa-user" aria-hidden="true"></span>
                     برگه‌ی کاربری من
                 </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a asp-controller="UserProfile" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-cog" aria-hidden="true"></span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-controller="UserProfile" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="mr-1 fas fa-cog" aria-hidden="true"></span>
                     تنظیمات کاربری من
                 </a>
-            </li>
-            <li>
-                <a asp-controller="ChangePassword" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-asterisk" aria-hidden="true"></span>
+                <a class="dropdown-item" asp-controller="ChangePassword" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <span class="mr-1 fas fa-asterisk" aria-hidden="true"></span>
                     تغییر کلمه‌ی عبور
                 </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a asp-controller="Login" asp-action="LogOff" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-sign-out" aria-hidden="true"></span>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" asp-controller="Login" asp-action="LogOff" asp-area="@AreaConstants.IdentityArea">
+                    <span class="mr-1 fas fa-sign-out-alt" aria-hidden="true"></span>
                     خروج
                 </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+        </div>
+    </div>
+</div>

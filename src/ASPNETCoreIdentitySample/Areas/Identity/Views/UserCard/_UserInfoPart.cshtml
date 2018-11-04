@@ -6,22 +6,21 @@
     var photoUrl = PhotoService.GetUserPhotoUrl(user.PhotoFileName);
 }
 
-<div class="top30">
-    <div class="col-md-4">
-        <ul class="media-list">
-            <li class="media">
-                <img class="img-circle" src="@photoUrl" alt="@user.DisplayName" asp-append-version="true"
+<div class="mt-5">
+   <div class="row">
+        <div class="col-md-4">
+            <img class="img-thumbnail" src="@photoUrl" alt="@user.DisplayName" asp-append-version="true"
                      onerror="this.style.visibility = 'hidden';this.width=0; this.height=0;" />
-            </li>
-        </ul>
-    </div>
-    <div class="col-md-4">
-        <ul class="media-list">
-            <li class="media">
+        </div>
+   </div>
+   <div class="row mt-4">
+      <div class="col-md-6">
+        <ul class="list-unstyled">
+            <li>
                 <span aria-hidden="true" class="fas fa-user"></span>
                 <strong>عضو شماره:</strong> @user.Id.ToPersianNumbers()
             </li>
-            <li class="media">
+            <li>
                 <span aria-hidden="true" class="fas fa-clock"></span>
                 <strong>تاریخ عضویت: </strong><span dir="ltr">
                     <abbr title="@user.CreatedDateTime.Value.ToFriendlyPersianDateTextify().ToPersianNumbers()">
@@ -32,7 +31,7 @@
 
             @if (user.IsEmailPublic)
             {
-                <li class="media">
+                <li>
                     <span aria-hidden="true" class="fas fa-envelope"></span>
                     <img src="@Url.Action(action: "EmailToImage", controller:"UserCard", values: new { id = user.Id })"
                          asp-append-version="true"
@@ -42,7 +41,7 @@
 
             @if (!string.IsNullOrWhiteSpace(user.Location))
             {
-                <li class="media">
+                <li>
                     <span aria-hidden="true" class="fas fa-home"></span>
                     <strong>محل اقامت:</strong>
                     @user.Location
@@ -51,7 +50,7 @@
 
             @if (user.LastVisitDateTime != null)
             {
-                <li class="media">
+                <li>
                     <span aria-hidden="true" class="fas fa-calendar-check"></span>
                     <strong>آخرین مراجعه:</strong>
                     @user.LastVisitDateTime.Value.ToFriendlyPersianDateTextify().ToPersianNumbers()
@@ -60,11 +59,11 @@
         </ul>
 
     </div>
-    <div class="col-md-4">
-        <ul class="media-list">
+    <div class="col-md-6">
+        <ul class="list-unstyled">
             @if (user.BirthDate.HasValue)
             {
-                <li class="media">
+                <li>
                     <span aria-hidden="true" class="fas fa-calendar"></span>
                     <strong>سن:</strong>
                     <abbr title="@user.BirthDate.Value.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture), @user.BirthDate.Value.ToShortPersianDateString(DateTimeOffsetPart.DateTime)">
@@ -74,4 +73,5 @@
             }
         </ul>
     </div>
+   </div>
 </div>

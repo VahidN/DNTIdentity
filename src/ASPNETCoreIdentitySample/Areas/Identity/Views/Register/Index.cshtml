@@ -3,81 +3,79 @@
     ViewData["Title"] = "ثبت نام";
 }
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <form asp-controller="Register"
               asp-action="Index"
-              method="post"
-              class="form-horizontal">
+              method="post">
             <partial name="_CustomValidationSummary" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="FirstName" class="form-control col-md-4" />
+                    <input dir="rtl" asp-for="FirstName" class="form-control" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="LastName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="LastName" class="form-control col-md-4" />
+                    <input dir="rtl" asp-for="LastName" class="form-control" />
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Username" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Username" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Username" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="Username" onblur="triggerRemoteValidation()" class="form-control" />
                     <span asp-validation-for="Username" class="text-danger"></span>
                     <span class="optional-label">(جهت لاگین)</span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Email" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Password" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Password" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="Password" class="form-control" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="ConfirmPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label class="col col-md-2 control-label">
+            <div class="form-group row">
+                <label class="col col-md-2 col-form-label text-md-left">
                     کد امنیتی
                 </label>
-                <div class="controls col col-md-10">
+                <div class="col col-md-10">
                     <dnt-captcha asp-captcha-generator-max="9000"
                                  asp-captcha-generator-min="1"
                                  asp-captcha-generator-language="Persian"
                                  asp-font-name="Tahoma"
                                  asp-font-size="20"
+                                 asp-refresh-button-class="fas fa-redo btn-sm"
                                  asp-fore-color="#333333"
                                  asp-back-color="#ccc"
-                                 asp-text-box-class="text-box single-line form-control col-md-4"
-                                 asp-text-box-template="<div class='input-group col-md-4'><span class='input-group-addon'><span class='glyphicon glyphicon-lock'></span></span>{0}</div>"
+                                 asp-text-box-class="text-box form-control"
+                                 asp-text-box-template="<div class='input-group'><span class='input-group-prepend'><span class='input-group-text'><i class='fas fa-lock'></i></span></span>{0}</div>"
                                  asp-validation-message-class="text-danger"
                                  />
                 </div>
             </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
                     <button type="submit" class="btn btn-info col-md-2">ثبت نام</button>
                 </div>
             </div>

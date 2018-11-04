@@ -3,11 +3,11 @@
     this.Context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 }
 
-<div class="panel panel-danger top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card panel-danger mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         متاسفانه در حین پردازش درخواست جاری خطایی رخ داده‌است.
         @if (User.IsInRole(ConstantRoles.Admin))
         {

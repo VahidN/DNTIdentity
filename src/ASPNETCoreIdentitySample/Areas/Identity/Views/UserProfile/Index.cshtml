@@ -8,11 +8,11 @@
     var imageOptions = SiteOptions.Value.UserAvatarImageOptions;
 }
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         @if (Model.IsPasswordTooOld)
         {
             <div class="alert alert-warning" role="alert">
@@ -23,55 +23,58 @@
         <form asp-controller="UserProfile"
               asp-action="Index"
               method="post"
-              enctype="multipart/form-data"
-              class="form-horizontal">
+              enctype="multipart/form-data">
             <partial name="_CustomValidationSummary" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="FirstName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="FirstName" class="form-control col-md-4"/>
+                    <input dir="rtl" asp-for="FirstName" class="form-control"/>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="LastName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="LastName" class="form-control col-md-4"/>
+                    <input dir="rtl" asp-for="LastName" class="form-control"/>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="UserName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="UserName" onblur="triggerRemoteValidation()" class="form-control col-md-4"/>
+                    <input dir="ltr" asp-for="UserName" onblur="triggerRemoteValidation()" class="form-control"/>
                     <span asp-validation-for="UserName" class="text-danger"></span>
                     <span class="optional-label">(جهت لاگین)</span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Email" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control col-md-4"/>
+                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control"/>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col col-md-2 control-label"></label>
-                <div class="controls col col-md-10">
-                    <input asp-for="IsEmailPublic"/>
-                    <label asp-for="IsEmailPublic"></label>
+            <div class="form-group row">
+                <label class="col col-md-2 col-form-label text-md-left"></label>
+                <div class=" col col-md-10">
+                    <div class="form-check">
+                      <input asp-for="IsEmailPublic"/>
+                      <label asp-for="IsEmailPublic"></label>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col col-md-2 control-label"></label>
-                <div class="controls col col-md-10">
-                    <input asp-for="TwoFactorEnabled" />
-                    <label asp-for="TwoFactorEnabled"></label>
+            <div class="form-group row">
+                <label class="col col-md-2 col-form-label text-md-left"></label>
+                <div class=" col col-md-10">
+                    <div class="form-check">
+                      <input asp-for="TwoFactorEnabled" />
+                      <label asp-for="TwoFactorEnabled"></label>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col col-md-2 control-label">تاریخ تولد</label>
-                <div class="controls col col-md-10 form-inline">
+            <div class="form-group row">
+                <label class="col col-md-2 col-form-label text-md-left">تاریخ تولد</label>
+                <div class=" col col-md-10 form-inline">
                     <select asp-for="DateOfBirthDay" class="form-control"
                             asp-items="Enumerable.Range(1, 31).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() })">
                         <option value="">-- روز --</option>
@@ -86,16 +89,16 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Location" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="Location" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="Location" class="form-control col-md-4"/>
+                    <input dir="rtl" asp-for="Location" class="form-control"/>
                     <span asp-validation-for="Location" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="PhotoFileName" class="col-md-2 control-label"></label>
-                <div class="controls col col-md-9">
+            <div class="form-group row">
+                <label asp-for="PhotoFileName" class="col-md-2 col-form-label text-md-left"></label>
+                <div class=" col col-md-9">
                     <img src="@PhotoService.GetUserPhotoUrl(Model.PhotoFileName)"
                          asp-append-version="true" alt="photo"/>
 
@@ -103,8 +106,8 @@
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
                     <input asp-for="Pid"/> <input asp-for="IsAdminEdit"/>
                     <button type="submit" class="btn btn-info col-md-2">ارسال</button>
                 </div>
@@ -113,7 +116,7 @@
     </div>
 </div>
 
-<div class="alert alert-info top30" role="alert">
+<div class="alert alert-info mt-5" role="alert">
     <a href="#" class="close" data-dismiss="alert">×</a>
     <ul>
         <li>لطفا دقت بفرمائید با تغییر آدرس ایمیل، اکانت شما به صورت موقت غیرفعال شده و یک ایمیل فعالسازی مجدد آن‌را بلافاصله دریافت خواهید کرد.</li>

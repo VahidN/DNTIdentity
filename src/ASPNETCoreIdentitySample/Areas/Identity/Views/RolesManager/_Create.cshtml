@@ -1,6 +1,6 @@
 ﻿@model RoleViewModel
 <partial name="_CustomValidationSummary" />
-<form asp-action="AddRole" method="post" class="form-horizontal">
+<form asp-action="AddRole" method="post">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,12 +15,12 @@
                 }
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label asp-for="Name" class="col col-lg-4 control-label"></label>
-                    <div class="col col-lg-8 controls">
+                <div class="form-group row">
+                    <label asp-for="Name" class="col-md-3 col-form-label text-md-left"></label>
+                    <div class="col-md-9">
                         <input asp-for="Id" />
-                        <input dir="ltr" asp-for="Name" class="form-control col col-md-8" />
-                        <span asp-validation-for="Name"></span>
+                        <input dir="ltr" asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
             </div>

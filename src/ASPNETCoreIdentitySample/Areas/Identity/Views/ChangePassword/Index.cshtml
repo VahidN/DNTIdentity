@@ -3,11 +3,11 @@
     ViewData["Title"] = "تغییر کلمه‌ی عبور";
 }
 
-<div class="panel panel-default top30">
-    <div class="panel-heading">
-        <h3 class="panel-title">@ViewData["Title"]</h3>
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         @if (Model.LastUserPasswordChangeDate.HasValue)
         {
             <div class="alert alert-warning">
@@ -20,32 +20,31 @@
         }
         <form asp-controller="ChangePassword"
               asp-action="Index"
-              method="post"
-              class="form-horizontal">
+              method="post">
             <partial name="_CustomValidationSummary" />
-            <div class="form-group">
-                <label asp-for="OldPassword" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="OldPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="OldPassword" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="OldPassword" class="form-control" />
                     <span asp-validation-for="OldPassword" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="NewPassword" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="NewPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="NewPassword" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="NewPassword" class="form-control" />
                     <span asp-validation-for="NewPassword" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+            <div class="form-group row">
+                <label asp-for="ConfirmPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control col-md-4" />
+                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control" />
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
                     <button type="submit" class="btn btn-info col-md-2">ارسال</button>
                 </div>
             </div>

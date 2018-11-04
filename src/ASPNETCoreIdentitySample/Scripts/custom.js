@@ -4,20 +4,32 @@
 });
 
 //-----------------------------------------------bootstrap
-$(document).ready(function () {
-    $('ul.nav.navbar-nav, ul.list-group, ul.nav.nav-tabs').find('a[href="' + location.pathname + '"]')
-        .closest('li')
-        .addClass('active');
-
+$(function () {
+    $(".navbar-nav .nav-item, .navbar-nav .dropdown-item").each(function () {
+        var href = $(this).find('a').attr('href');
+        if (!href) {
+            href = $(this).attr('href');
+        }
+        if (href === location.pathname) {
+            $(this).addClass('active');
+        }
+    });
 });
 
 $.validator.setDefaults({
+    ignore: "", // for hidden tabs and also textarea's
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+    },
     highlight: function (element, errorClass, validClass) {
         if (element.type === 'radio') {
             this.findByName(element.name).addClass(errorClass).removeClass(validClass);
         } else {
             $(element).addClass(errorClass).removeClass(validClass);
-            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            $(element).addClass('is-invalid').removeClass('is-valid');
+            $(element).closest('.form-group').find('.input-group-text, label').removeClass('text-success').addClass('text-danger');
         }
         $(element).trigger('highlited');
     },
@@ -26,23 +38,12 @@ $.validator.setDefaults({
             this.findByName(element.name).removeClass(errorClass).addClass(validClass);
         } else {
             $(element).removeClass(errorClass).addClass(validClass);
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            $(element).removeClass('is-invalid').addClass('is-valid');
+            $(element).closest('.form-group').find('.input-group-text, label').removeClass('text-danger').addClass('text-success');
         }
         $(element).trigger('unhighlited');
     }
 });
-
-$(function () {
-    $('form').each(function () {
-        $(this).find('div.form-group').each(function () {
-            if ($(this).find('span.field-validation-error').length > 0) {
-                $(this).addClass('has-error');
-            }
-        });
-    });
-});
-
-$.validator.setDefaults({ ignore: "" }); // for hidden tabs and also textarea's
 
 function removeAllTagsAndTrim(html) {
     return !html ? "" : $.trim(html.replace(/(<([^>]+)>)/ig, ""));

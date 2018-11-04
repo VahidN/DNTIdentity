@@ -1,28 +1,23 @@
-﻿<ul class="nav navbar-nav">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+﻿<div class="navbar-nav">
+    <div class="dropdown">
+        <a class="nav-item nav-link dropdown-toggle" data-toggle="dropdown"
+           id="adminDropdown" aria-haspopup="true"
+           aria-expanded="false" href="#">
             منوی مدیریتی
-            <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu">
-            <li>
-                <a asp-controller="UsersManager" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-user" aria-hidden="true"></span>
+        <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                <a class="dropdown-item" asp-controller="UsersManager" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <i class="fas fa-user mr-1" aria-hidden="true"></i>
                     مدیریت کاربران
                 </a>
-            </li>
-            <li>
-                <a asp-controller="RolesManager" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-group" aria-hidden="true"></span>
+                <a class="dropdown-item" asp-controller="RolesManager" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <i class="fas fa-object-group mr-1" aria-hidden="true"></i>
                     مدیریت نقش‌های سیستم
                 </a>
-            </li>
-            <li>
-                <a asp-controller="SystemLog" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
-                    <span class="left5 fas fa-legal" aria-hidden="true"></span>
+                <a class="dropdown-item" asp-controller="SystemLog" asp-action="Index" asp-area="@AreaConstants.IdentityArea">
+                    <i class="fas fa-bell mr-1" aria-hidden="true"></i>
                     گزارش رخ‌دادهای سیستم
                 </a>
-            </li>
-        </ul>
-    </li>
-</ul>
+        </div>
+    </div>
+</div>

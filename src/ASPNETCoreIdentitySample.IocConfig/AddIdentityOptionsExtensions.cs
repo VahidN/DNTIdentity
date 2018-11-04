@@ -45,7 +45,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
                 setApplicationCookieOptions(provider, identityOptionsCookies, siteSettings);
             });
 
-            services.enableIimmediateLogout();
+            services.enableImmediateLogout();
 
             return services;
         }
@@ -63,7 +63,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
             });
         }
 
-        private static void enableIimmediateLogout(this IServiceCollection services)
+        private static void enableImmediateLogout(this IServiceCollection services)
         {
             services.Configure<SecurityStampValidatorOptions>(options =>
             {

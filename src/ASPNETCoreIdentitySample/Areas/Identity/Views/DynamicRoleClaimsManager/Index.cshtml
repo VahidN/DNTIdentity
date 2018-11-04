@@ -27,9 +27,9 @@
         <input name="RoleId" value="@Model.RoleIncludeRoleClaims.Id" type="hidden" />
         @foreach (var controller in Model.SecuredControllerActions.OrderBy(x => x.ControllerDisplayName))
         {
-            <div class="panel panel-default top30">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h5 class="card-title">
                         @{
                             var displayName = controller.ControllerDisplayName;
                             if(string.IsNullOrWhiteSpace(displayName))
@@ -37,9 +37,9 @@
                                 displayName = controller.ToString();
                             }
                         }
-                        @displayName</h3>
+                        @displayName</h5>
                 </div>
-                <ul class="list-group">
+                <ul class="list-group list-group-flush">
                     @foreach (var action in controller.MvcActions.OrderBy(x => x.ActionDisplayName))
                     {
                         var isSelected = Model.RoleIncludeRoleClaims.Claims
@@ -58,7 +58,6 @@
                         </li>
                     }
                 </ul>
-
             </div>
         }
 

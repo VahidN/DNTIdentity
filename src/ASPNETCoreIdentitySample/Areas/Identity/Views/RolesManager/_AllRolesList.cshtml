@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<RoleAndUsersCountViewModel>
 
-<table id="all-roles-list" class="table table-striped table-hover table-bordered table-condensed">
+<div class="table-responsive">
+  <table id="all-roles-list" class="table table-striped table-hover table-bordered">
+   <thead class="thead-light">
     <tr>
         <th class="text-center">نام نقش</th>
         <th class="text-center">تعداد اعضاء</th>
@@ -8,6 +10,8 @@
         <th class="text-center">مدیریت اعضای نقش</th>
         <th class="text-center">مدیریت دسترسی‌های پویای نقش</th>
     </tr>
+   </thead>
+   <tbody>
     @if (!Model.Any())
             {
         <tr>
@@ -39,4 +43,6 @@
             </tr>
         }
     }
-</table>
+  </tbody>
+ </table>
+</div>

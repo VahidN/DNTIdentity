@@ -19,34 +19,42 @@
             return val.valid();
         };
 
-        var enableBootstrapStyleValidation = function() {
+        var enableBootstrapStyleValidation = function () {
             $.validator.setDefaults({
-                highlight: function(element, errorClass, validClass) {
+                ignore: "", // for hidden tabs and also textarea's
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
                     if (element.type === 'radio') {
                         this.findByName(element.name).addClass(errorClass).removeClass(validClass);
                     } else {
                         $(element).addClass(errorClass).removeClass(validClass);
-                        $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+                        $(element).addClass('is-invalid').removeClass('is-valid');
+                        $(element).closest('.form-group').find('.input-group-text, label').removeClass('text-success').addClass('text-danger');
                     }
                     $(element).trigger('highlited');
                 },
-                unhighlight: function(element, errorClass, validClass) {
+                unhighlight: function (element, errorClass, validClass) {
                     if (element.type === 'radio') {
                         this.findByName(element.name).removeClass(errorClass).addClass(validClass);
                     } else {
                         $(element).removeClass(errorClass).addClass(validClass);
-                        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+                        $(element).removeClass('is-invalid').addClass('is-valid');
+                        $(element).closest('.form-group').find('.input-group-text, label').removeClass('text-danger').addClass('text-success');
                     }
                     $(element).trigger('unhighlited');
                 }
             });
         };
 
-        var enablePostbackValidation = function() {
-            $('form').each(function() {
-                $(this).find('div.form-group').each(function() {
+        var enablePostbackValidation = function () {
+            $('form').each(function () {
+                $(this).find('div.form-group').each(function () {
                     if ($(this).find('span.field-validation-error').length > 0) {
-                        $(this).addClass('has-error');
+                        $(this).addClass('is-invalid');
                     }
                 });
             });

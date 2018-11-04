@@ -4,125 +4,125 @@
     var resultIsActive = searchResultsCount.HasValue ? "active" : "";
 }
 <div id="SearchUsers">
-    <div class="panel panel-default top30">
-        <div class="panel-body">
+    <div class="card mt-5">
+        <div class="card-body">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation">
-                    <a href="#search" aria-controls="search" role="tab" data-toggle="tab">جستجوی کاربران</a>
+            <ul class="nav nav-tabs" role="tablist" id="srchTab">
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link" href="#search" aria-controls="search" role="tab" data-toggle="tab">جستجوی کاربران</a>
                 </li>
-                <li role="presentation" class="@resultIsActive">
-                    <a href="#searchResults" aria-controls="searchResults" role="tab" data-toggle="tab">
+                <li role="presentation" class="nav-item">
+                    <a class="nav-link @resultIsActive" href="#searchResults" aria-controls="searchResults" role="tab" data-toggle="tab">
                         نتیجه‌ی جستجو
                         @if (searchResultsCount.HasValue)
                         {
-                            <span class="label label-success pull-left right5">@searchResultsCount.Value.ToPersianNumbers()</span>
+                            <span class="label label-success float-left right5">@searchResultsCount.Value.ToPersianNumbers()</span>
                         }
                     </a>
                 </li>
             </ul>
             <!-- Tab panes -->
-            <div class="tab-content">
+            <div class="tab-content" id="srchTabContent">
                 <div role="tabpanel" class="tab-pane" id="search">
                     <form asp-controller="UsersManager"
                           asp-action="SearchUsers"
                           method="post"
-                          class="form-horizontal top30"
+                          class="mt-5"
                           data-ajax="true"
                           data-ajax-begin="dataAjaxBegin"
                           data-ajax-success="dataAjaxSuccess"
                           data-ajax-failure="dataAjaxFailure"
                           data-ajax-update="#SearchUsers">
                         <partial name="_CustomValidationSummary" />
-                        <div class="form-group">
-                            <label asp-for="TextToFind" class="col-md-2 control-label"></label>
+                        <div class="form-group row">
+                            <label asp-for="TextToFind" class="col-md-2 col-form-label text-md-left"></label>
                             <div class="col-md-10">
-                                <input dir="rtl" asp-for="TextToFind" class="form-control col-md-4" />
+                                <input dir="rtl" asp-for="TextToFind" class="form-control" />
                                 <span class="optional-label">(اختیاری)</span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="MaxNumberOfRows" class="col-md-2 control-label"></label>
+                        <div class="form-group row">
+                            <label asp-for="MaxNumberOfRows" class="col-md-2 col-form-label text-md-left"></label>
                             <div class="col-md-10">
-                                <input dir="rtl" asp-for="MaxNumberOfRows" class="form-control col-md-1" />
+                                <input dir="rtl" asp-for="MaxNumberOfRows" class="form-control" />
                                 <span asp-validation-for="MaxNumberOfRows" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-offset-1 form-group">
+                        <div class="offset-md-1 form-group row">
                             <div class="col-md-2"></div>
                             <div class="col-md-10">
                                 <h5>بر اساس:</h5>
                                 <hr />
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsPartOfEmail" />
                                         <label asp-for="IsPartOfEmail"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsUserId" />
                                         <label asp-for="IsUserId"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsPartOfName" />
                                         <label asp-for="IsPartOfName"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsPartOfLastName" />
                                         <label asp-for="IsPartOfLastName"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsPartOfUserName" />
                                         <label asp-for="IsPartOfUserName"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="IsPartOfLocation" />
                                         <label asp-for="IsPartOfLocation"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="HasEmailConfirmed" />
                                         <label asp-for="HasEmailConfirmed"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="UserIsActive" />
                                         <label asp-for="UserIsActive"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="ShowAllUsers" />
                                         <label asp-for="ShowAllUsers"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="UserIsLockedOut" />
                                         <label asp-for="UserIsLockedOut"></label>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-md-4">
+                                    <div class="form-check">
                                         <input asp-for="HasTwoFactorEnabled" />
                                         <label asp-for="HasTwoFactorEnabled"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-1 col-md-11">
+                        <div class="form-group row">
+                            <div class="offset-md-1 col-md-11">
                                 <button type="submit" class="btn btn-info col-md-2 top15">جستجو</button>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                         }
                         else
                         {
-                            <div class="alert alert-warning top30">کاربری یافت نشد.</div>
+                            <div class="alert alert-warning mt-5">کاربری یافت نشد.</div>
                         }
                     }
                 </div>
