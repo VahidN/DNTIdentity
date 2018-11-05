@@ -4,7 +4,7 @@
         "outputFileName": "wwwroot/css/site.min.css",
         "inputFiles": [
             "node_modules/bootstrap/dist/css/bootstrap.min.css",
-            "Content/bootstrap-rtl.min.css",
+            "node_modules/@ghalamborm/bootstrap4-rtl/bootstrap-rtl.css",
             "node_modules/components-font-awesome/css/fa-solid.min.css",
             "node_modules/components-font-awesome/css/fontawesome.min.css",
             "Content/custom.css"
