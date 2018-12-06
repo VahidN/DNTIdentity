@@ -46,7 +46,7 @@ namespace ASPNETCoreIdentitySample
             {
                 jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDNTCommonWeb();
             services.AddDNTCaptcha();
