@@ -1,0 +1,23 @@
+<nav class="navbar navbar-light bg-light navbar-expand-md">
+  <a class="navbar-brand" [routerLink]="['/']">{{title}}</a>
+  <ul class="nav navbar-nav">
+    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a class="nav-link" [routerLink]="['/welcome']">Home</a>
+    </li>
+    <li *ngIf="!isLoggedIn" class="nav-item" routerLinkActive="active">
+      <a class="nav-link" queryParamsHandling="merge" [routerLink]="['/login']">Login</a>
+    </li>
+    <li *ngIf="isLoggedIn" class="nav-item" routerLinkActive="active">
+      <a class="nav-link" (click)="logout()">Logoff [{{displayName}}]</a>
+    </li>
+    <li *ngIf="isLoggedIn" class="nav-item" routerLinkActive="active">
+      <a class="nav-link" [routerLink]="['/protectedPage']">Protected Page</a>
+    </li>
+    <li *ngIf="isLoggedIn" class="nav-item" routerLinkActive="active">
+      <a class="nav-link" [routerLink]="['/callProtectedApi']">‍‍Call Protected Api</a>
+    </li>
+    <li *ngIf="isLoggedIn" class="nav-item" routerLinkActive="active">
+      <a class="nav-link" [routerLink]="['/changePassword']">Change Password</a>
+    </li>
+  </ul>
+</nav>

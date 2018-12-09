@@ -5,6 +5,7 @@ using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.Services.Identity.Logger;
+using ASPNETCoreIdentitySample.Services.Token;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -68,7 +69,15 @@ namespace ASPNETCoreIdentitySample.IocConfig
             services.AddScoped<ISecurityTrimmingService, SecurityTrimmingService>();
             services.AddScoped<IAppLogItemsService, AppLogItemsService>();
 
-            return services;
+
+
+          services.AddScoped<ITokenStoreService, TokenStoreService>();
+          services.AddScoped<ITokenFactoryService, TokenFactoryService>();
+
+
+          services.AddScoped<ITokenValidatorService, TokenValidatorService>();
+          services.AddSingleton<ISecurityService, SecurityService>();
+      return services;
         }
     }
 }

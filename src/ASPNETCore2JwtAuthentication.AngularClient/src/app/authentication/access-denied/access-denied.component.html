@@ -1,0 +1,12 @@
+<h1 class="text-danger">
+  <i class="fa fa-ban" aria-hidden="true"></i> Access Denied
+</h1>
+<p>Sorry! You don't have access to this page.</p>
+<button class="btn btn-default" (click)="goBack()">
+  <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+</button>
+
+<button *ngIf="!isAuthenticated" class="btn btn-success" [routerLink]="['/login']"
+  queryParamsHandling="merge">
+  Login
+</button>

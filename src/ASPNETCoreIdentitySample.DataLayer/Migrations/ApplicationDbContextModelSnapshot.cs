@@ -15,7 +15,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -142,6 +142,51 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     b.ToTable("AppSqlCache","dbo");
                 });
 
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.CustomUserToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset>("AccessTokenExpiresDateTime");
+
+                    b.Property<string>("AccessTokenHash");
+
+                    b.Property<string>("CreatedByBrowserName")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("CreatedByIp")
+                        .HasMaxLength(255);
+
+                    b.Property<int?>("CreatedByUserId");
+
+                    b.Property<DateTimeOffset?>("CreatedDateTime");
+
+                    b.Property<string>("ModifiedByBrowserName")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("ModifiedByIp")
+                        .HasMaxLength(255);
+
+                    b.Property<int?>("ModifiedByUserId");
+
+                    b.Property<DateTimeOffset?>("ModifiedDateTime");
+
+                    b.Property<DateTimeOffset>("RefreshTokenExpiresDateTime");
+
+                    b.Property<string>("RefreshTokenIdHash");
+
+                    b.Property<string>("RefreshTokenIdHashSource");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CustomUserToken");
+                });
+
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -263,6 +308,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
 
                     b.Property<bool>("IsEmailPublic");
 
+                    b.Property<DateTimeOffset?>("LastLoggedIn");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(450);
 
@@ -300,6 +347,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                         .HasMaxLength(450);
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("SerialNumber");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -541,6 +590,14 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.CustomUserToken", b =>
+                {
+                    b.HasOne("ASPNETCoreIdentitySample.Entities.Identity.User", "User")
+                        .WithMany("CustomUserTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.RoleClaim", b =>
