@@ -18,6 +18,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
         public ActiveDatabase ActiveDatabase { get; set; }
         public string UsersAvatarsFolder { get; set; }
         public string UserDefaultPhoto { get; set; }
+        public string ContentSecurityPolicyErrorLogUri { get; set; }
         public CookieOptions CookieOptions { get; set; }
         public LockoutOptions LockoutOptions { get; set; }
         public UserAvatarImageOptions UserAvatarImageOptions { get; set; }

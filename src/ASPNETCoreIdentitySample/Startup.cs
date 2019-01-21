@@ -10,6 +10,7 @@ using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Mvc;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -68,6 +69,8 @@ namespace ASPNETCoreIdentitySample
             app.UseHttpsRedirection();
             app.UseExceptionHandler("/error/index/500");
             app.UseStatusCodePagesWithReExecute("/error/index/{0}");
+
+            app.UseContentSecurityPolicy();
 
             // Serve wwwroot as root
             app.UseFileServer(new FileServerOptions
