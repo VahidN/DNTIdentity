@@ -2,7 +2,6 @@
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
-using DNTCommon.Web.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 {
@@ -19,15 +19,17 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
         private readonly TimeSpan _interval = TimeSpan.FromSeconds(2);
         private readonly IServiceProvider _serviceProvider;
         private readonly IList<AppLogItem> _currentBatch = new List<AppLogItem>();
+
         private readonly BlockingCollection<AppLogItem> _messageQueue =
-           new BlockingCollection<AppLogItem>(new ConcurrentQueue<AppLogItem>());
+            new BlockingCollection<AppLogItem>(new ConcurrentQueue<AppLogItem>());
+
         private readonly Task _outputTask;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private readonly IOptions<SiteSettings> _siteSettings;
 
         public DbLoggerProvider(
-                    IOptions<SiteSettings> siteSettings,
-                    IServiceProvider serviceProvider)
+            IOptions<SiteSettings> siteSettings,
+            IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _serviceProvider.CheckArgumentIsNull(nameof(_serviceProvider));
@@ -72,14 +74,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
                     }
                 }
 
-                saveLogItems(_currentBatch);
+                await saveLogItemsAsync(_currentBatch, _cancellationTokenSource.Token);
                 _currentBatch.Clear();
 
                 await Task.Delay(_interval, _cancellationTokenSource.Token);
             }
         }
 
-        private void saveLogItems(IList<AppLogItem> appLogItems)
+        private async Task saveLogItemsAsync(IList<AppLogItem> appLogItems, CancellationToken cancellationToken)
         {
             try
             {
@@ -90,11 +92,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 
                 // We need a separate context for the logger to call its SaveChanges several times,
                 // without using the current request's context and changing its internal state.
-                _serviceProvider.RunScopedService<IUnitOfWork>(context =>
+                using (var scope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    context.Set<AppLogItem>().AddRange(appLogItems);
-                    context.SaveChanges();
-                });
+                    using (var context = scope.ServiceProvider.GetRequiredService<IUnitOfWork>())
+                    {
+                        await context.Set<AppLogItem>().AddRangeAsync(appLogItems, cancellationToken);
+                        await context.SaveChangesAsync(cancellationToken);
+                    }
+                }
             }
             catch
             {
@@ -114,7 +119,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             catch (TaskCanceledException)
             {
             }
-            catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException)
+            catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 &&
+                                                ex.InnerExceptions[0] is TaskCanceledException)
             {
             }
         }
