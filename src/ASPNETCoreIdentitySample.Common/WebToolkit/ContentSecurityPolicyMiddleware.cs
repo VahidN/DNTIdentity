@@ -8,6 +8,11 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
 {
     public class ContentSecurityPolicyMiddleware
     {
+        private const string XFrameOptions = "X-Frame-Options";
+        private const string XXssProtection = "X-Xss-Protection";
+        private const string XContentTypeOptions = "X-Content-Type-Options";
+        private const string ContentSecurityPolicy = "Content-Security-Policy";
+
         private readonly RequestDelegate _next;
         private readonly string _contentSecurityPolicyValue;
         private readonly IConfiguration _configuration;
@@ -44,10 +49,25 @@ namespace ASPNETCoreIdentitySample.Common.WebToolkit
 
         public Task Invoke(HttpContext context)
         {
-            context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
-            context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
-            context.Response.Headers.Add("X-Content-Type-Options", "nosniff"); // Refused to execute script from '<URL>' because its MIME type ('') is not executable, and strict MIME type checking is enabled.
-            context.Response.Headers.Add("Content-Security-Policy", _contentSecurityPolicyValue);
+            if (!context.Response.Headers.ContainsKey(XFrameOptions))
+            {
+                context.Response.Headers.Add(XFrameOptions, "SAMEORIGIN");
+            }
+
+            if (!context.Response.Headers.ContainsKey(XXssProtection))
+            {
+                context.Response.Headers.Add(XXssProtection, "1; mode=block");
+            }
+
+            if (!context.Response.Headers.ContainsKey(XContentTypeOptions))
+            {
+                context.Response.Headers.Add(XContentTypeOptions, "nosniff"); // Refused to execute script from '<URL>' because its MIME type ('') is not executable, and strict MIME type checking is enabled.
+            }
+
+            if (!context.Response.Headers.ContainsKey(ContentSecurityPolicy))
+            {
+                context.Response.Headers.Add(ContentSecurityPolicy, _contentSecurityPolicyValue);
+            }
             return _next(context);
         }
     }

@@ -1,9 +1,11 @@
+using MsLogLevel = Microsoft.Extensions.Logging.LogLevel;
+
 namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
 {
     public class Loglevel
     {
-        public string Default { get; set; }
-        public string System { get; set; }
-        public string Microsoft { get; set; }
+        public MsLogLevel Default { get; set; }
+        public MsLogLevel System { get; set; }
+        public MsLogLevel Microsoft { get; set; }
     }
 }

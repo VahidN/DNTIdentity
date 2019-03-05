@@ -54,13 +54,8 @@ namespace ASPNETCoreIdentitySample
             services.AddCloudscribePagination();
         }
 
-        public void Configure(
-            ILoggerFactory loggerFactory,
-            IApplicationBuilder app,
-            IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddDbLogger(serviceProvider: app.ApplicationServices, minLevel: LogLevel.Warning);
-
             if (!env.IsDevelopment())
             {
                 app.UseHsts();

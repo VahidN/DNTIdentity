@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ASPNETCoreIdentitySample.Services.Identity.Logger;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -34,6 +35,7 @@ namespace ASPNETCoreIdentitySample
                 {
                     logging.AddDebug();
                     logging.AddConsole();
+                    logging.AddDbLogger(); // You can change its Log Level using the `appsettings.json` file -> Logging -> LogLevel -> Default
                 })
                 .UseIISIntegration()
                 .UseDefaultServiceProvider((context, options) =>

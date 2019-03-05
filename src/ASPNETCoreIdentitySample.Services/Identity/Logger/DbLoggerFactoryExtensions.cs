@@ -1,22 +1,14 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 {
     public static class DbLoggerFactoryExtensions
     {
-        public static ILoggerFactory AddDbLogger(
-                    this ILoggerFactory factory,
-                    IServiceProvider serviceProvider,
-                    LogLevel minLevel)
+        public static ILoggingBuilder AddDbLogger(this ILoggingBuilder builder)
         {
-            Func<string, LogLevel, bool> logFilter = delegate (string loggerName, LogLevel logLevel)
-            {
-                return logLevel >= minLevel;
-            };
-
-            factory.AddProvider(new DbLoggerProvider(logFilter, serviceProvider));
-            return factory;
+            builder.Services.AddSingleton<ILoggerProvider, DbLoggerProvider>();
+            return builder;
         }
     }
 }
