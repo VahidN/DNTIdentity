@@ -1,7 +1,7 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using System;
+using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -23,17 +23,11 @@ namespace ASPNETCoreIdentitySample.IocConfig
         }
 
         /// <summary>
-        /// Adds all of the ASP.NET Core Identity related initializations at once.
+        /// Creates and seeds the database.
         /// </summary>
-        public static void UseCustomIdentityServices(this IApplicationBuilder app)
+        public static void InitializeDb(this IServiceProvider serviceProvider)
         {
-            app.UseAuthentication();
-            app.callDbInitializer();
-        }
-
-        private static void callDbInitializer(this IApplicationBuilder app)
-        {
-            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
                 var identityDbInitialize = scope.ServiceProvider.GetService<IIdentityDbInitializer>();

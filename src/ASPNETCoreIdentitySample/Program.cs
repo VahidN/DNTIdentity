@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ASPNETCoreIdentitySample.Services.Identity.Logger;
+using ASPNETCoreIdentitySample.IocConfig;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -11,7 +12,9 @@ namespace ASPNETCoreIdentitySample
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var webHost = CreateWebHostBuilder(args).Build();
+            webHost.Services.InitializeDb();
+            webHost.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)

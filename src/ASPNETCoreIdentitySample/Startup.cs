@@ -1,11 +1,9 @@
-﻿using ASPNETCoreIdentitySample.Services.Identity.Logger;
-using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+﻿using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTCaptcha.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using ASPNETCoreIdentitySample.IocConfig;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using DNTCommon.Web.Core;
@@ -74,10 +72,7 @@ namespace ASPNETCoreIdentitySample
                 EnableDirectoryBrowsing = false
             });
 
-            // Adds all of the ASP.NET Core Identity related initializations at once.
-            app.UseCustomIdentityServices();
-            app.UseCookiePolicy();
-
+            app.UseAuthentication();
             // app.UseNoBrowserCache();
 
             app.UseMvc(routes =>
