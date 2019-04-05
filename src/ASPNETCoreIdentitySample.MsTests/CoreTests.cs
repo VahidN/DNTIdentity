@@ -31,17 +31,24 @@ namespace ASPNETCoreIdentitySample.MsTests
             services.AddScoped<IHostingEnvironment, HostingEnvironment>();
 
             var configuration = new ConfigurationBuilder()
-                                .AddJsonFile("ASPNETCoreIdentitySample/appsettings.json", reloadOnChange: true, optional: false)
+                                .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
                                 .Build();
             services.AddSingleton<IConfigurationRoot>(provider => configuration);
             services.Configure<SiteSettings>(options => configuration.Bind(options));
-            services.AddEntityFrameworkInMemoryDatabase().AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
 
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
-
             services.AddDNTCommonWeb();
             services.AddCloudscribePagination();
+
+            var siteSettings = services.GetSiteSettings();
+            siteSettings.ActiveDatabase = ActiveDatabase.InMemoryDatabase;
+            services.AddRequiredEfInternalServices(siteSettings); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
+            services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
+            {
+                optionsBuilder.SetDbContextOptions(siteSettings);
+                optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
+            });
 
             _serviceProvider = services.BuildServiceProvider();
 
