@@ -10,13 +10,13 @@
     "url": "https://github.com/VahidN/DNTIdentity.git"
   },
   "dependencies": {
-    "bootstrap": "^4.1.3",
-    "@ghalamborm/bootstrap4-rtl": "^1.3.1",
-    "popper.js": "^1.14.4",
-    "components-font-awesome": "^5.4.2",
-    "jquery": "^3.3.1",
+    "bootstrap": "^4.3.1",
+    "@ghalamborm/bootstrap4-rtl": "^1.6.0",
+    "popper.js": "^1.15.0",
+    "components-font-awesome": "^5.9.0",
+    "jquery": "^3.4.1",
     "jquery-ajax-unobtrusive": "^3.2.6",
-    "jquery-validation": "^1.18.0",
+    "jquery-validation": "^1.19.0",
     "jquery-validation-unobtrusive": "^3.2.11",
     "samim-font": "^1.0.2"
   }
