@@ -24,7 +24,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
                 provider.GetService<IHttpContextAccessor>()?.HttpContext?.User ?? ClaimsPrincipal.Current);
 
             services.AddScoped<ILookupNormalizer, CustomNormalizer>();
-            services.AddScoped<UpperInvariantLookupNormalizer, CustomNormalizer>();
+            //services.AddScoped<UpperInvariantLookupNormalizer, CustomNormalizer>();
 
             services.AddScoped<ISecurityStampValidator, CustomSecurityStampValidator>();
             services.AddScoped<SecurityStampValidator<User>, CustomSecurityStampValidator>();

@@ -91,7 +91,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
 
         public override int SaveChanges()
         {
-            ChangeTracker.DetectChanges();
+            ChangeTracker.DetectChanges(); //NOTE: changeTracker.Entries<T>() will call it automatically.
 
             beforeSaveTriggers();
 

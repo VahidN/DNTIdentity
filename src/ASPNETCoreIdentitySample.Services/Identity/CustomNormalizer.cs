@@ -10,9 +10,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
     /// <summary>
     /// More info: http://www.dotnettips.info/post/2579
     /// </summary>
-    public class CustomNormalizer : UpperInvariantLookupNormalizer
+    public class CustomNormalizer : ILookupNormalizer
     {
-        public override string Normalize(string key)
+        public string Normalize(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
