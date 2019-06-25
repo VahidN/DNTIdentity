@@ -13,7 +13,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
         {
             // To manage large identity cookies
             var cookieOptions = siteSettings.CookieOptions;
-            if (cookieOptions.UseDistributedCacheTicketStore)
+            if (cookieOptions.UseDistributedCacheTicketStore && isActiveDatabaseSqlServer(siteSettings))
             {
                 services.AddDistributedSqlServerCache(options =>
                 {
@@ -34,6 +34,12 @@ namespace ASPNETCoreIdentitySample.IocConfig
             }
 
             return services;
+        }
+
+        private static bool isActiveDatabaseSqlServer(SiteSettings siteSettings)
+        {
+            return siteSettings.ActiveDatabase == ActiveDatabase.LocalDb
+                   || siteSettings.ActiveDatabase == ActiveDatabase.SqlServer;
         }
     }
 }
