@@ -20,7 +20,7 @@
 - سپس آخرین نگارش [NodeJS](https://nodejs.org/en/download/current/) را نیز نصب کنید. از npm آن برای دریافت کتابخانه‌های سمت کلاینت پروژه که در فایل [package.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/package.json) ذکر شده‌اند، استفاده می‌شود.
 - بانک اطلاعاتی پیش‌فرض برنامه [LocalDB](https://www.dotnettips.info/post/2409) است که [از اینجا](https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SqlLocalDB.msi) قابل دریافت و نصب است (البته می‌توانید حالت in-memory را نیز در فایل [appsettings.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/appsettings.json#L47) انتخاب کنید که وابستگی به بانک اطلاعاتی خاصی ندارد).
 - سپس فایل [restore.bat](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/_0-restore.bat) را اجرا کنید تا تمام وابستگی‌های سمت سرور و کلاینت پروژه، دریافت و نصب شوند.
-- در آخر فایل [dotnet_run.bat](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/_1-dotnet_run.bat) را اجرا کنید، تا پروژه در آدرس https://localhost:5001 قابل دسترسی شود.
+- در آخر فایل [dotnet_run.bat](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/_1-dotnet_run.bat) را اجرا کنید، تا پروژه در آدرس https://localhost:5001 قابل دسترسی شود.  مشخصات پیش‌فرض ورود به سیستم را در فایل [appsettings.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/appsettings.json) می‌توانید مشاهده کنید.
 
 
 
