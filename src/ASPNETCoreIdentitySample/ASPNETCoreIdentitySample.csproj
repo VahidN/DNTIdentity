@@ -32,7 +32,7 @@
     <Exec Command="dotnet bundle" />
   </Target>
   <ItemGroup>
-    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.8.391" />
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.9.406" />
   </ItemGroup>
   <ItemGroup>
     <!-- extends watching group to include *.js files -->
