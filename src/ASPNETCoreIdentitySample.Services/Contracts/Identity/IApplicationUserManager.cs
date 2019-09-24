@@ -2,11 +2,9 @@
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Threading;
 using System;
 using Microsoft.Extensions.Logging;
 
@@ -109,7 +107,6 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// true if the backing user store supports user roles, otherwise false.
         /// </value>
         bool SupportsUserRole { get; }
-
 
         /// <summary>
         /// Gets a flag indicating whether the backing user store supports external logins.
@@ -265,9 +262,16 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <summary>
         /// Normalize a key (user name, email) for consistent comparisons.
         /// </summary>
-        /// <param name="key">The key to normalize.</param>
-        /// <returns>A normalized value representing the specified <paramref name="key"/>.</returns>
-        string NormalizeKey(string key);
+        /// <param name="email">The key to normalize.</param>
+        /// <returns>A normalized value representing the specified <paramref name="email"/>.</returns>
+        string NormalizeEmail(string email);
+
+        /// <summary>
+        /// Normalize a key (user name, email) for consistent comparisons.
+        /// </summary>
+        /// <param name="name">The key to normalize.</param>
+        /// <returns>A normalized value representing the specified <paramref name="name"/>.</returns>
+        string NormalizeName(string name);
 
         /// <summary>
         /// Updates the normalized user name for the specified <paramref name="user"/>.
@@ -746,9 +750,9 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <summary>
         /// Generates a token for the given <paramref name="user"/> and <paramref name="purpose"/>.
         /// </summary>
-        /// <param name="purpose">The purpose the token will be for.</param>
         /// <param name="user">The user the token will be for.</param>
         /// <param name="tokenProvider">The provider which will generate the token.</param>
+        /// <param name="purpose">The purpose the token will be for.</param>
         /// <returns>
         /// The <see cref="Task"/> that represents result of the asynchronous operation, a token for
         /// the given user and purpose.
@@ -1051,7 +1055,6 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         Task<IdentityResult> AddOrUpdateUserRolesAsync(int userId, IList<int> selectedRoleIds, Action<User> action = null);
 
         Task<PagedUsersListViewModel> GetPagedUsersListAsync(SearchUsersViewModel model, int pageNumber);
-
 
         #endregion
     }

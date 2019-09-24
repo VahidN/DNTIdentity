@@ -23,7 +23,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptionsSnapshot<SiteSettings> configurationRoot
             ) : base(errors)
         {
-            configurationRoot.CheckArgumentIsNull(nameof(configurationRoot));
+            if (configurationRoot == null) throw new ArgumentNullException(nameof(configurationRoot));
             _emailsBanList = new HashSet<string>(configurationRoot.Value.EmailsBanList, StringComparer.OrdinalIgnoreCase);
 
             if (!_emailsBanList.Any())

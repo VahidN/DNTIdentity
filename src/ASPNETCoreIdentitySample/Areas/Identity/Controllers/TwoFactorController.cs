@@ -32,22 +32,12 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IOptionsSnapshot<SiteSettings> siteOptions,
             ILogger<TwoFactorController> logger)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _signInManager = signInManager;
-            _signInManager.CheckArgumentIsNull(nameof(_signInManager));
-
-            _emailSender = emailSender;
-            _emailSender.CheckArgumentIsNull(nameof(_emailSender));
-
-            _siteOptions = siteOptions;
-            _siteOptions.CheckArgumentIsNull(nameof(_siteOptions));
-
-            _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(_logger));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
+            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
         }
-
 
         [AllowAnonymous]
         [BreadCrumb(Title = "ارسال کد", Order = 1)]
@@ -71,7 +61,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                                subject: "کد جدید اعتبارسنجی دو مرحله‌ای",
                                viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_TwoFactorSendCode.cshtml",
                                model: new TwoFactorSendCodeViewModel
-                                {
+                               {
                                    Token = code,
                                    EmailSignature = _siteOptions.Value.Smtp.FromName,
                                    MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()

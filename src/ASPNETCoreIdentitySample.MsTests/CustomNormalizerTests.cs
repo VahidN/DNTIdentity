@@ -17,7 +17,7 @@ namespace ASPNETCoreIdentitySample.MsTests
         public void Test_Gmail_Address_With_Dots_CanBe_Normalized(string actual, string expected)
         {
             var customNormalizer = new CustomNormalizer();
-            Assert.AreEqual(expected, customNormalizer.Normalize(actual));
+            Assert.AreEqual(expected, customNormalizer.NormalizeEmail(actual));
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace ASPNETCoreIdentitySample.MsTests
         public void Test_Gmail_Address_With_Plus_CanBe_Normalized(string actual, string expected)
         {
             var customNormalizer = new CustomNormalizer();
-            Assert.AreEqual(expected, customNormalizer.Normalize(actual));
+            Assert.AreEqual(expected, customNormalizer.NormalizeEmail(actual));
         }
     }
 }

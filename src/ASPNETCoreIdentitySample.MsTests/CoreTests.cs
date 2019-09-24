@@ -1,17 +1,16 @@
 ﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
-using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System;
-using Microsoft.AspNetCore.Hosting.Internal;
 using ASPNETCoreIdentitySample.IocConfig;
 using DNTCommon.Web.Core;
+using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace ASPNETCoreIdentitySample.MsTests
 {
@@ -22,40 +21,31 @@ namespace ASPNETCoreIdentitySample.MsTests
     public class CoreTests
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IOptionsSnapshot<SiteSettings> _siteSettings;
-
+        
         public CoreTests()
         {
             var services = new ServiceCollection();
             services.AddOptions();
-            services.AddScoped<IHostingEnvironment, HostingEnvironment>();
+            services.AddLogging(cfg => cfg.AddConsole().AddDebug());
+            services.AddScoped<IWebHostEnvironment, TestHostingEnvironment>();
 
             var configuration = new ConfigurationBuilder()
-                                .AddJsonFile("appsettings.json", reloadOnChange: true, optional: false)
-                                .Build();
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            services.Configure<SiteSettings>(options => configuration.Bind(options))
+                .PostConfigure<SiteSettings>(x => { x.ActiveDatabase = ActiveDatabase.InMemoryDatabase; });
             services.AddSingleton<IConfigurationRoot>(provider => configuration);
-            services.Configure<SiteSettings>(options => configuration.Bind(options));
 
-            // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
             services.AddDNTCommonWeb();
             services.AddCloudscribePagination();
 
             var siteSettings = services.GetSiteSettings();
-            siteSettings.ActiveDatabase = ActiveDatabase.InMemoryDatabase;
-            services.AddRequiredEfInternalServices(siteSettings); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
-            {
-                optionsBuilder.SetDbContextOptions(siteSettings);
-                optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            });
-
+            services.AddConfiguredDbContext(siteSettings);
             _serviceProvider = services.BuildServiceProvider();
 
-            _siteSettings = _serviceProvider.GetRequiredService<IOptionsSnapshot<SiteSettings>>();
-            _siteSettings.Value.ActiveDatabase = ActiveDatabase.InMemoryDatabase;
-
             var identityDbInitialize = _serviceProvider.GetRequiredService<IIdentityDbInitializer>();
+            identityDbInitialize.Initialize();
             identityDbInitialize.SeedData();
         }
 

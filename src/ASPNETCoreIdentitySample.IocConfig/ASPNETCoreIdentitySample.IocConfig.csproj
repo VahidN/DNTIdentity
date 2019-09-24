@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <NoWarn>RCS1090</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
@@ -8,11 +9,16 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Entities\ASPNETCoreIdentitySample.Entities.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Services\ASPNETCoreIdentitySample.Services.csproj" />
+
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.DataLayer.InMemoryDatabase\ASPNETCoreIdentitySample.DataLayer.InMemoryDatabase.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.DataLayer.MSSQL\ASPNETCoreIdentitySample.DataLayer.MSSQL.csproj" />
+    <ProjectReference Include="..\ASPNETCoreIdentitySample.DataLayer.SQLite\ASPNETCoreIdentitySample.DataLayer.SQLite.csproj" />
+
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.4" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
   </ItemGroup>
 </Project>

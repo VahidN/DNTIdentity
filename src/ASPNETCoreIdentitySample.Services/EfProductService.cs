@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities;
 using ASPNETCoreIdentitySample.Services.Contracts;
@@ -10,13 +10,12 @@ namespace ASPNETCoreIdentitySample.Services
 {
     public class EfProductService : IProductService
     {
-        IUnitOfWork _uow;
-        readonly DbSet<Product> _products;
+        private readonly IUnitOfWork _uow;
+        private readonly DbSet<Product> _products;
+
         public EfProductService(IUnitOfWork uow)
         {
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
-
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
             _products = _uow.Set<Product>();
         }
 

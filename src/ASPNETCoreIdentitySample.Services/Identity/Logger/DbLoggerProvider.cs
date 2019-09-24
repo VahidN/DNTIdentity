@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.Extensions.Logging;
@@ -31,12 +30,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             IOptions<SiteSettings> siteSettings,
             IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
-            _serviceProvider.CheckArgumentIsNull(nameof(_serviceProvider));
-
-            _siteSettings = siteSettings;
-            _siteSettings.CheckArgumentIsNull(nameof(_siteSettings));
-
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(_serviceProvider));
+            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(_siteSettings));
             _outputTask = Task.Run(processLogQueue);
         }
 
@@ -48,6 +43,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
         public void Dispose()
         {
             stop();
+            _messageQueue.Dispose();
+            _cancellationTokenSource.Dispose();
         }
 
         internal void AddLogItem(AppLogItem appLogItem)

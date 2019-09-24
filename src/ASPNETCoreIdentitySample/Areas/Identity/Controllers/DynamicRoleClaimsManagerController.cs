@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -7,6 +6,7 @@ using DNTBreadCrumb.Core;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
@@ -26,11 +26,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IMvcActionsDiscoveryService mvcActionsDiscoveryService,
             IApplicationRoleManager roleManager)
         {
-            _mvcActionsDiscoveryService = mvcActionsDiscoveryService;
-            _mvcActionsDiscoveryService.CheckArgumentIsNull(nameof(_mvcActionsDiscoveryService));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
+            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(_mvcActionsDiscoveryService));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]

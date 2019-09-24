@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -23,21 +22,18 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IApplicationUserManager userManager,
             IUnitOfWork uow)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
-
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
             _users = uow.Set<User>();
         }
 
         public Task<List<User>> GetOnlineUsersListAsync(int numbersToTake, int minutesToTake)
         {
-            var now = DateTimeOffset.UtcNow;
+            var now = DateTime.UtcNow;
             var minutes = now.AddMinutes(-minutesToTake);
             return _users.AsNoTracking()
-                         .Where(user => user.LastVisitDateTime != null && user.LastVisitDateTime.Value <= now && user.LastVisitDateTime.Value >= minutes)
+                         .Where(user => user.LastVisitDateTime != null && user.LastVisitDateTime.Value <= now
+                                        && user.LastVisitDateTime.Value >= minutes)
                          .OrderByDescending(user => user.LastVisitDateTime)
                          .Take(numbersToTake)
                          .ToListAsync();
@@ -45,22 +41,22 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public Task<List<User>> GetTodayBirthdayListAsync()
         {
-            var now = DateTimeOffset.UtcNow;
+            var now = DateTime.UtcNow;
             var day = now.Day;
             var month = now.Month;
             return _users.AsNoTracking()
-                         .Where(user => user.BirthDate.HasValue && user.IsActive &&
-                                user.BirthDate.Value.Day == day && user.BirthDate.Value.Month == month)
+                         .Where(user => user.BirthDate != null && user.IsActive
+                                        && user.BirthDate.Value.Day == day
+                                        && user.BirthDate.Value.Month == month)
                          .ToListAsync();
         }
 
         public async Task<AgeStatViewModel> GetUsersAverageAge()
         {
             var users = await _users.AsNoTracking()
-                                    .Where(x => x.BirthDate.HasValue && x.IsActive)
+                                    .Where(x => x.BirthDate != null && x.IsActive)
                                     .OrderBy(x => x.BirthDate)
-                                    .ToListAsync()
-                                    ;
+                                    .ToListAsync();
 
             var count = users.Count;
             if (count == 0)
@@ -82,7 +78,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         public async Task UpdateUserLastVisitDateTimeAsync(ClaimsPrincipal claimsPrincipal)
         {
             var user = await _userManager.GetUserAsync(claimsPrincipal);
-            user.LastVisitDateTime = DateTimeOffset.UtcNow;
+            user.LastVisitDateTime = DateTime.UtcNow;
             await _userManager.UpdateAsync(user);
         }
     }

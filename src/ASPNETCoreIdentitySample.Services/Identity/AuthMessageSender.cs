@@ -1,9 +1,9 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+﻿using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTCommon.Web.Core;
+using System;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -20,11 +20,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptionsSnapshot<SiteSettings> smtpConfig,
             IWebMailService webMailService)
         {
-            _smtpConfig = smtpConfig;
-            _smtpConfig.CheckArgumentIsNull(nameof(_smtpConfig));
-
-            _webMailService = webMailService;
-            _webMailService.CheckArgumentIsNull(nameof(webMailService));
+            _smtpConfig = smtpConfig ?? throw new ArgumentNullException(nameof(_smtpConfig));
+            _webMailService = webMailService ?? throw new ArgumentNullException(nameof(webMailService));
         }
 
         public Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model)

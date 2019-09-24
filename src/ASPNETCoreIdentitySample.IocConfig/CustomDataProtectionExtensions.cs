@@ -23,7 +23,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
                     var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
                     using (var scope = scopeFactory.CreateScope())
                     {
-                        options.XmlRepository = scope.ServiceProvider.GetService<IXmlRepository>();
+                        options.XmlRepository = scope.ServiceProvider.GetRequiredService<IXmlRepository>();
                     }
                 });
             });

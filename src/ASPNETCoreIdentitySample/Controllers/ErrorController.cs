@@ -25,19 +25,19 @@ namespace ASPNETCoreIdentitySample.Controllers
             var logBuilder = new StringBuilder();
 
             var statusCodeReExecuteFeature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-            logBuilder.AppendLine($"Error {id} for {Request.Method} {statusCodeReExecuteFeature?.OriginalPath ?? Request.Path.Value}{Request.QueryString.Value}\n");
+            logBuilder.Append("Error ").Append(id).Append(" for ").Append(Request.Method).Append(' ').Append(statusCodeReExecuteFeature?.OriginalPath ?? Request.Path.Value).Append(Request.QueryString.Value).AppendLine("\n");
 
             var exceptionHandlerFeature = this.HttpContext.Features.Get<IExceptionHandlerFeature>();
             if (exceptionHandlerFeature?.Error != null)
             {
                 var exception = exceptionHandlerFeature.Error;
-                logBuilder.AppendLine($"<h1>Exception: {exception.Message}</h1>{exception.StackTrace}");
+                logBuilder.Append("<h1>Exception: ").Append(exception.Message).Append("</h1>").AppendLine(exception.StackTrace);
             }
 
             foreach (var header in Request.Headers)
             {
                 var headerValues = string.Join(",", value: header.Value);
-                logBuilder.AppendLine($"{header.Key}: {headerValues}");
+                logBuilder.Append(header.Key).Append(": ").AppendLine(headerValues);
             }
             _logger.LogError(logBuilder.ToString());
 

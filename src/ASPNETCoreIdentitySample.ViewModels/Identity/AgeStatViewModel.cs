@@ -5,7 +5,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity
 {
     public class AgeStatViewModel
     {
-        const char RleChar = (char)0x202B;
+        public const char RleChar = (char)0x202B;
 
         public int UsersCount { set; get; }
         public int AverageAge { set; get; }

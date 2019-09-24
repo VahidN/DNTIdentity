@@ -5,11 +5,9 @@ using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.Services.Identity.Logger;
-using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASPNETCoreIdentitySample.IocConfig
@@ -18,10 +16,9 @@ namespace ASPNETCoreIdentitySample.IocConfig
     {
         public static IServiceCollection AddCustomServices(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, ApplicationDbContext>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IPrincipal>(provider =>
-                provider.GetService<IHttpContextAccessor>()?.HttpContext?.User ?? ClaimsPrincipal.Current);
+                provider.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.User ?? ClaimsPrincipal.Current);
 
             services.AddScoped<ILookupNormalizer, CustomNormalizer>();
 
@@ -56,9 +53,6 @@ namespace ASPNETCoreIdentitySample.IocConfig
 
             services.AddScoped<IEmailSender, AuthMessageSender>();
             services.AddScoped<ISmsSender, AuthMessageSender>();
-
-            // services.AddSingleton<IAntiforgery, NoBrowserCacheAntiforgery>();
-            // services.AddSingleton<IHtmlGenerator, NoBrowserCacheHtmlGenerator>();
 
             services.AddScoped<IIdentityDbInitializer, IdentityDbInitializer>();
             services.AddScoped<IUsedPasswordsService, UsedPasswordsService>();

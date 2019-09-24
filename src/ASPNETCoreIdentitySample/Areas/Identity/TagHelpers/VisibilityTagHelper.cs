@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
@@ -19,8 +19,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
 
         public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            context.CheckArgumentIsNull(nameof(context));
-            output.CheckArgumentIsNull(nameof(output));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (output == null) throw new ArgumentNullException(nameof(output));
 
             if (!IsVisible)
             {

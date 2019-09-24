@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities;
 using ASPNETCoreIdentitySample.Services.Contracts;
@@ -10,19 +10,19 @@ namespace ASPNETCoreIdentitySample.Services
 {
     public class EfCategoryService : ICategoryService
     {
-        IUnitOfWork _uow;
-        readonly DbSet<Category> _categories;
+        private readonly IUnitOfWork _uow;
+        private readonly DbSet<Category> _categories;
+
         public EfCategoryService(IUnitOfWork uow)
         {
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
 
             _categories = _uow.Set<Category>();
         }
 
         public void AddNewCategory(Category category)
         {
-           _categories.Add(category);
+            _categories.Add(category);
         }
 
         public IList<Category> GetAllCategories()

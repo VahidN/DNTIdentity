@@ -62,9 +62,7 @@ namespace ASPNETCoreIdentitySample.Common.GuardToolkit
         public static bool IsNumeric(this string inputText)
         {
             if (string.IsNullOrWhiteSpace(inputText)) return false;
-
-            long inputNumber;
-            return long.TryParse(inputText.ToEnglishNumbers(), out inputNumber);
+            return long.TryParse(inputText.ToEnglishNumbers(), out _);
         }
     }
 }

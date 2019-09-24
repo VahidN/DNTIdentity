@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
@@ -25,10 +24,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptionsSnapshot<SiteSettings> configurationRoot,
             IUsedPasswordsService usedPasswordsService) : base(errors)
         {
-            _usedPasswordsService = usedPasswordsService;
-            _usedPasswordsService.CheckArgumentIsNull(nameof(_usedPasswordsService));
-
-            configurationRoot.CheckArgumentIsNull(nameof(configurationRoot));
+            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(_usedPasswordsService));
+            if (configurationRoot == null) throw new ArgumentNullException(nameof(configurationRoot));
             _passwordsBanList = new HashSet<string>(configurationRoot.Value.PasswordsBanList, StringComparer.OrdinalIgnoreCase);
 
             if (!_passwordsBanList.Any())
@@ -66,7 +63,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
 
             // Extending the built-in validator
-            if (password.ToLower().Contains(user.UserName.ToLower()))
+            if (password.Contains(user.UserName, StringComparison.OrdinalIgnoreCase))
             {
                 errors.Add(new IdentityError
                 {
@@ -99,7 +96,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             return !errors.Any() ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
         }
 
-        private static bool areAllCharsEuqal(string data)
+        private static bool areAllCharsEqual(string data)
         {
             if (string.IsNullOrWhiteSpace(data)) return false;
             data = data.ToLowerInvariant();
@@ -114,7 +111,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             if (string.IsNullOrWhiteSpace(data)) return false;
             if (data.Length < 5) return false;
             if (_passwordsBanList.Contains(data.ToLowerInvariant())) return false;
-            if (areAllCharsEuqal(data)) return false;
+            if (areAllCharsEqual(data)) return false;
 
             return true;
         }

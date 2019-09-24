@@ -81,7 +81,6 @@ namespace ASPNETCoreIdentitySample.Common.ReflectionToolkit
         /// </summary>
         /// <param name="target">the target object to set the value on</param>
         /// <param name="propertyName">the property to set, can be a property on a nested object (eg. "Child.Name")</param>
-
         /// <param name="value">the new value of the property</param>
         public void SetValue(object target, string propertyName, object value)
         {
@@ -111,8 +110,8 @@ namespace ASPNETCoreIdentitySample.Common.ReflectionToolkit
         /// For the propertyList { "Zero", "One", "Two" } and level 1, the string
         /// "Zero.One" will be returned.
         /// </summary>
-        /// <param name="propertyList">the array containing the properties in the corect order</param>
-        /// <param name="level">the level up to wich to include the properties in the returned string</param>
+        /// <param name="propertyList">the array containing the properties in the correct order</param>
+        /// <param name="level">the level up to which to include the properties in the returned string</param>
         /// <returns>a dot-separated string containing the properties up to the given level</returns>
         private static string GetPropertyNameString(string[] propertyList, int level)
         {
@@ -134,7 +133,7 @@ namespace ASPNETCoreIdentitySample.Common.ReflectionToolkit
         /// </summary>
         /// <param name="targetType">the type of the target instance</param>
         /// <param name="propertyName">the property to retrieve the type for</param>
-        /// <returns>the typr of the given property on the target type</returns>
+        /// <returns>the type of the given property on the target type</returns>
         private Type GetTypeImpl(Type targetType, string propertyName)
         {
             return GetPropertyInfo(targetType, propertyName).PropertyType;
@@ -182,7 +181,6 @@ namespace ASPNETCoreIdentitySample.Common.ReflectionToolkit
                 if (propertyInfo == null)
                 {
                     throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Unable to find public property named {0} on type {1}", propertyName, type.FullName), propertyName);
-
                 }
                 propertyInfoCache.Add(propertyName, propertyInfo);
             }
@@ -283,7 +281,6 @@ namespace ASPNETCoreIdentitySample.Common.ReflectionToolkit
                         if (constructorInfo == null)
                         {
                             throw new Exception(string.Format(CultureInfo.InvariantCulture, "Unable to construct instance, no parameterless constructor found in type {0}", type.FullName));
-
                         }
                         _constructorCache.Add(type, constructorInfo);
                     }

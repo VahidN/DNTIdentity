@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
@@ -10,9 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -42,27 +41,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IUnitOfWork uow) :
             base((RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>)store, roleValidators, keyNormalizer, errors, logger)
         {
-            _store = store;
-            _store.CheckArgumentIsNull(nameof(_store));
-
-            _roleValidators = roleValidators;
-            _roleValidators.CheckArgumentIsNull(nameof(_roleValidators));
-
-            _keyNormalizer = keyNormalizer;
-            _keyNormalizer.CheckArgumentIsNull(nameof(_keyNormalizer));
-
-            _errors = errors;
-            _errors.CheckArgumentIsNull(nameof(_errors));
-
-            _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(_logger));
-
-            _contextAccessor = contextAccessor;
-            _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
-
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
-
+            _store = store ?? throw new ArgumentNullException(nameof(_store));
+            _roleValidators = roleValidators ?? throw new ArgumentNullException(nameof(_roleValidators));
+            _keyNormalizer = keyNormalizer ?? throw new ArgumentNullException(nameof(_keyNormalizer));
+            _errors = errors ?? throw new ArgumentNullException(nameof(_errors));
+            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(_contextAccessor));
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
             _users = _uow.Set<User>();
         }
 
@@ -144,7 +129,6 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 Roles = await Roles.ToListAsync()
             };
         }
-
 
         public IList<User> GetApplicationUsersInRole(string roleName)
         {

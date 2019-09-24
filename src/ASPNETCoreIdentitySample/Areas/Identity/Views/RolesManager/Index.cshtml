@@ -48,7 +48,7 @@
                 $.bootstrapModalAjaxForm({
                     postUrl: '@Url.Action("AddRole", "RolesManager")',
                     renderModalPartialViewUrl: '@Url.Action("RenderRole", "RolesManager")',
-                    renderModalPartialViewData: {},
+                    renderModalPartialViewData: JSON.stringify({ "id": 0 }),
                     loginUrl: '/identity/login',
                     beforePostHandler: function () {
                     },

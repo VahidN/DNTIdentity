@@ -1,10 +1,8 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
@@ -15,11 +13,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
     {
         private readonly DbSet<AppLogItem> _appLogItems;
         private readonly IUnitOfWork _uow;
+
         public AppLogItemsService(IUnitOfWork uow)
         {
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
-
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
             _appLogItems = _uow.Set<AppLogItem>();
         }
 
@@ -48,7 +45,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             }
         }
 
-        public Task DeleteOlderThanAsync(DateTimeOffset cutoffDateUtc, string logLevel = "")
+        public Task DeleteOlderThanAsync(DateTime cutoffDateUtc, string logLevel = "")
         {
             if (string.IsNullOrWhiteSpace(logLevel))
             {

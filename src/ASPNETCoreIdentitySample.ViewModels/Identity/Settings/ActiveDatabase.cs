@@ -4,6 +4,7 @@
     {
         LocalDb,
         SqlServer,
-        InMemoryDatabase
+        InMemoryDatabase,
+        SQLite
     }
 }

@@ -1,7 +1,7 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+﻿using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -21,13 +21,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IHttpContextAccessor httpContextAccessor,
             IMvcActionsDiscoveryService mvcActionsDiscoveryService)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _httpContextAccessor.CheckArgumentIsNull(nameof(_httpContextAccessor));
-
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(_httpContextAccessor));
             _httpContext = _httpContextAccessor.HttpContext;
-
-            _mvcActionsDiscoveryService = mvcActionsDiscoveryService;
-            _mvcActionsDiscoveryService.CheckArgumentIsNull(nameof(_mvcActionsDiscoveryService));
+            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(_mvcActionsDiscoveryService));
         }
 
         public bool CanCurrentUserAccess(string area, string controller, string action)
@@ -41,7 +37,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var securedControllerActions = _mvcActionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission);
             if (!securedControllerActions.SelectMany(x => x.MvcActions).Any(x => x.ActionId == currentClaimValue))
             {
-                throw new KeyNotFoundException($@"The `secured` area={area}/controller={controller}/action={action} with `ConstantPolicies.DynamicPermission` policy not found. Please check you have entered the area/controller/action names correctly and also it's decorated with the correct security policy.");
+                throw new KeyNotFoundException($"The `secured` area={area}/controller={controller}/action={action} with `ConstantPolicies.DynamicPermission` policy not found. Please check you have entered the area/controller/action names correctly and also it's decorated with the correct security policy.");
             }
 
             if (!user.Identity.IsAuthenticated)

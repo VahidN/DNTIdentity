@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.IocConfig
 {
@@ -19,7 +17,7 @@ namespace ASPNETCoreIdentitySample.IocConfig
         public static IServiceCollection AddIdentityOptions(
             this IServiceCollection services, SiteSettings siteSettings)
         {
-            siteSettings.CheckArgumentIsNull(nameof(siteSettings));
+            if (siteSettings == null) throw new ArgumentNullException(nameof(siteSettings));
 
             services.addConfirmEmailDataProtectorTokenOptions(siteSettings);
             services.AddIdentity<User, Role>(identityOptions =>
@@ -96,9 +94,11 @@ namespace ASPNETCoreIdentitySample.IocConfig
             identityOptionsCookies.LogoutPath = siteSettings.CookieOptions.LogoutPath;
             identityOptionsCookies.AccessDeniedPath = siteSettings.CookieOptions.AccessDeniedPath;
 
-            var ticketStore = provider.GetService<ITicketStore>();
-            ticketStore.CheckArgumentIsNull(nameof(ticketStore));
-            identityOptionsCookies.SessionStore = ticketStore; // To manage large identity cookies
+            if (siteSettings.CookieOptions.UseDistributedCacheTicketStore)
+            {
+                // To manage large identity cookies
+                identityOptionsCookies.SessionStore = provider.GetRequiredService<ITicketStore>();
+            }
         }
 
         private static void setLockoutOptions(LockoutOptions identityOptionsLockout, SiteSettings siteSettings)

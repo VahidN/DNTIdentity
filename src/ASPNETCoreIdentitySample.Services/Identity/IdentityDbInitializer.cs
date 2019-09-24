@@ -59,7 +59,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         {
             using (var serviceScope = _scopeFactory.CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
                     if (_adminUserSeedOptions.Value.ActiveDatabase == ActiveDatabase.InMemoryDatabase)
                     {
@@ -80,7 +80,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         {
             using (var serviceScope = _scopeFactory.CreateScope())
             {
-                var identityDbSeedData = serviceScope.ServiceProvider.GetService<IIdentityDbInitializer>();
+                var identityDbSeedData = serviceScope.ServiceProvider.GetRequiredService<IIdentityDbInitializer>();
                 var result = identityDbSeedData.SeedDatabaseWithAdminUserAsync().Result;
                 if (result == IdentityResult.Failed())
                 {
@@ -88,7 +88,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                 }
 
                 // How to add initial data to the DB directly
-                using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
                 {
                     if (!context.Roles.Any())
                     {

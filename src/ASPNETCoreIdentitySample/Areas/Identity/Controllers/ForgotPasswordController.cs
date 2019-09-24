@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -15,6 +14,7 @@ using ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTPersianUtils.Core;
 using DNTCommon.Web.Core;
+using DNTCaptcha.Core.Providers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -34,17 +34,10 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IEmailSender emailSender,
             IOptionsSnapshot<SiteSettings> siteOptions)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _passwordValidator = passwordValidator;
-            _passwordValidator.CheckArgumentIsNull(nameof(_passwordValidator));
-
-            _emailSender = emailSender;
-            _emailSender.CheckArgumentIsNull(nameof(_emailSender));
-
-            _siteOptions = siteOptions;
-            _siteOptions.CheckArgumentIsNull(nameof(_siteOptions));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(_passwordValidator));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
         }
 
         [BreadCrumb(Title = "تائید کلمه‌ی عبور فراموش شده", Order = 1)]
@@ -77,10 +70,10 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ValidateDNTCaptcha(CaptchaGeneratorLanguage = DNTCaptcha.Core.Providers.Language.Persian)]
+        [ValidateDNTCaptcha(CaptchaGeneratorLanguage = DNTCaptcha.Core.Providers.Language.Persian,
+                            CaptchaGeneratorDisplayMode = DisplayMode.SumOfTwoNumbers)]
         public async Task<IActionResult> Index(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)

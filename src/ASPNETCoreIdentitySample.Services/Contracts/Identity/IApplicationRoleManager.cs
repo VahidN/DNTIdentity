@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <value>An IQueryable collection of Roles if the persistence store is an <see cref="IQueryableRoleStore{TRole}"/>.</value>
         /// <exception cref="NotSupportedException">Thrown if the persistence store is not an <see cref="IQueryableRoleStore{TRole}"/>.</exception>
         /// <remarks>
-        /// Callers to this property should use <see cref="SupportsQueryableRoles"/> to ensure the backing role store supports 
+        /// Callers to this property should use <see cref="SupportsQueryableRoles"/> to ensure the backing role store supports
         /// returning an IQueryable list of roles.
         /// </remarks>
         IQueryable<Role> Roles { get; }
@@ -32,7 +31,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <value>
         /// The normalizer to use when normalizing role names to keys.
-        /// </value>        
+        /// </value>
         ILookupNormalizer KeyNormalizer { get; set; }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="roleId">The role ID whose role should be returned.</param>
         /// <returns>
-        /// The <see cref="Task"/> that represents the asynchronous operation, containing the role 
+        /// The <see cref="Task"/> that represents the asynchronous operation, containing the role
         /// associated with the specified <paramref name="roleId"/>
         /// </returns>
         Task<Role> FindByIdAsync(string roleId);
@@ -117,11 +116,10 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="roleName">The name of the role to be returned.</param>
         /// <returns>
-        /// The <see cref="Task"/> that represents the asynchronous operation, containing the role 
+        /// The <see cref="Task"/> that represents the asynchronous operation, containing the role
         /// associated with the specified <paramref name="roleName"/>
         /// </returns>
         Task<Role> FindByNameAsync(string roleName);
-
 
         /// <summary>
         /// Gets a list of claims associated with the specified <paramref name="role"/>.
@@ -183,7 +181,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="role">The role whose name should be retrieved.</param>
         /// <returns>
-        /// The <see cref="Task"/> that represents the asynchronous operation, containing the name of the 
+        /// The <see cref="Task"/> that represents the asynchronous operation, containing the name of the
         /// specified <paramref name="role"/>.
         /// </returns>
         Task<string> GetRoleNameAsync(Role role);
@@ -204,7 +202,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="role">The role whose ID should be retrieved.</param>
         /// <returns>
-        /// The <see cref="Task"/> that represents the asynchronous operation, containing the ID of the 
+        /// The <see cref="Task"/> that represents the asynchronous operation, containing the ID of the
         /// specified <paramref name="role"/>.
         /// </returns>
         Task<string> GetRoleIdAsync(Role role);

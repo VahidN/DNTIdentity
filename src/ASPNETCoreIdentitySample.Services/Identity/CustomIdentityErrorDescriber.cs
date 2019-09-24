@@ -133,6 +133,15 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             };
         }
 
+        public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
+        {
+            return new IdentityError
+            {
+                Code = nameof(PasswordRequiresUniqueChars),
+                Description = "کلمه‌ی عبور باید حداقل داراى {0} حرف متفاوت باشد."
+            };
+        }
+
         public override IdentityError PasswordRequiresUpper()
         {
             return new IdentityError
@@ -148,6 +157,15 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 Code = nameof(PasswordTooShort),
                 Description = string.Format("کلمه‌ی عبور باید حداقل {0} حرف باشد.", length)
+            };
+        }
+
+        public override IdentityError RecoveryCodeRedemptionFailed()
+        {
+            return new IdentityError
+            {
+                Code = nameof(RecoveryCodeRedemptionFailed),
+                Description = "بازیابى با شکست مواجه شد."
             };
         }
 
@@ -184,24 +202,6 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 Code = nameof(UserNotInRole),
                 Description = "کاربر دارای نقش '{0}' نیست."
-            };
-        }
-
-        public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
-        {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresUniqueChars),
-                Description = "کلمه‌ی عبور باید حداقل داراى {0} حرف متفاوت باشد."
-            };
-        }
-
-        public override IdentityError RecoveryCodeRedemptionFailed()
-        {
-            return new IdentityError
-            {
-                Code = nameof(RecoveryCodeRedemptionFailed),
-                Description = "بازیابى با شکست مواجه شد."
             };
         }
     }

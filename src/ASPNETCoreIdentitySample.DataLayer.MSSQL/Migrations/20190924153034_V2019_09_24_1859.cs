@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Migrations
+namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 {
-    public partial class V2018_06_30_1022 : Migration
+    public partial class V2019_09_24_1859 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +15,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FriendlyName = table.Column<string>(nullable: true),
                     XmlData = table.Column<string>(nullable: true)
                 },
@@ -30,8 +29,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     EventId = table.Column<int>(nullable: false),
                     Url = table.Column<string>(nullable: true),
                     LogLevel = table.Column<string>(nullable: true),
@@ -44,7 +43,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -56,7 +55,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
@@ -64,11 +63,11 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,28 +78,28 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 name: "AppUsers",
                 columns: table => new
                 {
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 450, nullable: true),
                     LastName = table.Column<string>(maxLength: 450, nullable: true),
                     PhotoFileName = table.Column<string>(maxLength: 450, nullable: true),
-                    BirthDate = table.Column<DateTimeOffset>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
-                    LastVisitDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
+                    LastVisitDateTime = table.Column<DateTime>(nullable: true),
                     IsEmailPublic = table.Column<bool>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
@@ -110,7 +109,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -122,17 +121,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 450, nullable: false),
                     Title = table.Column<string>(nullable: false),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -160,18 +159,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,18 +188,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -217,18 +216,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 name: "AppUserLogins",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,16 +244,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 name: "AppUserRoles",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -284,11 +283,11 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,17 +305,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     HashedPassword = table.Column<string>(maxLength: 450, nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -334,18 +333,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 450, nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
                     CreatedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     CreatedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     CreatedByUserId = table.Column<int>(nullable: true),
-                    CreatedDateTime = table.Column<DateTimeOffset>(nullable: true),
+                    CreatedDateTime = table.Column<DateTime>(nullable: true),
                     ModifiedByBrowserName = table.Column<string>(maxLength: 1000, nullable: true),
                     ModifiedByIp = table.Column<string>(maxLength: 255, nullable: true),
                     ModifiedByUserId = table.Column<int>(nullable: true),
-                    ModifiedDateTime = table.Column<DateTimeOffset>(nullable: true)
+                    ModifiedDateTime = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

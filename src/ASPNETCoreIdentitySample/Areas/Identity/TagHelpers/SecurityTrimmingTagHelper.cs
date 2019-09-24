@@ -1,4 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using System;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -17,8 +17,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
 
         public SecurityTrimmingTagHelper(ISecurityTrimmingService securityTrimmingService)
         {
-            _securityTrimmingService = securityTrimmingService;
-            _securityTrimmingService.CheckArgumentIsNull(nameof(_securityTrimmingService));
+            _securityTrimmingService = securityTrimmingService ?? throw new ArgumentNullException(nameof(_securityTrimmingService));
         }
 
         /// <summary>
@@ -44,8 +43,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            context.CheckArgumentIsNull(nameof(context));
-            output.CheckArgumentIsNull(nameof(output));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+            if (output == null) throw new ArgumentNullException(nameof(output));
 
             // don't render the <security-trimming> tag.
             output.TagName = null;

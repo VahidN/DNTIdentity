@@ -1,15 +1,14 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using ASPNETCoreIdentitySample.Services.Identity;
 using DNTBreadCrumb.Core;
 using DNTCommon.Web.Core;
+using System;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -25,8 +24,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         public RolesManagerController(IApplicationRoleManager roleManager)
         {
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
@@ -39,16 +37,21 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [AjaxOnly]
         public async Task<IActionResult> RenderRole([FromBody]ModelIdViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model?.Id))
+            if (!ModelState.IsValid)
             {
-                return PartialView("_Create");
+                return BadRequest(ModelState);
             }
 
-            var role = await _roleManager.FindByIdAsync(model.Id);
+            if (model == null || model.Id == 0)
+            {
+                return PartialView("_Create", model: new RoleViewModel());
+            }
+
+            var role = await _roleManager.FindByIdAsync(model.Id.ToString());
             if (role == null)
             {
                 ModelState.AddModelError("", RoleNotFound);
-                return PartialView("_Create");
+                return PartialView("_Create", model: new RoleViewModel());
             }
             return PartialView("_Create", model: new RoleViewModel { Id = role.Id.ToString(), Name = role.Name });
         }
@@ -99,16 +102,21 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [AjaxOnly]
         public async Task<IActionResult> RenderDeleteRole([FromBody]ModelIdViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model?.Id))
+            if (!ModelState.IsValid)
             {
-                return PartialView("_Delete");
+                return BadRequest(ModelState);
             }
 
-            var role = await _roleManager.FindByIdAsync(model.Id);
+            if (model == null)
+            {
+                return BadRequest("model is null.");
+            }
+
+            var role = await _roleManager.FindByIdAsync(model.Id.ToString());
             if (role == null)
             {
                 ModelState.AddModelError("", RoleNotFound);
-                return PartialView("_Delete");
+                return PartialView("_Delete", model: new RoleViewModel());
             }
             return PartialView("_Delete", model: new RoleViewModel { Id = role.Id.ToString(), Name = role.Name });
         }
@@ -118,6 +126,16 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(RoleViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (string.IsNullOrWhiteSpace(model?.Id))
+            {
+                return BadRequest("model is null.");
+            }
+
             var role = await _roleManager.FindByIdAsync(model.Id);
             if (role == null)
             {

@@ -1,8 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -27,20 +27,14 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IApplicationRoleManager roleManager,
             ILogger<ApplicationClaimsTransformation> logger)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(userManager));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(roleManager));
-
-            _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(logger));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
         {
-            var identity = principal.Identity as ClaimsIdentity;
-            if (identity == null || !isNTLM(identity))
+            if (!(principal.Identity is ClaimsIdentity identity) || !isNTLM(identity))
             {
                 return principal;
             }

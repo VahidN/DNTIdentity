@@ -5,10 +5,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ASPNETCoreIdentitySample.IocConfig;
-using ASPNETCoreIdentitySample.DataLayer.Context;
 using DNTCommon.Web.Core;
-using Microsoft.AspNetCore.Mvc;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
+using Microsoft.Extensions.Hosting;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -28,31 +27,17 @@ namespace ASPNETCoreIdentitySample
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
 
-            var siteSettings = services.GetSiteSettings();
-            services.AddRequiredEfInternalServices(siteSettings); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            services.AddDbContextPool<ApplicationDbContext>((serviceProvider, optionsBuilder) =>
-            {
-                optionsBuilder.SetDbContextOptions(siteSettings);
-                optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            });
-
-            services.AddMvc(options =>
-            {
-                options.UseYeKeModelBinder();
-                options.AllowEmptyInputInBodyModelBinding = true;
-                // options.Filters.Add(new NoBrowserCacheAttribute());
-            }).AddJsonOptions(jsonOptions =>
-            {
-                jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-            })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => options.UseYeKeModelBinder());
 
             services.AddDNTCommonWeb();
             services.AddDNTCaptcha();
             services.AddCloudscribePagination();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (!env.IsDevelopment())
             {
@@ -65,25 +50,26 @@ namespace ASPNETCoreIdentitySample
 
             app.UseContentSecurityPolicy();
 
-            // Serve wwwroot as root
-            app.UseFileServer(new FileServerOptions
-            {
-                // Don't expose file system
-                EnableDirectoryBrowsing = false
-            });
+            app.UseStaticFiles();
+
+            app.UseRouting();
 
             app.UseAuthentication();
-            // app.UseNoBrowserCache();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "areas",
-                    template: "{area:exists}/{controller=Account}/{action=Index}/{id?}");
+                endpoints.MapControllers();
 
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller=Account}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapRazorPages();
             });
         }
     }

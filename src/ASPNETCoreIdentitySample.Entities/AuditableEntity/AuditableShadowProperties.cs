@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
@@ -40,14 +39,13 @@ namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
                                         entity => EF.Property<int?>(entity, ModifiedByUserId);
         public static readonly string ModifiedByUserId = nameof(ModifiedByUserId);
 
-        public static readonly Func<object, DateTimeOffset?> EFPropertyCreatedDateTime =
-                                        entity => EF.Property<DateTimeOffset?>(entity, CreatedDateTime);
+        public static readonly Func<object, DateTime?> EFPropertyCreatedDateTime =
+                                        entity => EF.Property<DateTime?>(entity, CreatedDateTime);
         public static readonly string CreatedDateTime = nameof(CreatedDateTime);
 
-        public static readonly Func<object, DateTimeOffset?> EFPropertyModifiedDateTime =
-                                        entity => EF.Property<DateTimeOffset?>(entity, ModifiedDateTime);
+        public static readonly Func<object, DateTime?> EFPropertyModifiedDateTime =
+                                        entity => EF.Property<DateTime?>(entity, ModifiedDateTime);
         public static readonly string ModifiedDateTime = nameof(ModifiedDateTime);
-
 
         public static void AddAuditableShadowProperties(this ModelBuilder modelBuilder)
         {
@@ -71,10 +69,9 @@ namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
                             .Property<int?>(ModifiedByUserId);
 
                 modelBuilder.Entity(entityType.ClrType)
-                            .Property<DateTimeOffset?>(CreatedDateTime);
+                            .Property<DateTime?>(CreatedDateTime);
                 modelBuilder.Entity(entityType.ClrType)
-                            .Property<DateTimeOffset?>(ModifiedDateTime);
-
+                            .Property<DateTime?>(ModifiedDateTime);
             }
         }
 
@@ -88,7 +85,7 @@ namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
             var httpContext = httpContextAccessor?.HttpContext;
             var userAgent = httpContext?.Request?.Headers["User-Agent"].ToString();
             var userIp = httpContext?.Connection?.RemoteIpAddress?.ToString();
-            var now = DateTimeOffset.UtcNow;
+            var now = DateTime.UtcNow;
             var userId = getUserId(httpContext);
 
             var modifiedEntries = changeTracker.Entries<IAuditableEntity>()

@@ -1,9 +1,8 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Entities.Identity;
+﻿using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -28,14 +27,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptions<IdentityOptions> optionsAccessor)
             : base((UserManager<User>)userManager, (RoleManager<Role>)roleManager, optionsAccessor)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
-
-            _optionsAccessor = optionsAccessor;
-            _optionsAccessor.CheckArgumentIsNull(nameof(_optionsAccessor));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
+            _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(_optionsAccessor));
         }
 
         public override async Task<ClaimsPrincipal> CreateAsync(User user)
@@ -47,7 +41,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         private static void addCustomClaims(User user, IPrincipal principal)
         {
-            ((ClaimsIdentity) principal.Identity).AddClaims(new[]
+            ((ClaimsIdentity)principal.Identity).AddClaims(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer),
                 new Claim(ClaimTypes.GivenName, user.FirstName ?? string.Empty),

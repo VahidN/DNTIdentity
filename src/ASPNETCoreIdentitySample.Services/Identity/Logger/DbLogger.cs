@@ -1,12 +1,11 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Entities.Identity;
+﻿using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json;
 
 namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 {
@@ -25,16 +24,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             IOptions<SiteSettings> siteSettings)
         {
             _loggerName = loggerName;
-
-            _siteSettings = siteSettings;
-            _siteSettings.CheckArgumentIsNull(nameof(_siteSettings));
+            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(_siteSettings));
             _minLevel = _siteSettings.Value.Logging.LogLevel.Default;
-
-            _serviceProvider = serviceProvider;
-            _serviceProvider.CheckArgumentIsNull(nameof(_serviceProvider));
-
-            _loggerProvider = loggerProvider;
-            _loggerProvider.CheckArgumentIsNull(nameof(_loggerProvider));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(_serviceProvider));
+            _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(_loggerProvider));
         }
 
         public IDisposable BeginScope<TState>(TState state)
@@ -76,7 +69,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
                 return;
             }
 
-            var httpContextAccessor = _serviceProvider.GetRequiredService<IHttpContextAccessor>();
+            var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
             var appLogItem = new AppLogItem
             {
                 Url = httpContextAccessor?.HttpContext != null ? httpContextAccessor.HttpContext.Request.Path.ToString() : string.Empty,
@@ -93,12 +86,12 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
         {
             try
             {
-                appLogItem.StateJson = JsonConvert.SerializeObject(
+                appLogItem.StateJson = JsonSerializer.Serialize(
                     state,
-                    Formatting.Indented,
-                    new JsonSerializerSettings
+                    new JsonSerializerOptions
                     {
-                        DefaultValueHandling = DefaultValueHandling.Include
+                        IgnoreNullValues = true,
+                        WriteIndented = true
                     });
             }
             catch

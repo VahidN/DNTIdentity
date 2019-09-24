@@ -1,12 +1,11 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+﻿using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System;
+using ASPNETCoreIdentitySample.ViewModels.Identity;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -20,8 +19,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public SystemLogController(
             IAppLogItemsService appLogItemsService)
         {
-            _appLogItemsService = appLogItemsService;
-            _appLogItemsService.CheckArgumentIsNull(nameof(_appLogItemsService));
+            _appLogItemsService = appLogItemsService ?? throw new ArgumentNullException(nameof(_appLogItemsService));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
@@ -65,7 +63,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogDeleteOlderThan(string logLevel = "", int days = 5)
         {
-            var cutoffUtc = DateTimeOffset.UtcNow.AddDays(-days);
+            var cutoffUtc = DateTime.UtcNow.AddDays(-days);
             await _appLogItemsService.DeleteOlderThanAsync(cutoffUtc, logLevel);
             return RedirectToAction(nameof(Index));
         }

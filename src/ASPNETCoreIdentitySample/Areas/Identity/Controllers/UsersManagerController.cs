@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
@@ -8,7 +7,7 @@ using DNTBreadCrumb.Core;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
+using System;
 using System.Threading.Tasks;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
@@ -22,15 +21,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         private readonly IApplicationRoleManager _roleManager;
         private readonly IApplicationUserManager _userManager;
+
         public UsersManagerController(
             IApplicationUserManager userManager,
             IApplicationRoleManager roleManager)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
         }
 
         [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
@@ -169,8 +166,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public async Task<IActionResult> SearchUsers(SearchUsersViewModel model)
         {
             var pagedUsersList = await _userManager.GetPagedUsersListAsync(
-                pageNumber: 0,
-                model: model);
+                model: model,
+                pageNumber: 0);
 
             pagedUsersList.Paging.CurrentPage = 1;
             pagedUsersList.Paging.ItemsPerPage = model.MaxNumberOfRows;
@@ -183,7 +180,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         private async Task<IActionResult> returnUserCardPartialView(User thisUser)
         {
             var roles = await _roleManager.GetAllCustomRolesAsync();
-            return PartialView(@"~/Areas/Identity/Views/UserCard/_UserCardItem.cshtml",
+            return PartialView("~/Areas/Identity/Views/UserCard/_UserCardItem.cshtml",
                 new UserCardItemViewModel
                 {
                     User = thisUser,

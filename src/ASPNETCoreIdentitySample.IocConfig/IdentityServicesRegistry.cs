@@ -1,6 +1,4 @@
 ﻿using System;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,33 +14,19 @@ namespace ASPNETCoreIdentitySample.IocConfig
         {
             var siteSettings = GetSiteSettings(services);
             services.AddIdentityOptions(siteSettings);
+            services.AddConfiguredDbContext(siteSettings);
             services.AddCustomServices();
             services.AddCustomTicketStore(siteSettings);
             services.AddDynamicPermissions();
             services.AddCustomDataProtection(siteSettings);
         }
 
-        /// <summary>
-        /// Creates and seeds the database.
-        /// </summary>
-        public static void InitializeDb(this IServiceProvider serviceProvider)
-        {
-            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var identityDbInitialize = scope.ServiceProvider.GetService<IIdentityDbInitializer>();
-                identityDbInitialize.Initialize();
-                identityDbInitialize.SeedData();
-            }
-        }
-
         public static SiteSettings GetSiteSettings(this IServiceCollection services)
         {
             var provider = services.BuildServiceProvider();
-            var siteSettingsOptions = provider.GetService<IOptionsSnapshot<SiteSettings>>();
-            siteSettingsOptions.CheckArgumentIsNull(nameof(siteSettingsOptions));
+            var siteSettingsOptions = provider.GetRequiredService<IOptionsSnapshot<SiteSettings>>();
             var siteSettings = siteSettingsOptions.Value;
-            siteSettings.CheckArgumentIsNull(nameof(siteSettings));
+            if (siteSettings == null) throw new ArgumentNullException(nameof(siteSettings));
             return siteSettings;
         }
     }

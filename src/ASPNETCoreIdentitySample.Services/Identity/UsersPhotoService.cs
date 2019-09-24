@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,28 +6,24 @@ using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
     public class UsersPhotoService : IUsersPhotoService
     {
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IOptionsSnapshot<SiteSettings> _siteSettings;
 
         public UsersPhotoService(
             IHttpContextAccessor contextAccessor,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IOptionsSnapshot<SiteSettings> siteSettings)
         {
-            _contextAccessor = contextAccessor;
-            _contextAccessor.CheckArgumentIsNull(nameof(_contextAccessor));
-
-            _hostingEnvironment = hostingEnvironment;
-            _hostingEnvironment.CheckArgumentIsNull(nameof(_hostingEnvironment));
-
-            _siteSettings = siteSettings;
-            _siteSettings.CheckArgumentIsNull(nameof(_siteSettings));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(_contextAccessor));
+            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(_hostingEnvironment));
+            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(_siteSettings));
         }
 
         public string GetUsersAvatarsFolderPath()
@@ -78,6 +73,5 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var photoFileName = _contextAccessor.HttpContext.User.Identity.GetUserClaimValue(ApplicationClaimsPrincipalFactory.PhotoFileName);
             return GetUserPhotoUrl(photoFileName);
         }
-
     }
 }

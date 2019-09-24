@@ -12,5 +12,6 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
         public bool SlidingExpiration { get; set; }
         public bool UseDistributedCacheTicketStore { set; get; }
         public DistributedSqlServerCacheOptions DistributedSqlServerCacheOptions { set; get; }
+        public DistributedSqliteCacheOptions DistributedSqliteCacheOptions { set; get; }
     }
 }

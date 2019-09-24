@@ -1,4 +1,5 @@
-using ASPNETCoreIdentitySample.DataLayer.Context;
+using System;
+using ASPNETCoreIdentitySample.DataLayer.MSSQL;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,33 +14,42 @@ namespace ASPNETCoreIdentitySample.IocConfig
         {
             // To manage large identity cookies
             var cookieOptions = siteSettings.CookieOptions;
-            if (cookieOptions.UseDistributedCacheTicketStore && isActiveDatabaseSqlServer(siteSettings))
+            if (!cookieOptions.UseDistributedCacheTicketStore)
             {
-                services.AddDistributedSqlServerCache(options =>
-                {
-                    var cacheOptions = cookieOptions.DistributedSqlServerCacheOptions;
-                    var connectionString = string.IsNullOrWhiteSpace(cacheOptions.ConnectionString) ?
-                            siteSettings.GetDbConnectionString() :
-                            cacheOptions.ConnectionString;
-                    options.ConnectionString = connectionString;
-                    options.SchemaName = cacheOptions.SchemaName;
-                    options.TableName = cacheOptions.TableName;
-                });
-                services.AddScoped<ITicketStore, DistributedCacheTicketStore>();
+                return services;
             }
-            else
+
+            switch (siteSettings.ActiveDatabase)
             {
-                services.AddMemoryCache();
-                services.AddScoped<ITicketStore, MemoryCacheTicketStore>();
+                case ActiveDatabase.InMemoryDatabase:
+                    services.AddMemoryCache();
+                    services.AddScoped<ITicketStore, MemoryCacheTicketStore>();
+                    break;
+
+                case ActiveDatabase.LocalDb:
+                case ActiveDatabase.SqlServer:
+                    services.AddDistributedSqlServerCache(options =>
+                    {
+                        var cacheOptions = cookieOptions.DistributedSqlServerCacheOptions;
+                        options.ConnectionString = string.IsNullOrWhiteSpace(cacheOptions.ConnectionString) ?
+                                siteSettings.GetMsSqlDbConnectionString() :
+                                cacheOptions.ConnectionString;
+                        options.SchemaName = cacheOptions.SchemaName;
+                        options.TableName = cacheOptions.TableName;
+                    });
+                    services.AddScoped<ITicketStore, DistributedCacheTicketStore>();
+                    break;
+
+                case ActiveDatabase.SQLite: //TODO:
+                    services.AddMemoryCache();
+                    services.AddScoped<ITicketStore, MemoryCacheTicketStore>();
+                    break;
+
+                default:
+                    throw new NotSupportedException("Please set the ActiveDatabase in appsettings.json file.");
             }
 
             return services;
-        }
-
-        private static bool isActiveDatabaseSqlServer(SiteSettings siteSettings)
-        {
-            return siteSettings.ActiveDatabase == ActiveDatabase.LocalDb
-                   || siteSettings.ActiveDatabase == ActiveDatabase.SqlServer;
         }
     }
 }

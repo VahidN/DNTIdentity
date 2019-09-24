@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.DataProtection.Repositories;
@@ -20,8 +19,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public DataProtectionKeyService(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
-            _serviceProvider.CheckArgumentIsNull(nameof(_serviceProvider));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(_serviceProvider));
         }
 
         public IReadOnlyCollection<XElement> GetAllElements()
@@ -41,7 +39,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             {
                 var dataProtectionKeys = context.Set<AppDataProtectionKey>();
                 var entity = dataProtectionKeys.SingleOrDefault(k => k.FriendlyName == friendlyName);
-                if (null != entity)
+                if (entity != null)
                 {
                     entity.XmlData = element.ToString();
                     dataProtectionKeys.Update(entity);

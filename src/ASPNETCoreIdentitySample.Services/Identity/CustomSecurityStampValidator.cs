@@ -1,13 +1,12 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Entities.Identity;
+﻿using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Logging;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -25,18 +24,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptions<SecurityStampValidatorOptions> options,
             IApplicationSignInManager signInManager,
             ISystemClock clock,
-            ISiteStatService siteStatService)
-            : base(options, (SignInManager<User>)signInManager, clock)
+            ISiteStatService siteStatService,
+            ILoggerFactory logger)
+            : base(options, (SignInManager<User>)signInManager, clock, logger)
         {
-            _options = options;
-            _options.CheckArgumentIsNull(nameof(_options));
-
-            _signInManager = signInManager;
-            _signInManager.CheckArgumentIsNull(nameof(_signInManager));
-
-            _siteStatService = siteStatService;
-            _siteStatService.CheckArgumentIsNull(nameof(_siteStatService));
-
+            _options = options ?? throw new ArgumentNullException(nameof(_options));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
+            _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(_siteStatService));
             _clock = clock;
         }
 

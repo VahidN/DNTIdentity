@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
@@ -14,8 +15,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
     {
         public ConfirmEmailDataProtectorTokenProvider(
             IDataProtectionProvider dataProtectionProvider,
-            IOptions<ConfirmEmailDataProtectionTokenProviderOptions> options)
-            : base(dataProtectionProvider, options)
+            IOptions<ConfirmEmailDataProtectionTokenProviderOptions> options,
+            ILogger<DataProtectorTokenProvider<TUser>> logger)
+            : base(dataProtectionProvider, options, logger)
         {
             // NOTE: DataProtectionTokenProviderOptions.TokenLifespan is set to TimeSpan.FromDays(1)
             // which is low for the `ConfirmEmail` task.

@@ -3,8 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -36,7 +34,6 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// The <see cref="IdentityOptions"/> used.
         /// </summary>
         IdentityOptions Options { get; set; }
-
 
         /// <summary>
         /// Creates a <see cref="ClaimsPrincipal"/> for the specified <paramref name="user"/>, as an asynchronous operation.
@@ -176,7 +173,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// </summary>
         /// <param name="code">The two factor authentication code to validate.</param>
         /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed.</param>
-        /// <param name="rememberClient">Flag indicating whether the current browser should be remember, suppressing all further 
+        /// <param name="rememberClient">Flag indicating whether the current browser should be remember, suppressing all further
         /// two factor authentication prompts.</param>
         /// <returns>The task object representing the asynchronous operation containing the <see name="SignInResult"/>
         /// for the sign-in attempt.</returns>
@@ -188,7 +185,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="provider">The two factor authentication provider to validate the code against.</param>
         /// <param name="code">The two factor authentication code to validate.</param>
         /// <param name="isPersistent">Flag indicating whether the sign-in cookie should persist after the browser is closed.</param>
-        /// <param name="rememberClient">Flag indicating whether the current browser should be remember, suppressing all further 
+        /// <param name="rememberClient">Flag indicating whether the current browser should be remember, suppressing all further
         /// two factor authentication prompts.</param>
         /// <returns>The task object representing the asynchronous operation containing the <see name="SignInResult"/>
         /// for the sign-in attempt.</returns>
@@ -223,9 +220,9 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         Task<SignInResult> ExternalLoginSignInAsync(string loginProvider, string providerKey, bool isPersistent, bool bypassTwoFactor);
 
         /// <summary>
-        /// Gets a collection of <see cref="AuthenticationScheme"/>s for the known external login providers.		
-        /// </summary>		
-        /// <returns>A collection of <see cref="AuthenticationScheme"/>s for the known external login providers.</returns>		
+        /// Gets a collection of <see cref="AuthenticationScheme"/>s for the known external login providers.
+        /// </summary>
+        /// <returns>A collection of <see cref="AuthenticationScheme"/>s for the known external login providers.</returns>
         Task<IEnumerable<AuthenticationScheme>> GetExternalAuthenticationSchemesAsync();
 
         /// <summary>
@@ -251,7 +248,6 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="userId">The current user's identifier, which will be used to provide CSRF protection.</param>
         /// <returns>A configured <see cref="AuthenticationProperties"/>.</returns>
         Microsoft.AspNetCore.Authentication.AuthenticationProperties ConfigureExternalAuthenticationProperties(string provider, string redirectUrl, string userId = null);
-
 
         /// <summary>
         /// Signs in the specified <paramref name="user"/> if <paramref name="bypassTwoFactor"/> is set to false.

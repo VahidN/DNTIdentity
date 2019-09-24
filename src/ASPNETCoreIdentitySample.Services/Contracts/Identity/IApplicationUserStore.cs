@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -28,7 +27,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation, containing the <see cref="IdentityResult"/> of the creation operation.</returns>
-        Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates the specified <paramref name="user"/> in the user store.
@@ -36,7 +35,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation, containing the <see cref="IdentityResult"/> of the update operation.</returns>
-        Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the specified <paramref name="user"/> from the user store.
@@ -44,7 +43,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user to delete.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation, containing the <see cref="IdentityResult"/> of the update operation.</returns>
-        Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Finds and returns a user, if any, who has the specified <paramref name="userId"/>.
@@ -54,7 +53,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>
         /// The <see cref="Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="userId"/> if it exists.
         /// </returns>
-        Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken));
+        Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Finds and returns a user, if any, who has the specified normalized user name.
@@ -64,7 +63,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>
         /// The <see cref="Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="normalizedUserName"/> if it exists.
         /// </returns>
-        Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken));
+        Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// A navigation property for the users the store contains.
@@ -122,7 +121,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="normalizedRoleName">The role to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task AddToRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken));
+        Task AddToRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes the given <paramref name="normalizedRoleName"/> from the specified <paramref name="user"/>.
@@ -131,7 +130,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="normalizedRoleName">The role to remove.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task RemoveFromRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken));
+        Task RemoveFromRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves the roles the specified <paramref name="user"/> is a member of.
@@ -139,7 +138,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user whose roles should be retrieved.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="Task{TResult}"/> that contains the roles the user is a member of.</returns>
-        Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Returns a flag indicating if the specified user is a member of the give <paramref name="normalizedRoleName"/>.
@@ -147,9 +146,9 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user whose role membership should be checked.</param>
         /// <param name="normalizedRoleName">The role to check membership of</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> containing a flag indicating if the specified user is a member of the given group. If the 
+        /// <returns>A <see cref="Task{TResult}"/> containing a flag indicating if the specified user is a member of the given group. If the
         /// user is a member of the group the returned value with be true, otherwise it will be false.</returns>
-        Task<bool> IsInRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken));
+        Task<bool> IsInRoleAsync(User user, string normalizedRoleName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
@@ -157,7 +156,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="user">The user whose claims should be retrieved.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a user.</returns>
-        Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the <paramref name="claims"/> given to the specified <paramref name="user"/>.
@@ -166,7 +165,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="claims">The claim to add to the user.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task AddClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken));
+        Task AddClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Replaces the <paramref name="claim"/> on the specified <paramref name="user"/>, with the <paramref name="newClaim"/>.
@@ -176,7 +175,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="newClaim">The new claim replacing the <paramref name="claim"/>.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task ReplaceClaimAsync(User user, Claim claim, Claim newClaim, CancellationToken cancellationToken = default(CancellationToken));
+        Task ReplaceClaimAsync(User user, Claim claim, Claim newClaim, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes the <paramref name="claims"/> given from the specified <paramref name="user"/>.
@@ -185,7 +184,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="claims">The claim to remove.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task RemoveClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken));
+        Task RemoveClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds the <paramref name="login"/> given to the specified <paramref name="user"/>.
@@ -194,8 +193,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="login">The login to add to the user.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task AddLoginAsync(User user, UserLoginInfo login,
-            CancellationToken cancellationToken = default(CancellationToken));
+        Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
@@ -205,8 +203,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
-        Task RemoveLoginAsync(User user, string loginProvider, string providerKey,
-            CancellationToken cancellationToken = default(CancellationToken));
+        Task RemoveLoginAsync(User user, string loginProvider, string providerKey, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves the associated logins for the specified <param ref="user"/>.
@@ -216,7 +213,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>
         /// The <see cref="Task"/> for the asynchronous operation, containing a list of <see cref="UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
         /// </returns>
-        Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves the user associated with the specified login provider and login provider key.
@@ -227,8 +224,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>
         /// The <see cref="Task"/> for the asynchronous operation, containing the user, if any which matched the specified login provider and key.
         /// </returns>
-        Task<User> FindByLoginAsync(string loginProvider, string providerKey,
-            CancellationToken cancellationToken = default(CancellationToken));
+        Task<User> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the user, if any, associated with the specified, normalized email address.
@@ -238,7 +234,7 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>
         /// The task object containing the results of the asynchronous lookup operation, the user if any associated with the specified normalized email address.
         /// </returns>
-        Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken));
+        Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves all users with the specified claim.
@@ -246,9 +242,9 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="claim">The claim whose users should be retrieved.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>
-        /// The <see cref="Task"/> contains a list of users, if any, that contain the specified claim. 
+        /// The <see cref="Task"/> contains a list of users, if any, that contain the specified claim.
         /// </returns>
-        Task<IList<User>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IList<User>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Retrieves all users in the specified role.
@@ -256,9 +252,9 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <param name="normalizedRoleName">The role whose users should be retrieved.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
         /// <returns>
-        /// The <see cref="Task"/> contains a list of users, if any, that are in the specified role. 
+        /// The <see cref="Task"/> contains a list of users, if any, that are in the specified role.
         /// </returns>
-        Task<IList<User>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IList<User>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Find a user token if it exists.

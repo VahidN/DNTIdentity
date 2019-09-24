@@ -39,11 +39,11 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
         [StringLength(450)]
         public string PhotoFileName { get; set; }
 
-        public DateTimeOffset? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
-        public DateTimeOffset? CreatedDateTime { get; set; }
+        public DateTime? CreatedDateTime { get; set; }
 
-        public DateTimeOffset? LastVisitDateTime { get; set; }
+        public DateTime? LastVisitDateTime { get; set; }
 
         public bool IsEmailPublic { get; set; }
 

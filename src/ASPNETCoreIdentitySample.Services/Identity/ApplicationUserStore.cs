@@ -1,7 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
@@ -25,13 +25,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IdentityErrorDescriber describer)
             : base((ApplicationDbContext)uow, describer)
         {
-            _uow = uow;
-            _uow.CheckArgumentIsNull(nameof(_uow));
-
-            _describer = describer;
-            _describer.CheckArgumentIsNull(nameof(_describer));
+            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
+            _describer = describer ?? throw new ArgumentNullException(nameof(_describer));
         }
-
 
         #region BaseClass
 

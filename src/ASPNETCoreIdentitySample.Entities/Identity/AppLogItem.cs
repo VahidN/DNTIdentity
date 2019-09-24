@@ -7,7 +7,7 @@ namespace ASPNETCoreIdentitySample.Entities.Identity
     {
         public int Id { set; get; }
 
-        public DateTimeOffset? CreatedDateTime { get; set; }
+        public DateTime? CreatedDateTime { get; set; }
 
         public int EventId { get; set; }
 

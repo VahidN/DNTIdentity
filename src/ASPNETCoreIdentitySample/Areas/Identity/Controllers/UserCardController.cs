@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
+﻿using System;
+using System.Threading.Tasks;
 using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
@@ -22,11 +22,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IApplicationUserManager userManager,
             IApplicationRoleManager roleManager)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
@@ -48,7 +45,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
                 return View("NotFound");
             }
 
-            var model= new UserCardItemViewModel
+            var model = new UserCardItemViewModel
             {
                 User = user,
                 ShowAdminParts = User.IsInRole(ConstantRoles.Admin),

@@ -33,7 +33,7 @@ namespace ASPNETCoreIdentitySample.Common.IdentityToolkit
                 foreach (var error in result.Errors)
                 {
                     var errorDescription = error.Description;
-                    if(string.IsNullOrWhiteSpace(errorDescription))
+                    if (string.IsNullOrWhiteSpace(errorDescription))
                     {
                         continue;
                     }
@@ -44,7 +44,7 @@ namespace ASPNETCoreIdentitySample.Common.IdentityToolkit
                     }
                     else
                     {
-                        results.AppendLine($"{errorDescription}<br/>");
+                        results.Append(errorDescription).AppendLine("<br/>");
                     }
                 }
             }
@@ -72,7 +72,7 @@ namespace ASPNETCoreIdentitySample.Common.IdentityToolkit
             var firstValue = identity?.GetUserClaimValue(ClaimTypes.NameIdentifier);
             return firstValue != null
                 ? (T)Convert.ChangeType(firstValue, typeof(T), CultureInfo.InvariantCulture)
-                : default(T);
+                : default;
         }
 
         public static string GetUserId(this IIdentity identity)

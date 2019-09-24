@@ -2,6 +2,6 @@
 {
     public class ModelIdViewModel
     {
-        public string Id { set; get; }
+        public int Id { set; get; }
     }
 }

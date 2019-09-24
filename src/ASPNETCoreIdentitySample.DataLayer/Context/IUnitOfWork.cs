@@ -22,8 +22,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
         T GetShadowPropertyValue<T>(object entity, string propertyName) where T : IConvertible;
         object GetShadowPropertyValue(object entity, string propertyName);
 
-        void ExecuteSqlCommand(string query);
-        void ExecuteSqlCommand(string query, params object[] parameters);
+        void ExecuteSqlInterpolatedCommand(FormattableString query);
+        void ExecuteSqlRawCommand(string query, params object[] parameters);
+
+        void BeginTransaction();
+        void RollbackTransaction();
+        void CommitTransaction();
 
         int SaveChanges(bool acceptAllChangesOnSuccess);
         int SaveChanges();

@@ -25,6 +25,6 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity
         [Compare(nameof(NewPassword), ErrorMessage = "کلمات عبور وارد شده با هم تطابق ندارند")]
         public string ConfirmPassword { get; set; }
 
-        public DateTimeOffset? LastUserPasswordChangeDate { get; set; }
+        public DateTime? LastUserPasswordChangeDate { get; set; }
     }
 }

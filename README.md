@@ -1,8 +1,13 @@
 ﻿<div dir="rtl">
 
-سفارشی سازی ASP.NET Core Identity SDK-2.2.300
+سفارشی سازی ASP.NET Core Identity SDK-3.0.100
 =======
 
+<p>
+  <a href="https://github.com/VahidN/DNTIdentity">
+     <img alt="GitHub Actions status" src="https://github.com/VahidN/DNTIdentity/workflows/.NET%20Core%20Build/badge.svg">
+  </a>
+</p>
 
 
 ![dnt-identity-02](/src/ASPNETCoreIdentitySample/wwwroot/images/dnti02.png)
@@ -17,9 +22,9 @@
 برای اجرای این پروژه
 ------
 - ابتدا نیاز است بر اساس شماره [SDK](https://dotnet.microsoft.com/download) ای که در عنوان پروژه مشاهده می‌کنید، نگارش متناظری را نصب کنید. به این معنا که این پروژه وابستگی خاصی به نگارش ویژه‌ای از Visual Studio ندارد. همینقدر که NET Core. را نصب کنید، می‌توانید آن‌را اجرا کنید. برای توسعه‌ی این برنامه از [VSCode](https://www.dotnettips.info/learningpaths/details/60) استفاده شده‌است. شماره نگارش SDK این پروژه توسط فایل [global.json‌](https://github.com/VahidN/DNTIdentity/blob/master/global.json#L3) قفل شده‌است تا اگر نگارش‌های دیگری را نصب کردید، با آن تداخل پیدا نکنند.
-- یک نکته: اگر قصد کار با [ویژوال استودیو 2017](https://github.com/dotnet/announcements/issues/108) را دارید، این برنامه دیگر از SDKهای جدید پشتیبانی نمی‌کند و حتما باید از نگارش 2019 آن استفاده کنید و یا می‌توانید شماره نگارش SDK را در فایل [global.json‌](https://github.com/VahidN/DNTIdentity/blob/master/global.json#L3) به شماره نگارشی که [ویژوال استودیو 2017](https://github.com/dotnet/announcements/issues/108) شما پشتیبانی می‌کند تغییر داده و سپس کار ری‌استور پروژه را انجام دهید.
+- یک نکته: اگر قصد کار با [ویژوال استودیو 2017](https://github.com/dotnet/announcements/issues/108) را دارید، این برنامه دیگر از SDKهای جدید پشتیبانی نمی‌کند و حتما باید از نگارش 2019 آن استفاده کنید و یا می‌توانید شماره نگارش SDK را در فایل [global.json‌](https://github.com/VahidN/DNTIdentity/blob/master/global.json#L3) به شماره نگارشی که [ویژوال استودیو](https://github.com/dotnet/announcements/issues/108) شما پشتیبانی می‌کند تغییر داده و سپس کار ری‌استور پروژه را انجام دهید.
 - سپس آخرین نگارش [NodeJS](https://nodejs.org/en/download/current/) را نیز نصب کنید. از npm آن برای دریافت کتابخانه‌های سمت کلاینت پروژه که در فایل [package.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/package.json) ذکر شده‌اند، استفاده می‌شود.
-- بانک اطلاعاتی پیش‌فرض برنامه [LocalDB](https://www.dotnettips.info/post/2409) است که [از اینجا](https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SqlLocalDB.msi) قابل دریافت و نصب است (البته می‌توانید حالت in-memory را نیز در فایل [appsettings.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/appsettings.json#L47) انتخاب کنید که وابستگی به بانک اطلاعاتی خاصی ندارد).
+- بانک اطلاعاتی پیش‌فرض برنامه [LocalDB](https://www.dotnettips.info/post/2409) است که [از اینجا](https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SqlLocalDB.msi) قابل دریافت و نصب است (البته می‌توانید حالت InMemoryDatabase/SQLite را نیز در فایل [appsettings.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/appsettings.json#L47) انتخاب کنید).
 - سپس فایل [restore.bat](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/_0-restore.bat) را اجرا کنید تا تمام وابستگی‌های سمت سرور و کلاینت پروژه، دریافت و نصب شوند.
 - در آخر فایل [dotnet_run.bat](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/_1-dotnet_run.bat) را اجرا کنید، تا پروژه در آدرس https://localhost:5001 قابل دسترسی شود.  مشخصات پیش‌فرض ورود به سیستم را در فایل [appsettings.json](https://github.com/VahidN/DNTIdentity/blob/master/src/ASPNETCoreIdentitySample/appsettings.json) می‌توانید مشاهده کنید.
 
@@ -49,7 +54,7 @@
 
 سفارشی سازی تنظیمات کلاینت
 --------
-* استفاده از بوت استرپ 3 راست به چپ
+* استفاده از بوت استرپ 4 راست به چپ
 * استفاده از قلم فارسی مناسب
 * تنظیم Unobtrusive jQuery Ajax & Validation
 * تنظیم Bundling & minification اسکریپت‌ها و شیوه‌نامه‌ها

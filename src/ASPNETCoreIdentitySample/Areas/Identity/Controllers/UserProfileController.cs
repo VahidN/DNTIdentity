@@ -48,35 +48,16 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IEmailSender emailSender,
             ILogger<UserProfileController> logger)
         {
-            _userManager = userManager;
-            _userManager.CheckArgumentIsNull(nameof(_userManager));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
-
-            _signInManager = signInManager;
-            _signInManager.CheckArgumentIsNull(nameof(_signInManager));
-
-            _protectionProviderService = protectionProviderService;
-            _protectionProviderService.CheckArgumentIsNull(nameof(_protectionProviderService));
-
-            _userValidator = userValidator;
-            _userValidator.CheckArgumentIsNull(nameof(_userValidator));
-
-            _usedPasswordsService = usedPasswordsService;
-            _usedPasswordsService.CheckArgumentIsNull(nameof(_usedPasswordsService));
-
-            _usersPhotoService = usersPhotoService;
-            _usersPhotoService.CheckArgumentIsNull(nameof(_usersPhotoService));
-
-            _siteOptions = siteOptions;
-            _siteOptions.CheckArgumentIsNull(nameof(_siteOptions));
-
-            _emailSender = emailSender;
-            _emailSender.CheckArgumentIsNull(nameof(_emailSender));
-
-            _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(_logger));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
+            _protectionProviderService = protectionProviderService ?? throw new ArgumentNullException(nameof(_protectionProviderService));
+            _userValidator = userValidator ?? throw new ArgumentNullException(nameof(_userValidator));
+            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(_usedPasswordsService));
+            _usersPhotoService = usersPhotoService ?? throw new ArgumentNullException(nameof(_usersPhotoService));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
         }
 
         [Authorize(Roles = ConstantRoles.Admin)]
@@ -204,7 +185,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             {
                 var date =
                     $"{model.DateOfBirthYear.Value.ToString()}/{model.DateOfBirthMonth.Value.ToString("00")}/{model.DateOfBirthDay.Value.ToString("00")}";
-                user.BirthDate = date.ToGregorianDateTimeOffset();
+                user.BirthDate = date.ToGregorianDateTime(convertToUtc: true);
             }
             else
             {
@@ -233,7 +214,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
             if (user.BirthDate.HasValue)
             {
-                var pDateParts = user.BirthDate.Value.ToPersianYearMonthDay(DateTimeOffsetPart.DateTime);
+                var pDateParts = user.BirthDate.Value.ToPersianYearMonthDay();
                 userProfile.DateOfBirthYear = pDateParts.Year;
                 userProfile.DateOfBirthMonth = pDateParts.Month;
                 userProfile.DateOfBirthDay = pDateParts.Day;
@@ -247,7 +228,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             _usersPhotoService.SetUserDefaultPhoto(user);
 
             var photoFile = model.Photo;
-            if (photoFile != null && photoFile.Length > 0)
+            if (photoFile?.Length > 0)
             {
                 var imageOptions = _siteOptions.Value.UserAvatarImageOptions;
                 if (!photoFile.IsValidImageFile(maxWidth: imageOptions.MaxWidth, maxHeight: imageOptions.MaxHeight))

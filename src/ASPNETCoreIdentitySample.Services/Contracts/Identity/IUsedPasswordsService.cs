@@ -9,6 +9,6 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         Task<bool> IsPreviouslyUsedPasswordAsync(User user, string newPassword);
         Task AddToUsedPasswordsListAsync(User user);
         Task<bool> IsLastUserPasswordTooOldAsync(int userId);
-        Task<DateTimeOffset?> GetLastUserPasswordChangeDateAsync(int userId);
+        Task<DateTime?> GetLastUserPasswordChangeDateAsync(int userId);
     }
 }
