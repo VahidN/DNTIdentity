@@ -206,7 +206,6 @@ UpgradeLog*.htm
 # SQL Server files
 *.mdf
 *.ldf
-*.sqlite
 
 # Business Intelligence projects
 *.rdl.data
@@ -246,3 +245,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 src/ASPNETCoreIdentitySample/package-lock.json
+src/ASPNETCoreIdentitySample/wwwroot/App_Data
