@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
   </PropertyGroup>
-  <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
+  <Target Condition="'$(OS)' == 'Windows_NT'" Name="PrecompileScript" BeforeTargets="BeforeBuild">
     <Exec Command="dotnet bundle" />
   </Target>
   <ItemGroup>
