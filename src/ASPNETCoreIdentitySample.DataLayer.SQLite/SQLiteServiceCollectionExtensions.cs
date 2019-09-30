@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,11 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite
 {
     public static class SQLiteServiceCollectionExtensions
     {
-        public static IServiceCollection AddConfiguredSQLiteDbContext(this IServiceCollection services, SiteSettings siteSettings)
+        public static IServiceCollection AddConfiguredSQLiteDbContext(this IServiceCollection services,
+            SiteSettings siteSettings)
         {
-            services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IUnitOfWork>(serviceProvider =>
+                serviceProvider.GetRequiredService<ApplicationDbContext>());
             services.AddEntityFrameworkSqlite(); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
             services.AddDbContextPool<ApplicationDbContext, SQLiteDbContext>(
                 (serviceProvider, optionsBuilder) => optionsBuilder.UseConfiguredSQLite(siteSettings, serviceProvider));
@@ -20,18 +23,21 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite
         }
 
         public static void UseConfiguredSQLite(
-             this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
+            this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
         {
             var connectionString = siteSettings.GetSQLiteDbConnectionString();
             optionsBuilder.UseSqlite(
-                        connectionString,
-                        sqlServerOptionsBuilder =>
-                        {
-                            sqlServerOptionsBuilder.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
-                            sqlServerOptionsBuilder.MigrationsAssembly(typeof(SQLiteServiceCollectionExtensions).Assembly.FullName);
-                        });
-            optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-
+                connectionString,
+                sqlServerOptionsBuilder =>
+                {
+                    sqlServerOptionsBuilder.CommandTimeout((int) TimeSpan.FromMinutes(3).TotalSeconds);
+                    sqlServerOptionsBuilder.MigrationsAssembly(typeof(SQLiteServiceCollectionExtensions).Assembly
+                        .FullName);
+                });
+            optionsBuilder
+                .UseInternalServiceProvider(
+                    serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
+            optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor());
             optionsBuilder.ConfigureWarnings(warnings =>
             {
                 // ...
@@ -49,23 +55,28 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite
             {
                 case ActiveDatabase.SQLite:
                     return siteSettingsValue.ConnectionStrings
-                                            .SQLite
-                                            .ApplicationDbContextConnection
-                                            .ReplaceDataDirectoryInConnectionString();
+                        .SQLite
+                        .ApplicationDbContextConnection
+                        .ReplaceDataDirectoryInConnectionString();
 
                 default:
-                    throw new NotSupportedException("Please set the ActiveDatabase in appsettings.json file to `SQLite`.");
+                    throw new NotSupportedException(
+                        "Please set the ActiveDatabase in appsettings.json file to `SQLite`.");
             }
         }
 
         public static string ReplaceDataDirectoryInConnectionString(this string connectionString)
         {
-            var webRootPath = Path.Combine(AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries).First(), "wwwroot");
+            var webRootPath =
+                Path.Combine(
+                    AppContext.BaseDirectory.Split(new[] {"bin"}, StringSplitOptions.RemoveEmptyEntries).First(),
+                    "wwwroot");
             var appDataFolderPath = Path.Combine(webRootPath, "App_Data");
             if (!Directory.Exists(appDataFolderPath))
             {
                 Directory.CreateDirectory(appDataFolderPath);
             }
+
             return connectionString.Replace("|DataDirectory|", appDataFolderPath);
         }
     }

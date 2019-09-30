@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL
                             sqlServerOptionsBuilder.MigrationsAssembly(typeof(MsSqlServiceCollectionExtensions).Assembly.FullName);
                         });
             optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-
+            optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor());
             optionsBuilder.ConfigureWarnings(warnings =>
             {
                 // ...

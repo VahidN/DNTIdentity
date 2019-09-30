@@ -162,7 +162,6 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
         {
             validateEntities();
             setShadowProperties();
-            this.ApplyCorrectYeKe();
         }
 
         private void setShadowProperties()
