@@ -1,7 +1,6 @@
 using System;
-using System.IO;
-using System.Linq;
 using ASPNETCoreIdentitySample.Common.PersianToolkit;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite
                 connectionString,
                 sqlServerOptionsBuilder =>
                 {
-                    sqlServerOptionsBuilder.CommandTimeout((int) TimeSpan.FromMinutes(3).TotalSeconds);
+                    sqlServerOptionsBuilder.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
                     sqlServerOptionsBuilder.MigrationsAssembly(typeof(SQLiteServiceCollectionExtensions).Assembly
                         .FullName);
                 });
@@ -67,17 +66,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite
 
         public static string ReplaceDataDirectoryInConnectionString(this string connectionString)
         {
-            var webRootPath =
-                Path.Combine(
-                    AppContext.BaseDirectory.Split(new[] {"bin"}, StringSplitOptions.RemoveEmptyEntries).First(),
-                    "wwwroot");
-            var appDataFolderPath = Path.Combine(webRootPath, "App_Data");
-            if (!Directory.Exists(appDataFolderPath))
-            {
-                Directory.CreateDirectory(appDataFolderPath);
-            }
-
-            return connectionString.Replace("|DataDirectory|", appDataFolderPath);
+            return connectionString.Replace("|DataDirectory|", ServerInfo.GetAppDataFolderPath());
         }
     }
 }

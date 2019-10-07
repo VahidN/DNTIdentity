@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using System.Linq;
 using ASPNETCoreIdentitySample.Common.PersianToolkit;
+using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
@@ -51,8 +51,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL
             {
                 case ActiveDatabase.LocalDb:
                     var attachDbFilename = siteSettingsValue.ConnectionStrings.LocalDb.AttachDbFilename;
-                    var webRootPath = Path.Combine(AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries).First(), "wwwroot");
-                    var attachDbFilenamePath = Path.Combine(webRootPath, "App_Data", attachDbFilename);
+                    var attachDbFilenamePath = Path.Combine(ServerInfo.GetAppDataFolderPath(), attachDbFilename);
                     var localDbInitialCatalog = siteSettingsValue.ConnectionStrings.LocalDb.InitialCatalog;
                     return $@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog={localDbInitialCatalog};AttachDbFilename={attachDbFilenamePath};Integrated Security=True;MultipleActiveResultSets=True;";
 
