@@ -1,3 +1,3 @@
-git tag -a 3.0.100.RTM -m "Add .NET Core SDK 3.0.100.RTM support."
+git tag -a 3.0.100.1398.07.15 -m "V 3.0.100.1398.07.15"
 git push --follow-tags
 pause

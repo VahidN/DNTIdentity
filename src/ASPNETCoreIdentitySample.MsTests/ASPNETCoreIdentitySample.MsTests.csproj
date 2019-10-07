@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <NoWarn>RCS1090</NoWarn>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\ASPNETCoreIdentitySample\appsettings.json" CopyToOutputDirectory="PreserveNewest" />

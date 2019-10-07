@@ -403,6 +403,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             return await UpdateSecurityStampAsync(user);
         }
 
+        Task<IdentityResult> IApplicationUserManager.UpdatePasswordHash(User user, string newPassword, bool validatePassword)
+        {
+            return base.UpdatePasswordHash(user, newPassword, validatePassword);
+        }
+
         #endregion
     }
 }

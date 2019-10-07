@@ -1000,6 +1000,15 @@ namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
         /// <returns>The security token bytes.</returns>
         Task<byte[]> CreateSecurityTokenAsync(User user);
 
+        /// <summary>
+        /// Updates a user's password hash.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="validatePassword">Whether to validate the password.</param>
+        /// <returns>Whether the password has was successfully updated.</returns>
+        Task<IdentityResult> UpdatePasswordHash(User user, string newPassword, bool validatePassword);
+
         #endregion
 
         #region CustomMethods

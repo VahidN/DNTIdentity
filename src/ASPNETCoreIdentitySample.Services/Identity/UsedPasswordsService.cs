@@ -77,23 +77,23 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         /// This method will be used by CustomPasswordValidator automatically,
         /// every time a user wants to change his/her info.
         /// </summary>
-        public Task<bool> IsPreviouslyUsedPasswordAsync(User user, string newPassword)
+        public async Task<bool> IsPreviouslyUsedPasswordAsync(User user, string newPassword)
         {
             if (user.Id == 0)
             {
                 // A new user wants to register at our site
-                return Task.FromResult(false);
+                return false;
             }
 
             var userId = user.Id;
-            return
-                _userUsedPasswords
-                    .AsNoTracking()
-                    .Where(userUsedPassword => userUsedPassword.UserId == userId)
-                    .OrderByDescending(userUsedPassword => userUsedPassword.Id)
-                    .Select(userUsedPassword => userUsedPassword.HashedPassword)
-                    .Take(_notAllowedPreviouslyUsedPasswords)
-                    .AnyAsync(hashedPassword => _passwordHasher.VerifyHashedPassword(user, hashedPassword, newPassword) != PasswordVerificationResult.Failed);
+            var usedPasswords = await _userUsedPasswords
+                                .AsNoTracking()
+                                .Where(userUsedPassword => userUsedPassword.UserId == userId)
+                                .OrderByDescending(userUsedPassword => userUsedPassword.Id)
+                                .Select(userUsedPassword => userUsedPassword.HashedPassword)
+                                .Take(_notAllowedPreviouslyUsedPasswords)
+                                .ToListAsync();
+            return usedPasswords.Any(hashedPassword => _passwordHasher.VerifyHashedPassword(user, hashedPassword, newPassword) != PasswordVerificationResult.Failed);
         }
     }
 }

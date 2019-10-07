@@ -1,0 +1,37 @@
+﻿@model ChangeUserPasswordViewModel
+@{
+    ViewData["Title"] = "تغییر کلمه‌ی عبور " + Model.Name;
+}
+
+<div class="card mt-5">
+    <div class="card-header">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+    </div>
+    <div class="card-body">
+        <form asp-controller="ChangeUserPassword"
+              asp-action="Index"
+              method="post">
+            <partial name="_CustomValidationSummary" />
+            <div class="form-group row">
+                <label asp-for="NewPassword" class="col-md-2 col-form-label text-md-left"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="NewPassword" class="form-control" />
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                    <input asp-for="UserId" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label asp-for="ConfirmPassword" class="col-md-2 col-form-label text-md-left"></label>
+                <div class="col-md-10">
+                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-10">
+                    <button type="submit" class="btn btn-info col-md-2">ارسال</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
