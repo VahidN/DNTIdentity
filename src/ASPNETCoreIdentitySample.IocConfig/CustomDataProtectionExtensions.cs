@@ -32,8 +32,8 @@ namespace ASPNETCoreIdentitySample.IocConfig
             var certificate = loadCertificateFromFile(siteSettings);
             services
                 .AddDataProtection()
-                .SetDefaultKeyLifetime(siteSettings.CookieOptions.ExpireTimeSpan)
-                .SetApplicationName(siteSettings.CookieOptions.CookieName)
+                .SetDefaultKeyLifetime(siteSettings.DataProtectionOptions.DataProtectionKeyLifetime)
+                .SetApplicationName(siteSettings.DataProtectionOptions.ApplicationName)
                 .ProtectKeysWithCertificate(certificate);
 
             return services;

@@ -20,6 +20,7 @@ namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
         public string UserDefaultPhoto { get; set; }
         public string ContentSecurityPolicyErrorLogUri { get; set; }
         public CookieOptions CookieOptions { get; set; }
+        public DataProtectionOptions DataProtectionOptions { get; set; }
         public LockoutOptions LockoutOptions { get; set; }
         public UserAvatarImageOptions UserAvatarImageOptions { get; set; }
         public string[] EmailsBanList { get; set; }
