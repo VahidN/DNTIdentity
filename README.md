@@ -1,6 +1,6 @@
 ﻿<div dir="rtl">
 
-سفارشی سازی ASP.NET Core Identity SDK-3.0.100
+سفارشی سازی ASP.NET Core Identity SDK-3.1.100
 =======
 
 <p>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
-    public partial class V2019_09_24_1900 : Migration
+    public partial class V2019_12_08_0230 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

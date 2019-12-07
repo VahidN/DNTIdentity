@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 {
-    public partial class V2019_09_24_1859 : Migration
+    public partial class V2019_12_08_0229 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
