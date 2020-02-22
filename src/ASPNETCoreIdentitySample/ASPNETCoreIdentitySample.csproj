@@ -19,7 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DNTBreadCrumb.Core" Version="1.9.1" />
-    <PackageReference Include="DNTCaptcha.Core" Version="2.0.2" />
+    <PackageReference Include="DNTCaptcha.Core" Version="2.1.0" />
     <PackageReference Include="DNTCommon.Web.Core" Version="1.8.1" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -29,7 +29,7 @@
     <Exec Condition="'$(OS)' == 'Windows_NT'" LogStandardErrorAsError="true" Command="dotnet bundle" />
   </Target>
   <ItemGroup>
-    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="3.0.415" />
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="3.2.435 " />
   </ItemGroup>
   <ItemGroup>
     <!-- extends watching group to include *.js files -->
