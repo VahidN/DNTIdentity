@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
@@ -29,12 +30,12 @@ namespace ASPNETCoreIdentitySample.IocConfig
                 });
             });
 
-            var certificate = loadCertificateFromFile(siteSettings);
+            //var certificate = loadCertificateFromFile(siteSettings);
             services
                 .AddDataProtection()
                 .SetDefaultKeyLifetime(siteSettings.DataProtectionOptions.DataProtectionKeyLifetime)
-                .SetApplicationName(siteSettings.DataProtectionOptions.ApplicationName)
-                .ProtectKeysWithCertificate(certificate);
+                .SetApplicationName(siteSettings.DataProtectionOptions.ApplicationName);
+            //.ProtectKeysWithCertificate(certificate);
 
             return services;
         }
@@ -55,11 +56,14 @@ namespace ASPNETCoreIdentitySample.IocConfig
                 store.Add(new X509Certificate2(fileName, certificate.Password, X509KeyStorageFlags.Exportable));
             }
 
-            return new X509Certificate2(
+            var cert = new X509Certificate2(
                 fileName,
                 certificate.Password,
                 keyStorageFlags: X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet
-                                 | X509KeyStorageFlags.Exportable);
+                            | X509KeyStorageFlags.Exportable);
+            // TODO: If you are getting `Keyset does not exist`, run `wwwroot\App_Data\make-cert.cmd` again.
+            Console.WriteLine($"cert private key: {cert.PrivateKey}");
+            return cert;
         }
     }
 }

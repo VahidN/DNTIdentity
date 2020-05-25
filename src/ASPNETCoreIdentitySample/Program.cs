@@ -22,7 +22,7 @@ namespace ASPNETCoreIdentitySample
                     webBuilder.ConfigureLogging((hostingContext, logging) =>
                                {
                                    logging.ClearProviders();
-                                   logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                                   
                                    logging.AddDebug();
 
                                    if (hostingContext.HostingEnvironment.IsDevelopment())
@@ -31,6 +31,7 @@ namespace ASPNETCoreIdentitySample
                                    }
 
                                    logging.AddDbLogger(); // You can change its Log Level using the `appsettings.json` file -> Logging -> LogLevel -> Default
+								   logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                                })
                               .UseStartup<Startup>();
                 });
