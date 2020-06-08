@@ -47,7 +47,7 @@ namespace ASPNETCoreIdentitySample.Controllers
         public string SourceFile { get; set; }
 
         [JsonPropertyName("status-code")]
-        public string StatusCode { get; set; }
+        public int StatusCode { get; set; }
 
         [JsonPropertyName("script-sample")]
         public string ScriptSample { get; set; }
