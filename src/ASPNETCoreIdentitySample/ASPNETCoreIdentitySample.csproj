@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="DNTBreadCrumb.Core" Version="1.9.2" />
     <PackageReference Include="DNTCaptcha.Core" Version="2.5.0" />
-    <PackageReference Include="DNTCommon.Web.Core" Version="1.8.1" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="1.8.2" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>

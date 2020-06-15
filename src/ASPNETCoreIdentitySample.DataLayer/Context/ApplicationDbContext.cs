@@ -167,8 +167,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context
         private void setShadowProperties()
         {
             // we can't use constructor injection anymore, because we are using the `AddDbContextPool<>`
-            var httpContextAccessor = this.GetService<IHttpContextAccessor>();
-            ChangeTracker.SetAuditableEntityPropertyValues(httpContextAccessor);
+            var props = this.GetService<IHttpContextAccessor>()?.GetShadowProperties();
+            ChangeTracker.SetAuditableEntityPropertyValues(props);
         }
 
         private void validateEntities()

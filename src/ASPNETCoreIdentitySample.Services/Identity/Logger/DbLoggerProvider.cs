@@ -10,17 +10,24 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using ASPNETCoreIdentitySample.Entities.AuditableEntity;
 
 namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 {
+    public class LoggerItem
+    {
+        public AppShadowProperties Props { set; get; }
+        public AppLogItem AppLogItem { set; get; }
+    }
+
     public class DbLoggerProvider : ILoggerProvider
     {
         private readonly TimeSpan _interval = TimeSpan.FromSeconds(2);
         private readonly IServiceProvider _serviceProvider;
-        private readonly IList<AppLogItem> _currentBatch = new List<AppLogItem>();
+        private readonly IList<LoggerItem> _currentBatch = new List<LoggerItem>();
 
-        private readonly BlockingCollection<AppLogItem> _messageQueue =
-            new BlockingCollection<AppLogItem>(new ConcurrentQueue<AppLogItem>());
+        private readonly BlockingCollection<LoggerItem> _messageQueue =
+            new BlockingCollection<LoggerItem>(new ConcurrentQueue<LoggerItem>());
 
         private readonly Task _outputTask;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -47,7 +54,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             _cancellationTokenSource.Dispose();
         }
 
-        internal void AddLogItem(AppLogItem appLogItem)
+        internal void AddLogItem(LoggerItem appLogItem)
         {
             if (!_messageQueue.IsAddingCompleted)
             {
@@ -78,11 +85,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             }
         }
 
-        private async Task saveLogItemsAsync(IList<AppLogItem> appLogItems, CancellationToken cancellationToken)
+        private async Task saveLogItemsAsync(IList<LoggerItem> items, CancellationToken cancellationToken)
         {
             try
             {
-                if (!appLogItems.Any())
+                if (!items.Any())
                 {
                     return;
                 }
@@ -93,7 +100,11 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
                 {
                     using (var context = scope.ServiceProvider.GetRequiredService<IUnitOfWork>())
                     {
-                        await context.Set<AppLogItem>().AddRangeAsync(appLogItems, cancellationToken);
+                        foreach (var item in items)
+                        {
+                            var addedEntry = context.Set<AppLogItem>().Add(item.AppLogItem);
+                            addedEntry.SetAddedShadowProperties(item.Props);
+                        }
                         await context.SaveChangesAsync(cancellationToken);
                     }
                 }

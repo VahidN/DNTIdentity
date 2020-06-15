@@ -1,6 +1,8 @@
-﻿using ASPNETCoreIdentitySample.Entities.Identity;
+﻿using ASPNETCoreIdentitySample.Entities.AuditableEntity;
+using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -78,8 +80,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
                 Logger = _loggerName,
                 Message = message
             };
+            var props = httpContextAccessor?.GetShadowProperties();
             setStateJson(state, appLogItem);
-            _loggerProvider.AddLogItem(appLogItem);
+            _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
         }
 
         private static void setStateJson<TState>(TState state, AppLogItem appLogItem)
