@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <NoWarn>RCS1090</NoWarn>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
@@ -11,9 +10,9 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DNTCommon.Web.Core" Version="1.8.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="1.9.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
   </ItemGroup>
 </Project>
