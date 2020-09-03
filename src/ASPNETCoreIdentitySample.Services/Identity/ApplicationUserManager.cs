@@ -1,5 +1,4 @@
-﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -15,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using DNTCommon.Web.Core;
+using DNTCommon.Web.Core.Security;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {

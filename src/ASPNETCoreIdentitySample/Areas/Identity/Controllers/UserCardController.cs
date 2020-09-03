@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using DNTBreadCrumb.Core;
+using DNTCommon.Web.Core.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

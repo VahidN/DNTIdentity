@@ -4,6 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.DataProtection.Repositories;
@@ -22,11 +23,8 @@ namespace ASPNETCoreIdentitySample.IocConfig
             {
                 return new ConfigureOptions<KeyManagementOptions>(options =>
                 {
-                    var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-                    using (var scope = scopeFactory.CreateScope())
-                    {
-                        options.XmlRepository = scope.ServiceProvider.GetRequiredService<IXmlRepository>();
-                    }
+                    serviceProvider.RunScopedService<IXmlRepository>(xmlRepository =>
+                        options.XmlRepository = xmlRepository);
                 });
             });
 

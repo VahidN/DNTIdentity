@@ -28,12 +28,12 @@ namespace ASPNETCoreIdentitySample.Services.Identity
 
         public IReadOnlyCollection<XElement> GetAllElements()
         {
-            return _serviceProvider.RunScopedService<ReadOnlyCollection<XElement>, IUnitOfWork>(context =>
-              {
-                  var dataProtectionKeys = context.Set<AppDataProtectionKey>().AsNoTracking();
-                  var logger = _logger;
-                  return dataProtectionKeys.Select(key => tryParseKeyXml(key.XmlData, logger)).ToList().AsReadOnly();
-              });
+            return _serviceProvider.RunScopedService<IUnitOfWork, ReadOnlyCollection<XElement>>(context =>
+            {
+                var dataProtectionKeys = context.Set<AppDataProtectionKey>().AsNoTracking();
+                var logger = _logger;
+                return dataProtectionKeys.Select(key => tryParseKeyXml(key.XmlData, logger)).ToList().AsReadOnly();
+            });
         }
 
         private static XElement tryParseKeyXml(string xml, ILogger logger)

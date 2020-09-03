@@ -4,6 +4,7 @@ using ASPNETCoreIdentitySample.DataLayer.MSSQL;
 using ASPNETCoreIdentitySample.DataLayer.SQLite;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+using DNTCommon.Web.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ASPNETCoreIdentitySample.IocConfig
@@ -40,13 +41,11 @@ namespace ASPNETCoreIdentitySample.IocConfig
         /// </summary>
         public static void InitializeDb(this IServiceProvider serviceProvider)
         {
-            var scopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
+            serviceProvider.RunScopedService<IIdentityDbInitializer>(identityDbInitialize =>
             {
-                var identityDbInitialize = scope.ServiceProvider.GetRequiredService<IIdentityDbInitializer>();
                 identityDbInitialize.Initialize();
                 identityDbInitialize.SeedData();
-            }
+            });
         }
     }
 }

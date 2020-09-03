@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using ASPNETCoreIdentitySample.Entities.AuditableEntity;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 {
@@ -96,18 +96,15 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
 
                 // We need a separate context for the logger to call its SaveChanges several times,
                 // without using the current request's context and changing its internal state.
-                using (var scope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                await _serviceProvider.RunScopedServiceAsync<IUnitOfWork>(async context =>
                 {
-                    using (var context = scope.ServiceProvider.GetRequiredService<IUnitOfWork>())
+                    foreach (var item in items)
                     {
-                        foreach (var item in items)
-                        {
-                            var addedEntry = context.Set<AppLogItem>().Add(item.AppLogItem);
-                            addedEntry.SetAddedShadowProperties(item.Props);
-                        }
-                        await context.SaveChangesAsync(cancellationToken);
+                        var addedEntry = context.Set<AppLogItem>().Add(item.AppLogItem);
+                        addedEntry.SetAddedShadowProperties(item.Props);
                     }
-                }
+                    await context.SaveChangesAsync(cancellationToken);
+                });
             }
             catch
             {

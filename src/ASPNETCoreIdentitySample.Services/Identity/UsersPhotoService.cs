@@ -2,11 +2,11 @@
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.Extensions.Options;
 using System;
+using DNTCommon.Web.Core.Security;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {

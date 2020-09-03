@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {
@@ -57,9 +58,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         /// </summary>
         public void Initialize()
         {
-            using (var serviceScope = _scopeFactory.CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
                 {
                     if (_adminUserSeedOptions.Value.ActiveDatabase == ActiveDatabase.InMemoryDatabase)
                     {
@@ -69,8 +68,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                     {
                         context.Database.Migrate();
                     }
-                }
-            }
+                });
         }
 
         /// <summary>
@@ -78,25 +76,23 @@ namespace ASPNETCoreIdentitySample.Services.Identity
         /// </summary>
         public void SeedData()
         {
-            using (var serviceScope = _scopeFactory.CreateScope())
+            _scopeFactory.RunScopedService<IIdentityDbInitializer>(identityDbSeedData =>
             {
-                var identityDbSeedData = serviceScope.ServiceProvider.GetRequiredService<IIdentityDbInitializer>();
                 var result = identityDbSeedData.SeedDatabaseWithAdminUserAsync().Result;
                 if (result == IdentityResult.Failed())
                 {
                     throw new InvalidOperationException(result.DumpErrors());
                 }
+            });
 
-                // How to add initial data to the DB directly
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+            _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
+            {
+                if (!context.Roles.Any())
                 {
-                    if (!context.Roles.Any())
-                    {
-                        context.Add(new Role(ConstantRoles.Admin));
-                        context.SaveChanges();
-                    }
+                    context.Add(new Role(ConstantRoles.Admin));
+                    context.SaveChanges();
                 }
-            }
+            });
         }
 
         public async Task<IdentityResult> SeedDatabaseWithAdminUserAsync()
