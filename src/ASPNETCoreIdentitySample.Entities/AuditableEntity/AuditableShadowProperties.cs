@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ASPNETCoreIdentitySample.Entities.Identity;
-using DNTCommon.Web.Core.Security;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Entities.AuditableEntity
 {

@@ -6,7 +6,7 @@ using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.Extensions.Options;
 using System;
-using DNTCommon.Web.Core.Security;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {

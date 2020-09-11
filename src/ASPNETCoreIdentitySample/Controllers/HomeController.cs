@@ -1,7 +1,7 @@
 ﻿using DNTBreadCrumb.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using DNTCommon.Web.Core.Security;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Controllers
 {

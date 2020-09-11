@@ -4,7 +4,7 @@ using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
 using DNTBreadCrumb.Core;
-using DNTCommon.Web.Core.Security;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -13,7 +13,6 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
 using DNTCommon.Web.Core;
-using DNTCommon.Web.Core.Security;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {

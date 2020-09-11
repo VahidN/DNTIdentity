@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using DNTCommon.Web.Core.Security;
+using DNTCommon.Web.Core;
 
 namespace ASPNETCoreIdentitySample.Services.Identity
 {

@@ -7,10 +7,10 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    <PackageReference Include="DNTCommon.Web.Core" Version="2.0.0" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="2.1.0" />
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@ namespace ASPNETCoreIdentitySample
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<SiteSettings>(options => Configuration.Bind(options));
+            services.Configure<ContentSecurityPolicyConfig>(options => Configuration.GetSection("ContentSecurityPolicyConfig").Bind(options));
 
             // Adds all of the ASP.NET Core Identity related services and configurations at once.
             services.AddCustomIdentityServices();
