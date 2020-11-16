@@ -41,13 +41,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IUnitOfWork uow) :
             base((RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>)store, roleValidators, keyNormalizer, errors, logger)
         {
-            _store = store ?? throw new ArgumentNullException(nameof(_store));
-            _roleValidators = roleValidators ?? throw new ArgumentNullException(nameof(_roleValidators));
-            _keyNormalizer = keyNormalizer ?? throw new ArgumentNullException(nameof(_keyNormalizer));
-            _errors = errors ?? throw new ArgumentNullException(nameof(_errors));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
-            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(_contextAccessor));
-            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
+            _store = store ?? throw new ArgumentNullException(nameof(store));
+            _roleValidators = roleValidators ?? throw new ArgumentNullException(nameof(roleValidators));
+            _keyNormalizer = keyNormalizer ?? throw new ArgumentNullException(nameof(keyNormalizer));
+            _errors = errors ?? throw new ArgumentNullException(nameof(errors));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
             _users = _uow.Set<User>();
         }
 

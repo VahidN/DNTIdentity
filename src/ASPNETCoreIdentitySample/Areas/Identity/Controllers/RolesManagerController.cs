@@ -24,7 +24,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         public RolesManagerController(IApplicationRoleManager roleManager)
         {
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]
@@ -35,7 +35,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         }
 
         [AjaxOnly]
-        public async Task<IActionResult> RenderRole([FromBody]ModelIdViewModel model)
+        public async Task<IActionResult> RenderRole([FromBody] ModelIdViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         }
 
         [AjaxOnly]
-        public async Task<IActionResult> RenderDeleteRole([FromBody]ModelIdViewModel model)
+        public async Task<IActionResult> RenderDeleteRole([FromBody] ModelIdViewModel model)
         {
             if (!ModelState.IsValid)
             {

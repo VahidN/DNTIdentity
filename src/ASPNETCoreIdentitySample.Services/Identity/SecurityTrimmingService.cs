@@ -21,9 +21,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IHttpContextAccessor httpContextAccessor,
             IMvcActionsDiscoveryService mvcActionsDiscoveryService)
         {
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(_httpContextAccessor));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _httpContext = _httpContextAccessor.HttpContext;
-            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(_mvcActionsDiscoveryService));
+            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(mvcActionsDiscoveryService));
         }
 
         public bool CanCurrentUserAccess(string area, string controller, string action)

@@ -32,11 +32,11 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IOptionsSnapshot<SiteSettings> siteOptions,
             ILogger<TwoFactorController> logger)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
-            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
-            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [AllowAnonymous]

@@ -15,7 +15,7 @@ namespace ASPNETCoreIdentitySample.Services
 
         public EfCategoryService(IUnitOfWork uow)
         {
-            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
 
             _categories = _uow.Set<Category>();
         }

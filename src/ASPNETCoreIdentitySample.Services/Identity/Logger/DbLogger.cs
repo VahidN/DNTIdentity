@@ -25,10 +25,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger
             IOptions<SiteSettings> siteSettings)
         {
             _loggerName = loggerName;
-            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(_siteSettings));
+            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(siteSettings));
             _minLevel = _siteSettings.Value.Logging.LogLevel.Default;
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(_serviceProvider));
-            _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(_loggerProvider));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
         }
 
         public IDisposable BeginScope<TState>(TState state)

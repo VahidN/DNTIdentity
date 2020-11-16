@@ -48,16 +48,16 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IEmailSender emailSender,
             ILogger<UserProfileController> logger)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
-            _protectionProviderService = protectionProviderService ?? throw new ArgumentNullException(nameof(_protectionProviderService));
-            _userValidator = userValidator ?? throw new ArgumentNullException(nameof(_userValidator));
-            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(_usedPasswordsService));
-            _usersPhotoService = usersPhotoService ?? throw new ArgumentNullException(nameof(_usersPhotoService));
-            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
-            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _protectionProviderService = protectionProviderService ?? throw new ArgumentNullException(nameof(protectionProviderService));
+            _userValidator = userValidator ?? throw new ArgumentNullException(nameof(userValidator));
+            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
+            _usersPhotoService = usersPhotoService ?? throw new ArgumentNullException(nameof(usersPhotoService));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [Authorize(Roles = ConstantRoles.Admin)]

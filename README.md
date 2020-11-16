@@ -1,6 +1,6 @@
 ﻿<div dir="rtl">
 
-# سفارشی سازی ASP.NET Core Identity SDK-3.1.402
+# سفارشی سازی ASP.NET Core Identity SDK-5.0.100
 
 <p>
   <a href="https://github.com/VahidN/DNTIdentity">

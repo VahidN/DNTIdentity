@@ -15,24 +15,24 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -41,12 +41,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -56,8 +56,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -73,7 +73,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FriendlyName")
                         .HasColumnType("nvarchar(450)");
@@ -95,15 +95,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -124,12 +124,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -151,8 +151,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppSqlCache", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(449)")
-                        .HasMaxLength(449);
+                        .HasMaxLength(449)
+                        .HasColumnType("nvarchar(449)");
 
                     b.Property<DateTimeOffset?>("AbsoluteExpiration")
                         .HasColumnType("datetimeoffset");
@@ -170,9 +170,9 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExpiresAtTime")
-                        .HasName("Index_ExpiresAtTime");
+                        .HasDatabaseName("Index_ExpiresAtTime");
 
-                    b.ToTable("AppSqlCache","dbo");
+                    b.ToTable("AppSqlCache", "dbo");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.Role", b =>
@@ -180,19 +180,19 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -204,12 +204,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -218,18 +218,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AppRoles");
@@ -240,7 +240,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -249,12 +249,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -263,12 +263,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -291,7 +291,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -304,12 +304,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -318,15 +318,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -335,8 +335,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("LastVisitDateTime")
                         .HasColumnType("datetime2");
@@ -351,12 +351,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -365,12 +365,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -382,8 +382,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PhotoFileName")
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -392,17 +392,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AppUsers");
@@ -413,7 +413,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -422,12 +422,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -436,12 +436,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -468,12 +468,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -482,12 +482,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -517,12 +517,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -531,12 +531,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -563,12 +563,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -577,12 +577,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -603,15 +603,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -621,16 +621,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -653,18 +653,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -673,12 +673,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("nvarchar(255)")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("int");
@@ -688,11 +688,11 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 6)");
+                        .HasColumnType("decimal(18,6)");
 
                     b.HasKey("Id");
 
@@ -708,6 +708,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserClaim", b =>
@@ -717,6 +719,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserLogin", b =>
@@ -726,6 +730,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserRole", b =>
@@ -741,6 +747,10 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserToken", b =>
@@ -750,6 +760,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserUsedPassword", b =>
@@ -759,6 +771,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Product", b =>
@@ -768,6 +782,33 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.Role", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.User", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Roles");
+
+                    b.Navigation("UserTokens");
+
+                    b.Navigation("UserUsedPasswords");
                 });
 #pragma warning restore 612, 618
         }

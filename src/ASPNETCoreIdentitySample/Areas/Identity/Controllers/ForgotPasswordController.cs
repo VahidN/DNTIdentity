@@ -34,10 +34,10 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IEmailSender emailSender,
             IOptionsSnapshot<SiteSettings> siteOptions)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(_passwordValidator));
-            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
-            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(passwordValidator));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
         }
 
         [BreadCrumb(Title = "تائید کلمه‌ی عبور فراموش شده", Order = 1)]

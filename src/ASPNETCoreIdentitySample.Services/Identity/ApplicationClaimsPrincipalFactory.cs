@@ -27,9 +27,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptions<IdentityOptions> optionsAccessor)
             : base((UserManager<User>)userManager, (RoleManager<Role>)roleManager, optionsAccessor)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
-            _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(_optionsAccessor));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+            _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(optionsAccessor));
         }
 
         public override async Task<ClaimsPrincipal> CreateAsync(User user)

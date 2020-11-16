@@ -26,8 +26,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IMvcActionsDiscoveryService mvcActionsDiscoveryService,
             IApplicationRoleManager roleManager)
         {
-            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(_mvcActionsDiscoveryService));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
+            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(mvcActionsDiscoveryService));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]

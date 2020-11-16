@@ -24,7 +24,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IOptionsSnapshot<SiteSettings> configurationRoot,
             IUsedPasswordsService usedPasswordsService) : base(errors)
         {
-            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(_usedPasswordsService));
+            _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
             if (configurationRoot == null) throw new ArgumentNullException(nameof(configurationRoot));
             _passwordsBanList = new HashSet<string>(configurationRoot.Value.PasswordsBanList, StringComparer.OrdinalIgnoreCase);
 

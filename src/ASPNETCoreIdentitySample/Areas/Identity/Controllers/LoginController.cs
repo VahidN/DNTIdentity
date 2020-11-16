@@ -30,10 +30,10 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IOptionsSnapshot<SiteSettings> siteOptions,
             ILogger<LoginController> logger)
         {
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]

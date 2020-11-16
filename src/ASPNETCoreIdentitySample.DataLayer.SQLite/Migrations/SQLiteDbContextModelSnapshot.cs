@@ -14,7 +14,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0");
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {
@@ -23,12 +23,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -37,12 +37,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -52,8 +52,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -91,12 +91,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -117,12 +117,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -144,8 +144,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppSqlCache", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(449);
+                        .HasMaxLength(449)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("AbsoluteExpiration")
                         .HasColumnType("TEXT");
@@ -163,9 +163,9 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExpiresAtTime")
-                        .HasName("Index_ExpiresAtTime");
+                        .HasDatabaseName("Index_ExpiresAtTime");
 
-                    b.ToTable("AppSqlCache","dbo");
+                    b.ToTable("AppSqlCache", "dbo");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.Role", b =>
@@ -179,12 +179,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -196,12 +196,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -210,18 +210,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AppRoles");
                 });
@@ -239,12 +239,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -253,12 +253,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -293,12 +293,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -307,15 +307,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
@@ -324,8 +324,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("LastVisitDateTime")
                         .HasColumnType("TEXT");
@@ -340,12 +340,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -354,12 +354,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -371,8 +371,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PhotoFileName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
@@ -381,17 +381,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AppUsers");
                 });
@@ -409,12 +409,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -423,12 +423,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -455,12 +455,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -469,12 +469,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -504,12 +504,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -518,12 +518,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -550,12 +550,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -564,12 +564,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -592,12 +592,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -607,16 +607,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("HashedPassword")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -644,12 +644,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CreatedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -658,12 +658,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByBrowserName")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(1000);
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ModifiedByIp")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(255);
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -673,8 +673,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(450);
+                        .HasMaxLength(450)
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 6)");
@@ -693,6 +693,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserClaim", b =>
@@ -702,6 +704,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserLogin", b =>
@@ -711,6 +715,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserRole", b =>
@@ -726,6 +732,10 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserToken", b =>
@@ -735,6 +745,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserUsedPassword", b =>
@@ -744,6 +756,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Product", b =>
@@ -753,6 +767,33 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.Role", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.User", b =>
+                {
+                    b.Navigation("Claims");
+
+                    b.Navigation("Logins");
+
+                    b.Navigation("Roles");
+
+                    b.Navigation("UserTokens");
+
+                    b.Navigation("UserUsedPasswords");
                 });
 #pragma warning restore 612, 618
         }

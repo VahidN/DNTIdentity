@@ -17,7 +17,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers
 
         public SecurityTrimmingTagHelper(ISecurityTrimmingService securityTrimmingService)
         {
-            _securityTrimmingService = securityTrimmingService ?? throw new ArgumentNullException(nameof(_securityTrimmingService));
+            _securityTrimmingService = securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
         }
 
         /// <summary>

@@ -22,8 +22,8 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IApplicationUserManager userManager,
             IApplicationRoleManager roleManager)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(_roleManager));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]

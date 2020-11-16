@@ -19,7 +19,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
         public SystemLogController(
             IAppLogItemsService appLogItemsService)
         {
-            _appLogItemsService = appLogItemsService ?? throw new ArgumentNullException(nameof(_appLogItemsService));
+            _appLogItemsService = appLogItemsService ?? throw new ArgumentNullException(nameof(appLogItemsService));
         }
 
         [BreadCrumb(Title = "ایندکس", Order = 1)]

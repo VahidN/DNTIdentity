@@ -25,10 +25,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IPasswordHasher<User> passwordHasher,
             IOptionsSnapshot<SiteSettings> configurationRoot)
         {
-            _uow = uow ?? throw new ArgumentNullException(nameof(_uow));
+            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
 
             _userUsedPasswords = _uow.Set<UserUsedPassword>() ?? throw new ArgumentNullException(nameof(_userUsedPasswords));
-            _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(_passwordHasher));
+            _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
             if (configurationRoot == null) throw new ArgumentNullException(nameof(configurationRoot));
             var configurationRootValue = configurationRoot.Value;
             if (configurationRootValue == null) throw new ArgumentNullException(nameof(configurationRootValue));

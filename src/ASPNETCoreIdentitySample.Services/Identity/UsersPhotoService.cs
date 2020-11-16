@@ -21,9 +21,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IWebHostEnvironment hostingEnvironment,
             IOptionsSnapshot<SiteSettings> siteSettings)
         {
-            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(_contextAccessor));
-            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(_hostingEnvironment));
-            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(_siteSettings));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(siteSettings));
         }
 
         public string GetUsersAvatarsFolderPath()

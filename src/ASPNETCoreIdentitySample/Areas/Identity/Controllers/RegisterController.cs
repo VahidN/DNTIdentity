@@ -40,12 +40,12 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
             IOptionsSnapshot<SiteSettings> siteOptions,
             ILogger<RegisterController> logger)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(_passwordValidator));
-            _userValidator = userValidator ?? throw new ArgumentNullException(nameof(_userValidator));
-            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(_emailSender));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
-            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(_siteOptions));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(passwordValidator));
+            _userValidator = userValidator ?? throw new ArgumentNullException(nameof(userValidator));
+            _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
         }
 
         /// <summary>

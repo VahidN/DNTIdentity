@@ -35,12 +35,12 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             IUserConfirmation<User> confirmation)
             : base((UserManager<User>)userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(_userManager));
-            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(_contextAccessor));
-            _claimsFactory = claimsFactory ?? throw new ArgumentNullException(nameof(_claimsFactory));
-            _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(_optionsAccessor));
-            _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
-            _schemes = schemes ?? throw new ArgumentNullException(nameof(_schemes));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+            _claimsFactory = claimsFactory ?? throw new ArgumentNullException(nameof(claimsFactory));
+            _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(optionsAccessor));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _schemes = schemes ?? throw new ArgumentNullException(nameof(schemes));
             _confirmation = confirmation;
         }
 

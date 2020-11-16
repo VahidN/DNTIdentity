@@ -26,7 +26,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             ISecurityTrimmingService securityTrimmingService,
             IHttpContextAccessor httpContextAccessor)
         {
-            _securityTrimmingService = securityTrimmingService ?? throw new ArgumentNullException(nameof(_securityTrimmingService));
+            _securityTrimmingService = securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
@@ -45,8 +45,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             var actionName = routeData?.Values["action"]?.ToString();
             var action = string.IsNullOrWhiteSpace(actionName) ? string.Empty : actionName;
 
-            // How to access form values from an AuthorizationHandler
-            var request = _httpContextAccessor.HttpContext.Request;
+            // This is just a sample: How to access form values from an AuthorizationHandler
+            /*var request = _httpContextAccessor.HttpContext.Request;
             if (request.Method.Equals("post", StringComparison.OrdinalIgnoreCase))
             {
                 if (request.IsAjaxRequest() && request.ContentType.Contains("application/json"))
@@ -66,7 +66,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity
                         var formFieldValue = item.Value;
                     }
                 }
-            }
+            }*/
 
             if (_securityTrimmingService.CanCurrentUserAccess(area, controller, action))
             {

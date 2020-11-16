@@ -28,9 +28,9 @@ namespace ASPNETCoreIdentitySample.Services.Identity
             ILoggerFactory logger)
             : base(options, (SignInManager<User>)signInManager, clock, logger)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(_options));
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(_signInManager));
-            _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(_siteStatService));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(siteStatService));
             _clock = clock;
         }
 
