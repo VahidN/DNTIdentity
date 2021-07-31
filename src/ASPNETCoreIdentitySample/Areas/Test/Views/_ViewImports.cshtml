@@ -1,0 +1,24 @@
+﻿@using ASPNETCoreIdentitySample.Areas.Identity
+@using ASPNETCoreIdentitySample.Common.IdentityToolkit
+@using ASPNETCoreIdentitySample.Common.PersianToolkit
+@using ASPNETCoreIdentitySample.Entities.Identity
+@using ASPNETCoreIdentitySample.Services.Contracts.Identity
+@using ASPNETCoreIdentitySample.Services.Identity
+@using ASPNETCoreIdentitySample.ViewModels.Identity
+@using ASPNETCoreIdentitySample.ViewModels.Identity.Emails
+@using ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+@using Microsoft.AspNetCore.Routing
+@using Microsoft.Extensions.Options
+@using System.Globalization
+@using System.Threading.Tasks
+@using System.Net
+@using DNTPersianUtils.Core
+@using ASPNETCoreIdentitySample.DataLayer.Context
+@using ASPNETCoreIdentitySample.Entities.AuditableEntity
+
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, DNTCaptcha.Core
+@addTagHelper *, DNTBreadCrumb.Core
+@addTagHelper *, cloudscribe.Web.Pagination
+@addTagHelper *, ASPNETCoreIdentitySample

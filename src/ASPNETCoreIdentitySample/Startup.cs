@@ -8,6 +8,7 @@ using ASPNETCoreIdentitySample.IocConfig;
 using DNTCommon.Web.Core;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace ASPNETCoreIdentitySample
 {
@@ -31,7 +32,14 @@ namespace ASPNETCoreIdentitySample
             services.AddMvc(options => options.UseYeKeModelBinder());
 
             services.AddDNTCommonWeb();
-            services.AddDNTCaptcha();
+            services.AddDNTCaptcha(options =>
+            {
+                options.UseCookieStorageProvider(SameSiteMode.Strict)
+                .AbsoluteExpiration(minutes: 7)
+                .ShowThousandsSeparators(false)
+                .WithNoise(pixelsDensity: 25, linesCount: 3)
+                .WithEncryptionKey("This is my secure key!");
+            });
             services.AddCloudscribePagination();
 
             services.AddControllersWithViews();

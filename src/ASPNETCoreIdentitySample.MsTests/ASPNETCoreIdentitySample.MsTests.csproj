@@ -14,10 +14,10 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.IocConfig\ASPNETCoreIdentitySample.IocConfig.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DNTCommon.Web.Core" Version="2.4.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="2.9.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.5" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.5" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>

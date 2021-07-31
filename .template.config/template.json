@@ -1,11 +1,28 @@
 { 
+  "$schema": "http://json.schemastore.org/template",
   "author": "VahidN <http://www.dotnettips.info/>", 
   "classifications": [ "MVC", ".NET Core", "ASP.NET Core" ],  
   "name": "Empty DNT.Identity project", 
   "identity": "DNT.Identity", 
   "shortName": "dntidentity", 
+  "preferNameDirectory": true,
   "tags": { 
     "language": "C#" 
   }, 
-  "sourceName": "ASPNETCoreIdentitySample" 
+  "sourceName": "ASPNETCoreIdentitySample",
+  "symbols":{
+   "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net5.0",
+          "description": "Target .NET 5"
+        }
+      ],
+      "defaultValue": "net5.0",
+      "replaces": "net5.0"
+    }
+ }
 }

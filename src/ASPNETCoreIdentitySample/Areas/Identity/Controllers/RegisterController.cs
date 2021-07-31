@@ -16,7 +16,6 @@ using ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTPersianUtils.Core;
 using DNTCommon.Web.Core;
-using DNTCaptcha.Core.Providers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {
@@ -104,7 +103,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [ValidateDNTCaptcha(CaptchaGeneratorLanguage = DNTCaptcha.Core.Providers.Language.Persian,
+        [ValidateDNTCaptcha(CaptchaGeneratorLanguage = DNTCaptcha.Core.Language.Persian,
                             CaptchaGeneratorDisplayMode = DisplayMode.SumOfTwoNumbers)]
         public async Task<IActionResult> Index(RegisterViewModel model)
         {

@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
     [DbContext(typeof(SQLiteDbContext))]
-    [Migration("20201116084903_V2020_11_16_1218")]
-    partial class V2020_11_16_1218
+    [Migration("20210731080521_V2021_07_31_1234")]
+    partial class V2021_07_31_1234
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.8");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {

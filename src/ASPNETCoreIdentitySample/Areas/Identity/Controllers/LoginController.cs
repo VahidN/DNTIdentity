@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using DNTCommon.Web.Core;
 using System;
-using DNTCaptcha.Core.Providers;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers
 {

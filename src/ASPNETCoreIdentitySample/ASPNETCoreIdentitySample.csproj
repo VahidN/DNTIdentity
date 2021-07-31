@@ -18,8 +18,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DNTBreadCrumb.Core" Version="1.9.3" />
-    <PackageReference Include="DNTCaptcha.Core" Version="2.7.1" />
-    <PackageReference Include="DNTCommon.Web.Core" Version="2.4.0" />
+    <PackageReference Include="DNTCaptcha.Core" Version="4.1.0" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="2.9.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
