@@ -13,7 +13,5 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.101
-    - name: npm install
-      run: npm install
     - name: Build DNTIdentity
       run: dotnet build ./src/ASPNETCoreIdentitySample/ASPNETCoreIdentitySample.csproj --configuration Release
