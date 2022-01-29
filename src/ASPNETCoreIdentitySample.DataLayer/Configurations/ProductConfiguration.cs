@@ -2,15 +2,19 @@ using ASPNETCoreIdentitySample.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
-    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+    public void Configure(EntityTypeBuilder<Product> builder)
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        if (builder == null)
         {
-            builder.Property(product => product.Name).HasMaxLength(450).IsRequired();
-            builder.HasOne(product => product.Category)
-                   .WithMany(category => category.Products);
+            throw new ArgumentNullException(nameof(builder));
         }
+
+        builder.Property(product => product.Name).HasMaxLength(450).IsRequired();
+        builder.HasOne(product => product.Category)
+            .WithMany(category => category.Products);
     }
 }

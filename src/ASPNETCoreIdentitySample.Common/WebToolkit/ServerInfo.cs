@@ -1,26 +1,21 @@
-using System;
-using System.IO;
-using System.Linq;
+namespace ASPNETCoreIdentitySample.Common.WebToolkit;
 
-namespace ASPNETCoreIdentitySample.Common.WebToolkit
+public static class ServerInfo
 {
-    public static class ServerInfo
+    public static string GetAppDataFolderPath()
     {
-        public static string GetAppDataFolderPath()
+        var appDataFolderPath = Path.Combine(GetWwwRootPath(), "App_Data");
+        if (!Directory.Exists(appDataFolderPath))
         {
-            var appDataFolderPath = Path.Combine(GetWwwRootPath(), "App_Data");
-            if (!Directory.Exists(appDataFolderPath))
-            {
-                Directory.CreateDirectory(appDataFolderPath);
-            }
-            return appDataFolderPath;
+            Directory.CreateDirectory(appDataFolderPath);
         }
+        return appDataFolderPath;
+    }
 
-        public static string GetWwwRootPath()
-        {
-            return Path.Combine(
-                AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries).First(),
-                "wwwroot");
-        }
+    public static string GetWwwRootPath()
+    {
+        return Path.Combine(
+            AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries).First(),
+            "wwwroot");
     }
 }

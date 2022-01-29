@@ -1,7 +1,6 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class SqlServer
 {
-    public class SqlServer
-    {
-        public string ApplicationDbContextConnection { get; set; }
-    }
+    public string ApplicationDbContextConnection { get; set; }
 }

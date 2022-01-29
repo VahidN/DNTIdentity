@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-using ASPNETCoreIdentitySample.Entities.Identity;
+﻿using ASPNETCoreIdentitySample.Entities.Identity;
 using DNTCommon.Web.Core;
 
-namespace ASPNETCoreIdentitySample.ViewModels.Identity
+namespace ASPNETCoreIdentitySample.ViewModels.Identity;
+
+public class DynamicRoleClaimsManagerViewModel
 {
-    public class DynamicRoleClaimsManagerViewModel
-    {
-        public string[] ActionIds { set; get; }
+    public string[] ActionIds { set; get; }
 
-        public int RoleId { set; get; }
+    public int RoleId { set; get; }
 
-        public Role RoleIncludeRoleClaims { set; get; }
+    public Role RoleIncludeRoleClaims { set; get; }
 
-        public ICollection<MvcControllerViewModel> SecuredControllerActions { set; get; }
-    }
+    public ICollection<MvcControllerViewModel> SecuredControllerActions { set; get; }
 }

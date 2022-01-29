@@ -1,67 +1,70 @@
 ﻿using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
-using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace ASPNETCoreIdentitySample.Services.Identity
+namespace ASPNETCoreIdentitySample.Services.Identity;
+
+/// <summary>
+///     Keep track of on-line users
+/// </summary>
+public class CustomSecurityStampValidator : SecurityStampValidator<User>
 {
-    /// <summary>
-    /// Keep track of on-line users
-    /// </summary>
-    public class CustomSecurityStampValidator : SecurityStampValidator<User>
+    private readonly ISystemClock _clock;
+    private readonly IOptions<SecurityStampValidatorOptions> _options;
+    private readonly IApplicationSignInManager _signInManager;
+    private readonly ISiteStatService _siteStatService;
+
+    public CustomSecurityStampValidator(
+        IOptions<SecurityStampValidatorOptions> options,
+        IApplicationSignInManager signInManager,
+        ISystemClock clock,
+        ISiteStatService siteStatService,
+        ILoggerFactory logger)
+        : base(options, (SignInManager<User>)signInManager, clock, logger)
     {
-        private readonly IOptions<SecurityStampValidatorOptions> _options;
-        private readonly IApplicationSignInManager _signInManager;
-        private readonly ISiteStatService _siteStatService;
-        private readonly ISystemClock _clock;
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+        _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(siteStatService));
+        _clock = clock;
+    }
 
-        public CustomSecurityStampValidator(
-            IOptions<SecurityStampValidatorOptions> options,
-            IApplicationSignInManager signInManager,
-            ISystemClock clock,
-            ISiteStatService siteStatService,
-            ILoggerFactory logger)
-            : base(options, (SignInManager<User>)signInManager, clock, logger)
+    public TimeSpan UpdateLastModifiedDate { get; set; } = TimeSpan.FromMinutes(2);
+
+    public override async Task ValidateAsync(CookieValidatePrincipalContext context)
+    {
+        await base.ValidateAsync(context);
+        await UpdateUserLastVisitDateTimeAsync(context);
+    }
+
+    private async Task UpdateUserLastVisitDateTimeAsync(CookieValidatePrincipalContext context)
+    {
+        if (context == null)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-            _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(siteStatService));
-            _clock = clock;
+            throw new ArgumentNullException(nameof(context));
         }
 
-        public TimeSpan UpdateLastModifiedDate { get; set; } = TimeSpan.FromMinutes(2);
-
-        public override async Task ValidateAsync(CookieValidatePrincipalContext context)
+        var currentUtc = DateTimeOffset.UtcNow;
+        if (context.Options != null && _clock != null)
         {
-            await base.ValidateAsync(context);
-            await updateUserLastVisitDateTimeAsync(context);
+            currentUtc = _clock.UtcNow;
         }
 
-        private async Task updateUserLastVisitDateTimeAsync(CookieValidatePrincipalContext context)
+        var issuedUtc = context.Properties.IssuedUtc;
+
+        // Only validate if enough time has elapsed
+        if (issuedUtc == null || context.Principal == null)
         {
-            var currentUtc = DateTimeOffset.UtcNow;
-            if (context.Options != null && _clock != null)
-            {
-                currentUtc = _clock.UtcNow;
-            }
-            var issuedUtc = context.Properties.IssuedUtc;
+            return;
+        }
 
-            // Only validate if enough time has elapsed
-            if (issuedUtc == null || context.Principal == null)
-            {
-                return;
-            }
-
-            var timeElapsed = currentUtc.Subtract(issuedUtc.Value);
-            if (timeElapsed > UpdateLastModifiedDate)
-            {
-                await _siteStatService.UpdateUserLastVisitDateTimeAsync(context.Principal);
-            }
+        var timeElapsed = currentUtc.Subtract(issuedUtc.Value);
+        if (timeElapsed > UpdateLastModifiedDate)
+        {
+            await _siteStatService.UpdateUserLastVisitDateTimeAsync(context.Principal);
         }
     }
 }

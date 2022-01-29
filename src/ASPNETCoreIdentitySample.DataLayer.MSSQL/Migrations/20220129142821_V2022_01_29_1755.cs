@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 {
-    public partial class V2021_07_31_1233 : Migration
+    public partial class V2022_01_29_1755 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

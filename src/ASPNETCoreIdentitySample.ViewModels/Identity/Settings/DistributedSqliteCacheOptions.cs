@@ -1,8 +1,6 @@
-namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
-{
+namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 
-    public class DistributedSqliteCacheOptions
-    {
-        public string ConnectionString { set; get; }
-    }
+public class DistributedSqliteCacheOptions
+{
+    public string ConnectionString { set; get; }
 }

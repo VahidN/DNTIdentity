@@ -1,19 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿namespace ASPNETCoreIdentitySample.Services.Contracts.Identity;
 
-namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
+public interface IEmailSender
 {
-    public interface IEmailSender
-    {
-        #region BaseClass
+    #region BaseClass
 
-        Task SendEmailAsync(string email, string subject, string message);
+    Task SendEmailAsync(string email, string subject, string message);
 
-        #endregion
+    #endregion
 
-        #region CustomMethods
+    #region CustomMethods
 
-        Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model);
+    Task SendEmailAsync<T>(string email, string subject, string viewNameOrPath, T model);
 
-        #endregion
-    }
+    #endregion
 }

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using ASPNETCoreIdentitySample.Entities;
+﻿using ASPNETCoreIdentitySample.Entities;
 
-namespace ASPNETCoreIdentitySample.Services.Contracts
+namespace ASPNETCoreIdentitySample.Services.Contracts;
+
+public interface ICategoryService
 {
-    public interface ICategoryService
-    {
-        void AddNewCategory(Category category);
-        IList<Category> GetAllCategories();
-    }
+    void AddNewCategory(Category category);
+    IList<Category> GetAllCategories();
 }

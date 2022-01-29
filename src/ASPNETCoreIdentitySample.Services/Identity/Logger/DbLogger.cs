@@ -5,108 +5,112 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Text.Json;
 
-namespace ASPNETCoreIdentitySample.Services.Identity.Logger
+namespace ASPNETCoreIdentitySample.Services.Identity.Logger;
+
+public class DbLogger : ILogger
 {
-    public class DbLogger : ILogger
+    private readonly string _loggerName;
+    private readonly DbLoggerProvider _loggerProvider;
+    private readonly LogLevel _minLevel;
+    private readonly IServiceProvider _serviceProvider;
+
+    public DbLogger(
+        DbLoggerProvider loggerProvider,
+        IServiceProvider serviceProvider,
+        string loggerName,
+        IOptions<SiteSettings> siteSettings)
     {
-        private readonly string _loggerName;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly DbLoggerProvider _loggerProvider;
-        private readonly IOptions<SiteSettings> _siteSettings;
-        private readonly LogLevel _minLevel;
+        _loggerName = loggerName;
+        ArgumentNullException.ThrowIfNull(siteSettings);
+        _minLevel = siteSettings.Value.Logging.LogLevel.Default;
+        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
+    }
 
-        public DbLogger(
-            DbLoggerProvider loggerProvider,
-            IServiceProvider serviceProvider,
-            string loggerName,
-            IOptions<SiteSettings> siteSettings)
+    public IDisposable BeginScope<TState>(TState state)
+    {
+        return new NoopDisposable();
+    }
+
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return logLevel >= _minLevel;
+    }
+
+    public void Log<TState>(
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception exception,
+        Func<TState, Exception, string> formatter)
+    {
+        if (!IsEnabled(logLevel))
         {
-            _loggerName = loggerName;
-            _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(siteSettings));
-            _minLevel = _siteSettings.Value.Logging.LogLevel.Default;
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
+            return;
         }
 
-        public IDisposable BeginScope<TState>(TState state)
+        if (formatter == null)
         {
-            return new NoopDisposable();
+            throw new ArgumentNullException(nameof(formatter));
         }
 
-        public bool IsEnabled(LogLevel logLevel)
+        var message = formatter(state, exception);
+
+        if (exception != null)
         {
-            return logLevel >= _minLevel;
+            message = $"{message}{Environment.NewLine}{exception}";
         }
 
-        public void Log<TState>(
-            LogLevel logLevel,
-            EventId eventId,
-            TState state,
-            Exception exception,
-            Func<TState, Exception, string> formatter)
+        if (string.IsNullOrEmpty(message))
         {
-            if (!IsEnabled(logLevel))
-            {
-                return;
-            }
-
-            if (formatter == null)
-            {
-                throw new ArgumentNullException(nameof(formatter));
-            }
-
-            var message = formatter(state, exception);
-
-            if (exception != null)
-            {
-                message = $"{message}{Environment.NewLine}{exception}";
-            }
-
-            if (string.IsNullOrEmpty(message))
-            {
-                return;
-            }
-
-            var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
-            var appLogItem = new AppLogItem
-            {
-                Url = httpContextAccessor?.HttpContext != null ? httpContextAccessor.HttpContext.Request.Path.ToString() : string.Empty,
-                EventId = eventId.Id,
-                LogLevel = logLevel.ToString(),
-                Logger = _loggerName,
-                Message = message
-            };
-            var props = httpContextAccessor?.GetShadowProperties();
-            setStateJson(state, appLogItem);
-            _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
+            return;
         }
 
-        private static void setStateJson<TState>(TState state, AppLogItem appLogItem)
+        var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+        var appLogItem = new AppLogItem
         {
-            try
-            {
-                appLogItem.StateJson = JsonSerializer.Serialize(
-                    state,
-                    new JsonSerializerOptions
-                    {
-                        IgnoreNullValues = true,
-                        WriteIndented = true
-                    });
-            }
-            catch
-            {
-                // don't throw exceptions from logger
-            }
+            Url = httpContextAccessor?.HttpContext != null
+                ? httpContextAccessor.HttpContext.Request.Path.ToString()
+                : string.Empty,
+            EventId = eventId.Id,
+            LogLevel = logLevel.ToString(),
+            Logger = _loggerName,
+            Message = message
+        };
+        var props = httpContextAccessor?.GetShadowProperties();
+        SetStateJson(state, appLogItem);
+        _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
+    }
+
+    private static void SetStateJson<TState>(TState state, AppLogItem appLogItem)
+    {
+        try
+        {
+            appLogItem.StateJson = JsonSerializer.Serialize(
+                state,
+                new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    WriteIndented = true
+                });
+        }
+        catch
+        {
+            // don't throw exceptions from logger
+        }
+    }
+
+    private class NoopDisposable : IDisposable
+    {
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private class NoopDisposable : IDisposable
+        protected virtual void Dispose(bool disposing)
         {
-            public void Dispose()
-            {
-            }
         }
     }
 }

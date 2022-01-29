@@ -1,7 +1,6 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Emails
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Emails;
+
+public class TwoFactorSendCodeViewModel : EmailsBase
 {
-    public class TwoFactorSendCodeViewModel : EmailsBase
-    {
-        public string Token { set; get; }
-    }
+    public string Token { set; get; }
 }

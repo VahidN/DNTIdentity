@@ -2,14 +2,18 @@ using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public class AppDataProtectionKeyConfiguration : IEntityTypeConfiguration<AppDataProtectionKey>
 {
-    public class AppDataProtectionKeyConfiguration : IEntityTypeConfiguration<AppDataProtectionKey>
+    public void Configure(EntityTypeBuilder<AppDataProtectionKey> builder)
     {
-        public void Configure(EntityTypeBuilder<AppDataProtectionKey> builder)
+        if (builder == null)
         {
-            builder.ToTable("AppDataProtectionKeys");
-            builder.HasIndex(e => e.FriendlyName).IsUnique();
+            throw new ArgumentNullException(nameof(builder));
         }
+
+        builder.ToTable("AppDataProtectionKeys");
+        builder.HasIndex(e => e.FriendlyName).IsUnique();
     }
 }

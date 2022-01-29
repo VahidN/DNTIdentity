@@ -1,10 +1,9 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public enum ActiveDatabase
 {
-    public enum ActiveDatabase
-    {
-        LocalDb,
-        SqlServer,
-        InMemoryDatabase,
-        SQLite
-    }
+    LocalDb,
+    SqlServer,
+    InMemoryDatabase,
+    SQLite
 }

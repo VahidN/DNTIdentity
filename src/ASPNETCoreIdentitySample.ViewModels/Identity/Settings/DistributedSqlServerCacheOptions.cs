@@ -1,9 +1,8 @@
-namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class DistributedSqlServerCacheOptions
 {
-    public class DistributedSqlServerCacheOptions
-    {
-        public string ConnectionString { set; get; }
-        public string TableName { set; get; }
-        public string SchemaName { set; get; }
-    }
+    public string ConnectionString { set; get; }
+    public string TableName { set; get; }
+    public string SchemaName { set; get; }
 }

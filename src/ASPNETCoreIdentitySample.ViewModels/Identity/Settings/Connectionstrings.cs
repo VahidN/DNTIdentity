@@ -1,9 +1,8 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class Connectionstrings
 {
-    public class Connectionstrings
-    {
-        public SqlServer SqlServer { get; set; }
-        public Localdb LocalDb { get; set; }
-        public SQLite SQLite { get; set; }
-    }
+    public SqlServer SqlServer { get; set; }
+    public Localdb LocalDb { get; set; }
+    public SQLite SQLite { get; set; }
 }

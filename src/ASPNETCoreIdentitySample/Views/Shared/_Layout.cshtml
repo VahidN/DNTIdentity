@@ -4,87 +4,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@pageTitle</title>
-    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true"/>
 </head>
 <body>
-    <div class="navbar bg-dark navbar-dark navbar-expand-sm fixed-top">
-        <div class="container">
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand d-none d-sm-inline-block">DNT Identity</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse"
+<div class="navbar bg-dark navbar-dark navbar-expand-sm fixed-top">
+    <div class="container">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand d-none d-sm-inline-block">DNT Identity</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#myToggle" aria-controls="myToggle" aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="myToggle">
-                <div class="navbar-nav ml-2">
-                        <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">
-                            <span class="fas fa-home" aria-hidden="true"></span>
-                            خانه
-                        </a>
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="myToggle">
+            <div class="navbar-nav ml-2">
+                <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="fas fa-home" aria-hidden="true"></span>
+                    خانه
+                </a>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <partial name="_UserMenu"/>
+                <partial name="_ReportsMenu"/>
+                if (User.IsInRole(ConstantRoles.Admin))
+                {
+                    <partial name="_AdminMenu"/>
+                }
+            }
+            else
+            {
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" asp-area="@AreaConstants.IdentityArea" asp-controller="Login" asp-action="Index">
+                        <span class="fas fa-sign-in-alt" aria-hidden="true"></span>
+                        ورود
+                    </a>
+                    <a class="nav-item nav-link" asp-area="@AreaConstants.IdentityArea" asp-controller="Register" asp-action="Index">
+                        <span class="fas fa-plug" aria-hidden="true"></span>
+                        ثبت نام
+                    </a>
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <partial name="_UserMenu" />
-                    <partial name="_ReportsMenu" />
-                    if (User.IsInRole(ConstantRoles.Admin))
-                    {
-                        <partial name="_AdminMenu" />
-                    }
-                }
-                else
-                {
-                    <div class="navbar-nav">
-                            <a class="nav-item nav-link" asp-area="@AreaConstants.IdentityArea" asp-controller="Login" asp-action="Index">
-                                <span class="fas fa-sign-in-alt" aria-hidden="true"></span>
-                                ورود
-                            </a>
-                            <a class="nav-item nav-link" asp-area="@AreaConstants.IdentityArea" asp-controller="Register" asp-action="Index">
-                                <span class="fas fa-plug" aria-hidden="true"></span>
-                                ثبت نام
-                            </a>
-                    </div>
-                }
-            </div>
+            }
         </div>
     </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mt-5 pt-5">
+            <breadcrumb asp-homepage-title="خانه"
+                        asp-bootstrap-version="V4"
+                        asp-homepage-url="@Url.Action("Index", "Home", new { area = "" })"
+                        asp-homepage-glyphicon="fas fa-home">
+            </breadcrumb>
+        </div>
+    </div>
+</div>
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-md-9 order-md-9">
+            @RenderBody()
+        </div>
+        <div class="col-md-3 order-md-3">
+            <partial name="_SidebarMenu"/>
+        </div>
+    </div>
+</div>
+<footer id="footer" dir="ltr" class="navbar bg-light navbar-light navbar-expand-sm fixed-bottom">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-5 pt-5">
-                <breadcrumb asp-homepage-title="خانه"
-                            asp-bootstrap-version="V4"
-                            asp-homepage-url="@Url.Action("Index", "Home", values: new { area = "" })"
-                            asp-homepage-glyphicon="fas fa-home"></breadcrumb>
-            </div>
+        <div class="text-center footer-text">
+            <span class="copyright-text">
+                <span class="fas fa-heart" style="color:DarkRed" aria-hidden="true"></span>
+                <a href="http://www.dntips.ir/" target="_blank">DNT, 2017</a>
+            </span>
         </div>
     </div>
-    <div class="container mb-5">
-        <div class="row">
-            <div class="col-md-9 order-md-9">
-                @RenderBody()
-            </div>
-            <div class="col-md-3 order-md-3">
-                <partial name="_SidebarMenu" />
-            </div>
-        </div>
-    </div>
-    <footer id="footer" dir="ltr" class="navbar bg-light navbar-light navbar-expand-sm fixed-bottom">
-        <div class="container">
-            <div class="text-center footer-text">
-                <span class="copyright-text">
-                    <span class="fas fa-heart" style="color:DarkRed" aria-hidden="true"></span>
-                    <a href="http://www.dotnettips.info/" target="_blank">DNT, 2017</a>
-                </span>
-            </div>
-        </div>
-    </footer>
-    <script src="~/js/site.min.js" type="text/javascript" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+</footer>
+<script src="~/js/site.min.js" type="text/javascript" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", false)
 </body>
 
 </html>

@@ -1,72 +1,103 @@
-using System;
 using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.Common.WebToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-namespace ASPNETCoreIdentitySample.DataLayer.SQLite
+namespace ASPNETCoreIdentitySample.DataLayer.SQLite;
+
+public static class SQLiteServiceCollectionExtensions
 {
-    public static class SQLiteServiceCollectionExtensions
+    public static IServiceCollection AddConfiguredSQLiteDbContext(this IServiceCollection services,
+        SiteSettings siteSettings)
     {
-        public static IServiceCollection AddConfiguredSQLiteDbContext(this IServiceCollection services,
-            SiteSettings siteSettings)
+        services.AddScoped<IUnitOfWork>(serviceProvider =>
         {
-            services.AddScoped<IUnitOfWork>(serviceProvider =>
-                serviceProvider.GetRequiredService<ApplicationDbContext>());
-            services.AddEntityFrameworkSqlite(); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            services.AddDbContextPool<ApplicationDbContext, SQLiteDbContext>(
-                (serviceProvider, optionsBuilder) => optionsBuilder.UseConfiguredSQLite(siteSettings, serviceProvider));
-            return services;
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            SetCascadeOnSaveChanges(context);
+            return context;
+        });
+        services.AddDbContextPool<ApplicationDbContext, SQLiteDbContext>(
+            (serviceProvider, optionsBuilder) => optionsBuilder.UseConfiguredSQLite(siteSettings, serviceProvider));
+        return services;
+    }
+
+    private static void SetCascadeOnSaveChanges(DbContext context)
+    {
+        // To fix https://github.com/dotnet/efcore/issues/19786
+        context.ChangeTracker.CascadeDeleteTiming = CascadeTiming.OnSaveChanges;
+        context.ChangeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
+    }
+
+    public static void UseConfiguredSQLite(
+        this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
+    {
+        if (optionsBuilder == null)
+        {
+            throw new ArgumentNullException(nameof(optionsBuilder));
         }
 
-        public static void UseConfiguredSQLite(
-            this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
+        if (siteSettings == null)
         {
-            var connectionString = siteSettings.GetSQLiteDbConnectionString();
-            optionsBuilder.UseSqlite(
-                connectionString,
-                sqlServerOptionsBuilder =>
-                {
-                    sqlServerOptionsBuilder.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
-                    sqlServerOptionsBuilder.MigrationsAssembly(typeof(SQLiteServiceCollectionExtensions).Assembly
-                        .FullName);
-                });
-            optionsBuilder
-                .UseInternalServiceProvider(
-                    serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor());
-            optionsBuilder.ConfigureWarnings(warnings =>
+            throw new ArgumentNullException(nameof(siteSettings));
+        }
+
+        var connectionString = siteSettings.GetSQLiteDbConnectionString();
+        optionsBuilder.UseSqlite(
+            connectionString,
+            sqlServerOptionsBuilder =>
             {
-                // ...
+                sqlServerOptionsBuilder.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
+                sqlServerOptionsBuilder.MigrationsAssembly(typeof(SQLiteServiceCollectionExtensions).Assembly
+                    .FullName);
             });
-        }
-
-        public static string GetSQLiteDbConnectionString(this SiteSettings siteSettingsValue)
+        optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor(),
+            serviceProvider.GetRequiredService<AuditableEntitiesInterceptor>());
+        optionsBuilder.ConfigureWarnings(warnings =>
         {
-            if (siteSettingsValue == null)
-            {
-                throw new ArgumentNullException(nameof(siteSettingsValue));
-            }
+            warnings.Log(
+                (CoreEventId.LazyLoadOnDisposedContextWarning, LogLevel.Warning),
+                (CoreEventId.DetachedLazyLoadingWarning, LogLevel.Warning),
+                (CoreEventId.ManyServiceProvidersCreatedWarning, LogLevel.Warning),
+                (CoreEventId.SensitiveDataLoggingEnabledWarning, LogLevel.Information)
+            );
+        });
+        optionsBuilder.EnableSensitiveDataLogging().EnableDetailedErrors();
+    }
 
-            switch (siteSettingsValue.ActiveDatabase)
-            {
-                case ActiveDatabase.SQLite:
-                    return siteSettingsValue.ConnectionStrings
-                        .SQLite
-                        .ApplicationDbContextConnection
-                        .ReplaceDataDirectoryInConnectionString();
-
-                default:
-                    throw new NotSupportedException(
-                        "Please set the ActiveDatabase in appsettings.json file to `SQLite`.");
-            }
-        }
-
-        public static string ReplaceDataDirectoryInConnectionString(this string connectionString)
+    public static string GetSQLiteDbConnectionString(this SiteSettings siteSettingsValue)
+    {
+        if (siteSettingsValue == null)
         {
-            return connectionString.Replace("|DataDirectory|", ServerInfo.GetAppDataFolderPath());
+            throw new ArgumentNullException(nameof(siteSettingsValue));
         }
+
+        switch (siteSettingsValue.ActiveDatabase)
+        {
+            case ActiveDatabase.SQLite:
+                return siteSettingsValue.ConnectionStrings
+                    .SQLite
+                    .ApplicationDbContextConnection
+                    .ReplaceDataDirectoryInConnectionString();
+
+            default:
+                throw new NotSupportedException(
+                    "Please set the ActiveDatabase in appsettings.json file to `SQLite`.");
+        }
+    }
+
+    public static string ReplaceDataDirectoryInConnectionString(this string connectionString)
+    {
+        if (connectionString == null)
+        {
+            return null;
+        }
+
+        return connectionString.Replace("|DataDirectory|", ServerInfo.GetAppDataFolderPath(),
+            StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities;
 using ASPNETCoreIdentitySample.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASPNETCoreIdentitySample.Services
+namespace ASPNETCoreIdentitySample.Services;
+
+public class EfCategoryService : ICategoryService
 {
-    public class EfCategoryService : ICategoryService
+    private readonly DbSet<Category> _categories;
+    private readonly IUnitOfWork _uow;
+
+    public EfCategoryService(IUnitOfWork uow)
     {
-        private readonly IUnitOfWork _uow;
-        private readonly DbSet<Category> _categories;
+        _uow = uow ?? throw new ArgumentNullException(nameof(uow));
 
-        public EfCategoryService(IUnitOfWork uow)
-        {
-            _uow = uow ?? throw new ArgumentNullException(nameof(uow));
+        _categories = _uow.Set<Category>();
+    }
 
-            _categories = _uow.Set<Category>();
-        }
+    public void AddNewCategory(Category category)
+    {
+        _uow.Set<Category>().Add(category);
+    }
 
-        public void AddNewCategory(Category category)
-        {
-            _categories.Add(category);
-        }
-
-        public IList<Category> GetAllCategories()
-        {
-            return _categories.ToList();
-        }
+    public IList<Category> GetAllCategories()
+    {
+        return _categories.ToList();
     }
 }

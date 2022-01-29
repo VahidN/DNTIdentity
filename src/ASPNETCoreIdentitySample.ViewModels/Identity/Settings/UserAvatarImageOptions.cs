@@ -1,8 +1,7 @@
-namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class UserAvatarImageOptions
 {
-    public class UserAvatarImageOptions
-    {
-        public int MaxWidth { set; get; }
-        public int MaxHeight { set; get; }
-    }
+    public int MaxWidth { set; get; }
+    public int MaxHeight { set; get; }
 }

@@ -1,60 +1,60 @@
-﻿using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+﻿using System.Security.Claims;
+using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 
-namespace ASPNETCoreIdentitySample.Services.Identity
+namespace ASPNETCoreIdentitySample.Services.Identity;
+
+/// <summary>
+///     More info: http://www.dntips.ir/post/2581
+/// </summary>
+public class SecurityTrimmingService : ISecurityTrimmingService
 {
-    /// <summary>
-    /// More info: http://www.dotnettips.info/post/2581
-    /// </summary>
-    public class SecurityTrimmingService : ISecurityTrimmingService
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IMvcActionsDiscoveryService _mvcActionsDiscoveryService;
+
+    public SecurityTrimmingService(
+        IHttpContextAccessor httpContextAccessor,
+        IMvcActionsDiscoveryService mvcActionsDiscoveryService)
     {
-        private readonly HttpContext _httpContext;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IMvcActionsDiscoveryService _mvcActionsDiscoveryService;
+        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        _mvcActionsDiscoveryService = mvcActionsDiscoveryService ??
+                                      throw new ArgumentNullException(nameof(mvcActionsDiscoveryService));
+    }
 
-        public SecurityTrimmingService(
-            IHttpContextAccessor httpContextAccessor,
-            IMvcActionsDiscoveryService mvcActionsDiscoveryService)
+    public bool CanCurrentUserAccess(string area, string controller, string action)
+    {
+        return _httpContextAccessor.HttpContext != null &&
+               CanUserAccess(_httpContextAccessor.HttpContext.User, area, controller, action);
+    }
+
+    public bool CanUserAccess(ClaimsPrincipal user, string area, string controller, string action)
+    {
+        var currentClaimValue = $"{area}:{controller}:{action}";
+        var securedControllerActions =
+            _mvcActionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission);
+        if (securedControllerActions.SelectMany(x => x.MvcActions)
+            .All(x => !string.Equals(x.ActionId, currentClaimValue, StringComparison.Ordinal)))
         {
-            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            _httpContext = _httpContextAccessor.HttpContext;
-            _mvcActionsDiscoveryService = mvcActionsDiscoveryService ?? throw new ArgumentNullException(nameof(mvcActionsDiscoveryService));
+            throw new KeyNotFoundException(
+                $"The `secured` area={area}/controller={controller}/action={action} with `ConstantPolicies.DynamicPermission` policy not found. Please check you have entered the area/controller/action names correctly and also it's decorated with the correct security policy.");
         }
 
-        public bool CanCurrentUserAccess(string area, string controller, string action)
+        if (user?.Identity is null || !user.Identity.IsAuthenticated)
         {
-            return _httpContext != null && CanUserAccess(_httpContext.User, area, controller, action);
+            return false;
         }
 
-        public bool CanUserAccess(ClaimsPrincipal user, string area, string controller, string action)
+        if (user.IsInRole(ConstantRoles.Admin))
         {
-            var currentClaimValue = $"{area}:{controller}:{action}";
-            var securedControllerActions = _mvcActionsDiscoveryService.GetAllSecuredControllerActionsWithPolicy(ConstantPolicies.DynamicPermission);
-            if (!securedControllerActions.SelectMany(x => x.MvcActions).Any(x => x.ActionId == currentClaimValue))
-            {
-                throw new KeyNotFoundException($"The `secured` area={area}/controller={controller}/action={action} with `ConstantPolicies.DynamicPermission` policy not found. Please check you have entered the area/controller/action names correctly and also it's decorated with the correct security policy.");
-            }
-
-            if (!user.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            if (user.IsInRole(ConstantRoles.Admin))
-            {
-                // Admin users have access to all of the pages.
-                return true;
-            }
-
-            // Check for dynamic permissions
-            // A user gets its permissions claims from the `ApplicationClaimsPrincipalFactory` class automatically and it includes the role claims too.
-            return user.HasClaim(claim => claim.Type == ConstantPolicies.DynamicPermissionClaimType &&
-                                          claim.Value == currentClaimValue);
+            // Admin users have access to all of the pages.
+            return true;
         }
+
+        // Check for dynamic permissions
+        // A user gets its permissions claims from the `ApplicationClaimsPrincipalFactory` class automatically and it includes the role claims too.
+        return user.HasClaim(claim =>
+            string.Equals(claim.Type, ConstantPolicies.DynamicPermissionClaimType, StringComparison.Ordinal) &&
+            string.Equals(claim.Value, currentClaimValue, StringComparison.Ordinal));
     }
 }

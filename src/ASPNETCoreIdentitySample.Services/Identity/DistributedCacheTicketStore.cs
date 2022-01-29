@@ -1,62 +1,63 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace ASPNETCoreIdentitySample.Services.Identity
+namespace ASPNETCoreIdentitySample.Services.Identity;
+
+/// <summary>
+///     More info: http://www.dntips.ir/post/2581
+///     And http://www.dntips.ir/post/2575
+/// </summary>
+public class DistributedCacheTicketStore : ITicketStore
 {
-    /// <summary>
-    /// More info: http://www.dotnettips.info/post/2581
-    /// And http://www.dotnettips.info/post/2575
-    /// </summary>
-    public class DistributedCacheTicketStore : ITicketStore
+    private const string KeyPrefix = "AuthSessionStore-";
+    private readonly IDistributedCache _cache;
+    private readonly IDataSerializer<AuthenticationTicket> _ticketSerializer = TicketSerializer.Default;
+
+    public DistributedCacheTicketStore(IDistributedCache cache)
     {
-        private const string KeyPrefix = "AuthSessionStore-";
-        private readonly IDistributedCache _cache;
-        private readonly IDataSerializer<AuthenticationTicket> _ticketSerializer = TicketSerializer.Default;
+        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    }
 
-        public DistributedCacheTicketStore(IDistributedCache cache)
+    public async Task<string> StoreAsync(AuthenticationTicket ticket)
+    {
+        var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
+        await RenewAsync(key, ticket);
+        return key;
+    }
+
+    public Task RenewAsync(string key, AuthenticationTicket ticket)
+    {
+        if (ticket == null)
         {
-            _cache = cache ?? throw new ArgumentNullException(nameof(_cache));
+            throw new ArgumentNullException(nameof(ticket));
+        }
+        // NOTE: Using `services.enableImmediateLogout();` will cause this method to be called per each request.
+
+        var options = new DistributedCacheEntryOptions();
+
+        var expiresUtc = ticket.Properties.ExpiresUtc;
+        if (expiresUtc.HasValue)
+        {
+            options.SetAbsoluteExpiration(expiresUtc.Value);
         }
 
-        public async Task<string> StoreAsync(AuthenticationTicket ticket)
+        if (ticket.Properties.AllowRefresh ?? false)
         {
-            var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
-            await RenewAsync(key, ticket);
-            return key;
+            options.SetSlidingExpiration(TimeSpan.FromMinutes(30)); // TODO: configurable.
         }
 
-        public Task RenewAsync(string key, AuthenticationTicket ticket)
-        {
-            // NOTE: Using `services.enableImmediateLogout();` will cause this method to be called per each request.
+        return _cache.SetAsync(key, _ticketSerializer.Serialize(ticket), options);
+    }
 
-            var options = new DistributedCacheEntryOptions();
+    public async Task<AuthenticationTicket> RetrieveAsync(string key)
+    {
+        var value = await _cache.GetAsync(key);
+        return value != null ? _ticketSerializer.Deserialize(value) : null;
+    }
 
-            var expiresUtc = ticket.Properties.ExpiresUtc;
-            if (expiresUtc.HasValue)
-            {
-                options.SetAbsoluteExpiration(expiresUtc.Value);
-            }
-
-            if (ticket.Properties.AllowRefresh ?? false)
-            {
-                options.SetSlidingExpiration(TimeSpan.FromMinutes(30)); // TODO: configurable.
-            }
-
-            return _cache.SetAsync(key, _ticketSerializer.Serialize(ticket), options);
-        }
-
-        public async Task<AuthenticationTicket> RetrieveAsync(string key)
-        {
-            var value = await _cache.GetAsync(key);
-            return value != null ? _ticketSerializer.Deserialize(value) : null;
-        }
-
-        public Task RemoveAsync(string key)
-        {
-            return _cache.RemoveAsync(key);
-        }
+    public Task RemoveAsync(string key)
+    {
+        return _cache.RemoveAsync(key);
     }
 }

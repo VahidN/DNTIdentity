@@ -1,166 +1,164 @@
-﻿using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
+using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
-using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
-using DNTCommon.Web.Core;
 
-namespace ASPNETCoreIdentitySample.Services.Identity
+namespace ASPNETCoreIdentitySample.Services.Identity;
+
+/// <summary>
+///     More info: http://www.dntips.ir/post/2577
+///     And http://www.dntips.ir/post/2578
+/// </summary>
+public class IdentityDbInitializer : IIdentityDbInitializer
 {
-    /// <summary>
-    /// More info: http://www.dotnettips.info/post/2577
-    /// And http://www.dotnettips.info/post/2578
-    /// </summary>
-    public class IdentityDbInitializer : IIdentityDbInitializer
+    private readonly IOptionsSnapshot<SiteSettings> _adminUserSeedOptions;
+    private readonly IApplicationUserManager _applicationUserManager;
+    private readonly ILogger<IdentityDbInitializer> _logger;
+    private readonly IApplicationRoleManager _roleManager;
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    public IdentityDbInitializer(
+        IApplicationUserManager applicationUserManager,
+        IServiceScopeFactory scopeFactory,
+        IApplicationRoleManager roleManager,
+        IOptionsSnapshot<SiteSettings> adminUserSeedOptions,
+        ILogger<IdentityDbInitializer> logger
+    )
     {
-        private readonly IOptionsSnapshot<SiteSettings> _adminUserSeedOptions;
-        private readonly IApplicationUserManager _applicationUserManager;
-        private readonly ILogger<IdentityDbInitializer> _logger;
-        private readonly IApplicationRoleManager _roleManager;
-        private readonly IServiceScopeFactory _scopeFactory;
+        _applicationUserManager = applicationUserManager;
+        ArgumentNullException.ThrowIfNull(applicationUserManager);
 
-        public IdentityDbInitializer(
-            IApplicationUserManager applicationUserManager,
-            IServiceScopeFactory scopeFactory,
-            IApplicationRoleManager roleManager,
-            IOptionsSnapshot<SiteSettings> adminUserSeedOptions,
-            ILogger<IdentityDbInitializer> logger
-            )
+        _scopeFactory = scopeFactory;
+        ArgumentNullException.ThrowIfNull(scopeFactory);
+
+        _roleManager = roleManager;
+        ArgumentNullException.ThrowIfNull(roleManager);
+
+        _adminUserSeedOptions = adminUserSeedOptions;
+        ArgumentNullException.ThrowIfNull(adminUserSeedOptions);
+
+        _logger = logger;
+        ArgumentNullException.ThrowIfNull(logger);
+    }
+
+    /// <summary>
+    ///     Applies any pending migrations for the context to the database.
+    ///     Will create the database if it does not already exist.
+    /// </summary>
+    public void Initialize()
+    {
+        _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
         {
-            _applicationUserManager = applicationUserManager;
-            _applicationUserManager.CheckArgumentIsNull(nameof(_applicationUserManager));
-
-            _scopeFactory = scopeFactory;
-            _scopeFactory.CheckArgumentIsNull(nameof(_scopeFactory));
-
-            _roleManager = roleManager;
-            _roleManager.CheckArgumentIsNull(nameof(_roleManager));
-
-            _adminUserSeedOptions = adminUserSeedOptions;
-            _adminUserSeedOptions.CheckArgumentIsNull(nameof(_adminUserSeedOptions));
-
-            _logger = logger;
-            _logger.CheckArgumentIsNull(nameof(_logger));
-        }
-
-        /// <summary>
-        /// Applies any pending migrations for the context to the database.
-        /// Will create the database if it does not already exist.
-        /// </summary>
-        public void Initialize()
-        {
-            _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
-                {
-                    if (_adminUserSeedOptions.Value.ActiveDatabase == ActiveDatabase.InMemoryDatabase)
-                    {
-                        context.Database.EnsureCreated();
-                    }
-                    else
-                    {
-                        context.Database.Migrate();
-                    }
-                });
-        }
-
-        /// <summary>
-        /// Adds some default values to the IdentityDb
-        /// </summary>
-        public void SeedData()
-        {
-            _scopeFactory.RunScopedService<IIdentityDbInitializer>(identityDbSeedData =>
+            if (_adminUserSeedOptions.Value.ActiveDatabase == ActiveDatabase.InMemoryDatabase)
             {
-                var result = identityDbSeedData.SeedDatabaseWithAdminUserAsync().Result;
-                if (result == IdentityResult.Failed())
-                {
-                    throw new InvalidOperationException(result.DumpErrors());
-                }
-            });
-
-            _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
-            {
-                if (!context.Roles.Any())
-                {
-                    context.Add(new Role(ConstantRoles.Admin));
-                    context.SaveChanges();
-                }
-            });
-        }
-
-        public async Task<IdentityResult> SeedDatabaseWithAdminUserAsync()
-        {
-            var adminUserSeed = _adminUserSeedOptions.Value.AdminUserSeed;
-            adminUserSeed.CheckArgumentIsNull(nameof(adminUserSeed));
-
-            var name = adminUserSeed.Username;
-            var password = adminUserSeed.Password;
-            var email = adminUserSeed.Email;
-            var roleName = adminUserSeed.RoleName;
-
-            var thisMethodName = nameof(SeedDatabaseWithAdminUserAsync);
-
-            var adminUser = await _applicationUserManager.FindByNameAsync(name);
-            if (adminUser != null)
-            {
-                _logger.LogInformation($"{thisMethodName}: adminUser already exists.");
-                return IdentityResult.Success;
-            }
-
-            //Create the `Admin` Role if it does not exist
-            var adminRole = await _roleManager.FindByNameAsync(roleName);
-            if (adminRole == null)
-            {
-                adminRole = new Role(roleName);
-                var adminRoleResult = await _roleManager.CreateAsync(adminRole);
-                if (adminRoleResult == IdentityResult.Failed())
-                {
-                    _logger.LogError($"{thisMethodName}: adminRole CreateAsync failed. {adminRoleResult.DumpErrors()}");
-                    return IdentityResult.Failed();
-                }
+                context.Database.EnsureCreated();
             }
             else
             {
-                _logger.LogInformation($"{thisMethodName}: adminRole already exists.");
+                context.Database.Migrate();
             }
+        });
+    }
 
-            adminUser = new User
+    /// <summary>
+    ///     Adds some default values to the IdentityDb
+    /// </summary>
+    public void SeedData()
+    {
+        _scopeFactory.RunScopedService<IIdentityDbInitializer>(identityDbSeedData =>
+        {
+            var result = identityDbSeedData.SeedDatabaseWithAdminUserAsync().GetAwaiter().GetResult();
+            if (result == IdentityResult.Failed())
             {
-                UserName = name,
-                Email = email,
-                EmailConfirmed = true,
-                IsEmailPublic = true,
-                LockoutEnabled = true
-            };
-            var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password);
-            if (adminUserResult == IdentityResult.Failed())
-            {
-                _logger.LogError($"{thisMethodName}: adminUser CreateAsync failed. {adminUserResult.DumpErrors()}");
-                return IdentityResult.Failed();
+                throw new InvalidOperationException(result.DumpErrors());
             }
+        });
 
-            var setLockoutResult = await _applicationUserManager.SetLockoutEnabledAsync(adminUser, enabled: false);
-            if (setLockoutResult == IdentityResult.Failed())
+        _scopeFactory.RunScopedService<ApplicationDbContext>(context =>
+        {
+            if (!context.Roles.Any())
             {
-                _logger.LogError($"{thisMethodName}: adminUser SetLockoutEnabledAsync failed. {setLockoutResult.DumpErrors()}");
-                return IdentityResult.Failed();
+                context.Add(new Role(ConstantRoles.Admin));
+                context.SaveChanges();
             }
+        });
+    }
 
-            var addToRoleResult = await _applicationUserManager.AddToRoleAsync(adminUser, adminRole.Name);
-            if (addToRoleResult == IdentityResult.Failed())
-            {
-                _logger.LogError($"{thisMethodName}: adminUser AddToRoleAsync failed. {addToRoleResult.DumpErrors()}");
-                return IdentityResult.Failed();
-            }
+    public async Task<IdentityResult> SeedDatabaseWithAdminUserAsync()
+    {
+        var adminUserSeed = _adminUserSeedOptions.Value.AdminUserSeed;
+        ArgumentNullException.ThrowIfNull(adminUserSeed);
 
+        var name = adminUserSeed.Username;
+        var password = adminUserSeed.Password;
+        var email = adminUserSeed.Email;
+        var roleName = adminUserSeed.RoleName;
+
+        var thisMethodName = nameof(SeedDatabaseWithAdminUserAsync);
+
+        var adminUser = await _applicationUserManager.FindByNameAsync(name);
+        if (adminUser != null)
+        {
+            _logger.LogInformationMessage($"{thisMethodName}: adminUser already exists.");
             return IdentityResult.Success;
         }
+
+        //Create the `Admin` Role if it does not exist
+        var adminRole = await _roleManager.FindByNameAsync(roleName);
+        if (adminRole == null)
+        {
+            adminRole = new Role(roleName);
+            var adminRoleResult = await _roleManager.CreateAsync(adminRole);
+            if (adminRoleResult == IdentityResult.Failed())
+            {
+                _logger.LogErrorMessage(
+                    $"{thisMethodName}: adminRole CreateAsync failed. {adminRoleResult.DumpErrors()}");
+                return IdentityResult.Failed();
+            }
+        }
+        else
+        {
+            _logger.LogInformationMessage($"{thisMethodName}: adminRole already exists.");
+        }
+
+        adminUser = new User
+        {
+            UserName = name,
+            Email = email,
+            EmailConfirmed = true,
+            IsEmailPublic = true,
+            LockoutEnabled = true
+        };
+        var adminUserResult = await _applicationUserManager.CreateAsync(adminUser, password);
+        if (adminUserResult == IdentityResult.Failed())
+        {
+            _logger.LogErrorMessage($"{thisMethodName}: adminUser CreateAsync failed. {adminUserResult.DumpErrors()}");
+            return IdentityResult.Failed();
+        }
+
+        var setLockoutResult = await _applicationUserManager.SetLockoutEnabledAsync(adminUser, false);
+        if (setLockoutResult == IdentityResult.Failed())
+        {
+            _logger.LogErrorMessage(
+                $"{thisMethodName}: adminUser SetLockoutEnabledAsync failed. {setLockoutResult.DumpErrors()}");
+            return IdentityResult.Failed();
+        }
+
+        var addToRoleResult = await _applicationUserManager.AddToRoleAsync(adminUser, adminRole.Name);
+        if (addToRoleResult == IdentityResult.Failed())
+        {
+            _logger.LogErrorMessage(
+                $"{thisMethodName}: adminUser AddToRoleAsync failed. {addToRoleResult.DumpErrors()}");
+            return IdentityResult.Failed();
+        }
+
+        return IdentityResult.Success;
     }
 }

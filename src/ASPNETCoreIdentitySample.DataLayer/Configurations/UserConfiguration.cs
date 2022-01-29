@@ -2,13 +2,17 @@ using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        if (builder == null)
         {
-            builder.ToTable("AppUsers");
+            throw new ArgumentNullException(nameof(builder));
         }
+
+        builder.ToTable("AppUsers");
     }
 }

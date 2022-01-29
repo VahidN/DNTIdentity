@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 {
     [DbContext(typeof(MsSqlDbContext))]
@@ -15,16 +17,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
@@ -72,8 +76,9 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("FriendlyName")
                         .HasColumnType("nvarchar(450)");
@@ -87,15 +92,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .IsUnique()
                         .HasFilter("[FriendlyName] IS NOT NULL");
 
-                    b.ToTable("AppDataProtectionKeys");
+                    b.ToTable("AppDataProtectionKeys", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppLogItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
@@ -179,8 +185,9 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -232,15 +239,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AppRoles");
+                    b.ToTable("AppRoles", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -283,15 +291,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AppRoleClaims");
+                    b.ToTable("AppRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -405,15 +414,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("AppUsers", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -456,7 +466,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserClaims");
+                    b.ToTable("AppUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserLogin", b =>
@@ -505,7 +515,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserLogins");
+                    b.ToTable("AppUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserRole", b =>
@@ -548,7 +558,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AppUserRoles");
+                    b.ToTable("AppUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserToken", b =>
@@ -595,15 +605,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AppUserTokens");
+                    b.ToTable("AppUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserUsedPassword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
@@ -645,15 +656,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserUsedPasswords");
+                    b.ToTable("AppUserUsedPasswords", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");

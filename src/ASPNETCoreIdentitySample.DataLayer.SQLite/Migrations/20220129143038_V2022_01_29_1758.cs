@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
-    public partial class V2021_07_31_1234 : Migration
+    public partial class V2022_01_29_1758 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,8 +18,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FriendlyName = table.Column<string>(type: "TEXT", nullable: true),
-                    XmlData = table.Column<string>(type: "TEXT", nullable: true)
+                    FriendlyName = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    XmlData = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -32,16 +34,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     EventId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Url = table.Column<string>(type: "TEXT", nullable: true),
-                    LogLevel = table.Column<string>(type: "TEXT", nullable: true),
-                    Logger = table.Column<string>(type: "TEXT", nullable: true),
-                    Message = table.Column<string>(type: "TEXT", nullable: true),
-                    StateJson = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Url = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    LogLevel = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    Logger = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    Message = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    StateJson = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -56,18 +58,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -79,7 +81,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", maxLength: 449, nullable: false),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 449, nullable: false, collation: "NOCASE"),
                     Value = table.Column<byte[]>(type: "BLOB", nullable: false),
                     ExpiresAtTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SlidingExpirationInSeconds = table.Column<long>(type: "INTEGER", nullable: true),
@@ -96,31 +98,31 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true),
-                    PhotoFileName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true, collation: "NOCASE"),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true, collation: "NOCASE"),
+                    PhotoFileName = table.Column<string>(type: "TEXT", maxLength: 450, nullable: true, collation: "NOCASE"),
                     BirthDate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     LastVisitDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     IsEmailPublic = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", nullable: true),
+                    Location = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
                     IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
+                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true, collation: "NOCASE"),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
                     PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     LockoutEnd = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -138,14 +140,14 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false, collation: "NOCASE"),
+                    Title = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -160,17 +162,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -189,17 +191,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
-                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -216,17 +218,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 name: "AppUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE"),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -246,12 +248,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -277,17 +279,17 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    Name = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                    Value = table.Column<string>(type: "TEXT", nullable: true, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -306,14 +308,14 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    HashedPassword = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
+                    HashedPassword = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false, collation: "NOCASE"),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -334,15 +336,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 450, nullable: false, collation: "NOCASE"),
                     Price = table.Column<decimal>(type: "decimal(18, 6)", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    CreatedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    CreatedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     CreatedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true),
-                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    ModifiedByBrowserName = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true, collation: "NOCASE"),
+                    ModifiedByIp = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true, collation: "NOCASE"),
                     ModifiedByUserId = table.Column<int>(type: "INTEGER", nullable: true),
                     ModifiedDateTime = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },

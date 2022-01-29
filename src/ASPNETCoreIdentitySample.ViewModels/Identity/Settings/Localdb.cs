@@ -1,8 +1,7 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class Localdb
 {
-    public class Localdb
-    {
-        public string InitialCatalog { get; set; }
-        public string AttachDbFilename { get; set; }
-    }
+    public string InitialCatalog { get; set; }
+    public string AttachDbFilename { get; set; }
 }

@@ -1,39 +1,39 @@
 [
-    //More info: http://www.dotnettips.info/post/2471
-    {
-        "outputFileName": "wwwroot/css/site.min.css",
-        "inputFiles": [
-            "node_modules/bootstrap/dist/css/bootstrap.min.css",
-            "node_modules/@ghalamborm/bootstrap4-rtl/bootstrap-rtl.css",
-            "node_modules/components-font-awesome/css/solid.min.css",
-            "node_modules/components-font-awesome/css/fontawesome.min.css",
-            "Content/custom.css"
-        ],
-        "minify": {
-            "enabled": true,
-            "renameLocals": false,
-            "adjustRelativePaths": false
-        },
-        "sourceMap": false
+  //More info: http://www.dntips.ir/post/2471
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "node_modules/bootstrap/dist/css/bootstrap.min.css",
+      "node_modules/@ghalamborm/bootstrap4-rtl/bootstrap-rtl.css",
+      "node_modules/components-font-awesome/css/solid.min.css",
+      "node_modules/components-font-awesome/css/fontawesome.min.css",
+      "Content/custom.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": false,
+      "adjustRelativePaths": false
     },
-    {
-        "outputFileName": "wwwroot/js/site.min.js",
-        "inputFiles": [
-            "node_modules/jquery/dist/jquery.min.js",
-            "node_modules/popper.js/dist/umd/popper.min.js",
-            "node_modules/jquery-validation/dist/jquery.validate.min.js",
-            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
-            "node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
-            "node_modules/bootstrap/dist/js/bootstrap.min.js",
-            "scripts/jquery.bootstrap-modal-confirm.js",
-            "scripts/jquery.bootstrap-modal-alert.js",
-            "scripts/jquery.bootstrap-modal-ajax-form.js",
-            "scripts/custom.js"
-        ],
-        "minify": {
-            "enabled": true,
-            "renameLocals": true
-        },
-        "sourceMap": false
-    }
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.min.js",
+      "node_modules/popper.js/dist/umd/popper.min.js",
+      "node_modules/jquery-validation/dist/jquery.validate.min.js",
+      "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
+      "node_modules/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
+      "node_modules/bootstrap/dist/js/bootstrap.min.js",
+      "scripts/jquery.bootstrap-modal-confirm.js",
+      "scripts/jquery.bootstrap-modal-alert.js",
+      "scripts/jquery.bootstrap-modal-ajax-form.js",
+      "scripts/custom.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
 ]

@@ -1,8 +1,7 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class Logging
 {
-    public class Logging
-    {
-        public bool IncludeScopes { get; set; }
-        public Loglevel LogLevel { get; set; }
-    }
+    public bool IncludeScopes { get; set; }
+    public Loglevel LogLevel { get; set; }
 }

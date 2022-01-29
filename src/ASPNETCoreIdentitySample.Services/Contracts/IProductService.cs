@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using ASPNETCoreIdentitySample.Entities;
+﻿using ASPNETCoreIdentitySample.Entities;
 
-namespace ASPNETCoreIdentitySample.Services.Contracts
+namespace ASPNETCoreIdentitySample.Services.Contracts;
+
+public interface IProductService
 {
-    public interface IProductService
-    {
-        void AddNewProduct(Product product);
-        IList<Product> GetAllProducts();
-    }
+    void AddNewProduct(Product product);
+    IList<Product> GetAllProducts();
 }

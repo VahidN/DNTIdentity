@@ -1,8 +1,6 @@
-namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
-{
+namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 
-    public class SQLite
-    {
-        public string ApplicationDbContextConnection { get; set; }
-    }
+public class SQLite
+{
+    public string ApplicationDbContextConnection { get; set; }
 }

@@ -1,10 +1,9 @@
-﻿namespace ASPNETCoreIdentitySample.Areas.Test
+﻿namespace ASPNETCoreIdentitySample.Areas.Test;
+
+/// <summary>
+///     More info: http://www.dntips.ir/post/2550
+/// </summary>
+public static class TestAreaConstants
 {
-    /// <summary>
-    /// More info: http://www.dotnettips.info/post/2550
-    /// </summary>
-    public static class TestAreaConstants
-    {
-        public const string TestArea = "Test";
-    }
+    public const string TestArea = "Test";
 }

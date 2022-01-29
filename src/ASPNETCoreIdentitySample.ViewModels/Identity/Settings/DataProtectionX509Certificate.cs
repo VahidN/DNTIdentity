@@ -1,8 +1,7 @@
-namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings
+namespace ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
+
+public class DataProtectionX509Certificate
 {
-    public class DataProtectionX509Certificate
-    {
-        public string FileName { set; get; }
-        public string Password { set; get; }
-    }
+    public string FileName { set; get; }
+    public string Password { set; get; }
 }

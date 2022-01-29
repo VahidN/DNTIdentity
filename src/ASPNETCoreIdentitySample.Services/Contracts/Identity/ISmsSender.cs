@@ -1,17 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿namespace ASPNETCoreIdentitySample.Services.Contracts.Identity;
 
-namespace ASPNETCoreIdentitySample.Services.Contracts.Identity
+public interface ISmsSender
 {
-    public interface ISmsSender
-    {
-        #region BaseClass
+    #region BaseClass
 
-        Task SendSmsAsync(string number, string message);
+    Task SendSmsAsync(string number, string message);
 
-        #endregion
+    #endregion
 
-        #region CustomMethods
+    #region CustomMethods
 
-        #endregion
-    }
+    #endregion
 }

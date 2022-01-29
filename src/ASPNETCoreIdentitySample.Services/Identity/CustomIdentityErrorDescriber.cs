@@ -1,208 +1,210 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ASPNETCoreIdentitySample.Services.Identity
+namespace ASPNETCoreIdentitySample.Services.Identity;
+
+/// <summary>
+///     More info: http://www.dntips.ir/post/2582
+/// </summary>
+public class CustomIdentityErrorDescriber : IdentityErrorDescriber
 {
-    /// <summary>
-    /// More info: http://www.dotnettips.info/post/2582
-    /// </summary>
-    public class CustomIdentityErrorDescriber : IdentityErrorDescriber
+    public override IdentityError ConcurrencyFailure()
     {
-        public override IdentityError ConcurrencyFailure()
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(ConcurrencyFailure),
-                Description = "رکورد جاری پیشتر ویرایش شده‌است و تغییرات شما آن‌را بازنویسی خواهد کرد."
-            };
-        }
+            Code = nameof(ConcurrencyFailure),
+            Description = "رکورد جاری پیشتر ویرایش شده‌است و تغییرات شما آن‌را بازنویسی خواهد کرد."
+        };
+    }
 
-        public override IdentityError DefaultError()
+    public override IdentityError DefaultError()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(DefaultError),
-                Description = "خطایی رخ داده‌است."
-            };
-        }
+            Code = nameof(DefaultError),
+            Description = "خطایی رخ داده‌است."
+        };
+    }
 
-        public override IdentityError DuplicateEmail(string email)
+    public override IdentityError DuplicateEmail(string email)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(DuplicateEmail),
-                Description = string.Format("ایمیل '{0}' هم اکنون مورد استفاده است.", email)
-            };
-        }
+            Code = nameof(DuplicateEmail),
+            Description = string.Format(CultureInfo.InvariantCulture, "ایمیل '{0}' هم اکنون مورد استفاده است.", email)
+        };
+    }
 
-        public override IdentityError DuplicateRoleName(string role)
+    public override IdentityError DuplicateRoleName(string role)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(DuplicateRoleName),
-                Description = string.Format("نقش '{0}' هم اکنون مورد استفاده‌است.", role)
-            };
-        }
+            Code = nameof(DuplicateRoleName),
+            Description = string.Format(CultureInfo.InvariantCulture, "نقش '{0}' هم اکنون مورد استفاده‌است.", role)
+        };
+    }
 
-        public override IdentityError DuplicateUserName(string userName)
+    public override IdentityError DuplicateUserName(string userName)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(DuplicateUserName),
-                Description = string.Format("نام کاربری '{0}' هم اکنون مورد استفاده‌است.", userName)
-            };
-        }
+            Code = nameof(DuplicateUserName),
+            Description = string.Format(CultureInfo.InvariantCulture, "نام کاربری '{0}' هم اکنون مورد استفاده‌است.",
+                userName)
+        };
+    }
 
-        public override IdentityError InvalidEmail(string email)
+    public override IdentityError InvalidEmail(string email)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(InvalidEmail),
-                Description = string.Format("ایمیل '{0}' معتبر نیست.", email)
-            };
-        }
+            Code = nameof(InvalidEmail),
+            Description = string.Format(CultureInfo.InvariantCulture, "ایمیل '{0}' معتبر نیست.", email)
+        };
+    }
 
-        public override IdentityError InvalidRoleName(string role)
+    public override IdentityError InvalidRoleName(string role)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(InvalidRoleName),
-                Description = string.Format("نقش '{0}' معتبر نیست.", role)
-            };
-        }
+            Code = nameof(InvalidRoleName),
+            Description = string.Format(CultureInfo.InvariantCulture, "نقش '{0}' معتبر نیست.", role)
+        };
+    }
 
-        public override IdentityError InvalidToken()
+    public override IdentityError InvalidToken()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(InvalidToken),
-                Description = "توکن غیر معتبر."
-            };
-        }
+            Code = nameof(InvalidToken),
+            Description = "توکن غیر معتبر."
+        };
+    }
 
-        public override IdentityError InvalidUserName(string userName)
+    public override IdentityError InvalidUserName(string userName)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(InvalidUserName),
-                Description = string.Format("نام کاربری '{0}' معتبر نیست و تنها می‌تواند حاوی حروف و یا ارقام باشد.", userName)
-            };
-        }
+            Code = nameof(InvalidUserName),
+            Description = string.Format(CultureInfo.InvariantCulture,
+                "نام کاربری '{0}' معتبر نیست و تنها می‌تواند حاوی حروف و یا ارقام باشد.",
+                userName)
+        };
+    }
 
-        public override IdentityError LoginAlreadyAssociated()
+    public override IdentityError LoginAlreadyAssociated()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(LoginAlreadyAssociated),
-                Description = "این کاربر پیشتر اضافه شده‌است."
-            };
-        }
+            Code = nameof(LoginAlreadyAssociated),
+            Description = "این کاربر پیشتر اضافه شده‌است."
+        };
+    }
 
-        public override IdentityError PasswordMismatch()
+    public override IdentityError PasswordMismatch()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordMismatch),
-                Description = "کلمه‌ی عبور نامعتبر."
-            };
-        }
+            Code = nameof(PasswordMismatch),
+            Description = "کلمه‌ی عبور نامعتبر."
+        };
+    }
 
-        public override IdentityError PasswordRequiresDigit()
+    public override IdentityError PasswordRequiresDigit()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresDigit),
-                Description = "کلمه‌ی عبور باید حداقل دارای یک رقم بین 0 تا 9 باشد."
-            };
-        }
+            Code = nameof(PasswordRequiresDigit),
+            Description = "کلمه‌ی عبور باید حداقل دارای یک رقم بین 0 تا 9 باشد."
+        };
+    }
 
-        public override IdentityError PasswordRequiresLower()
+    public override IdentityError PasswordRequiresLower()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresLower),
-                Description = "کلمه‌ی عبور باید حداقل دارای یک حرف کوچک انگلیسی باشد."
-            };
-        }
+            Code = nameof(PasswordRequiresLower),
+            Description = "کلمه‌ی عبور باید حداقل دارای یک حرف کوچک انگلیسی باشد."
+        };
+    }
 
-        public override IdentityError PasswordRequiresNonAlphanumeric()
+    public override IdentityError PasswordRequiresNonAlphanumeric()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresNonAlphanumeric),
-                Description = "کلمه‌ی عبور باید حداقل دارای یک حرف خارج از حروف الفبای انگلیسی و همچنین اعداد باشد."
-            };
-        }
+            Code = nameof(PasswordRequiresNonAlphanumeric),
+            Description = "کلمه‌ی عبور باید حداقل دارای یک حرف خارج از حروف الفبای انگلیسی و همچنین اعداد باشد."
+        };
+    }
 
-        public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
+    public override IdentityError PasswordRequiresUniqueChars(int uniqueChars)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresUniqueChars),
-                Description = "کلمه‌ی عبور باید حداقل داراى {0} حرف متفاوت باشد."
-            };
-        }
+            Code = nameof(PasswordRequiresUniqueChars),
+            Description = "کلمه‌ی عبور باید حداقل داراى {0} حرف متفاوت باشد."
+        };
+    }
 
-        public override IdentityError PasswordRequiresUpper()
+    public override IdentityError PasswordRequiresUpper()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordRequiresUpper),
-                Description = "کلمه‌ی عبور باید حداقل دارای یک حرف بزرگ انگلیسی باشد."
-            };
-        }
+            Code = nameof(PasswordRequiresUpper),
+            Description = "کلمه‌ی عبور باید حداقل دارای یک حرف بزرگ انگلیسی باشد."
+        };
+    }
 
-        public override IdentityError PasswordTooShort(int length)
+    public override IdentityError PasswordTooShort(int length)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(PasswordTooShort),
-                Description = string.Format("کلمه‌ی عبور باید حداقل {0} حرف باشد.", length)
-            };
-        }
+            Code = nameof(PasswordTooShort),
+            Description = string.Format(CultureInfo.InvariantCulture, "کلمه‌ی عبور باید حداقل {0} حرف باشد.", length)
+        };
+    }
 
-        public override IdentityError RecoveryCodeRedemptionFailed()
+    public override IdentityError RecoveryCodeRedemptionFailed()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(RecoveryCodeRedemptionFailed),
-                Description = "بازیابى با شکست مواجه شد."
-            };
-        }
+            Code = nameof(RecoveryCodeRedemptionFailed),
+            Description = "بازیابى با شکست مواجه شد."
+        };
+    }
 
-        public override IdentityError UserAlreadyHasPassword()
+    public override IdentityError UserAlreadyHasPassword()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(UserAlreadyHasPassword),
-                Description = "کلمه‌ی عبور کاربر پیشتر تنظیم شده‌است."
-            };
-        }
+            Code = nameof(UserAlreadyHasPassword),
+            Description = "کلمه‌ی عبور کاربر پیشتر تنظیم شده‌است."
+        };
+    }
 
-        public override IdentityError UserAlreadyInRole(string role)
+    public override IdentityError UserAlreadyInRole(string role)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(UserAlreadyInRole),
-                Description = string.Format("کاربر هم اکنون دارای نقش '{0}' است.", role)
-            };
-        }
+            Code = nameof(UserAlreadyInRole),
+            Description = string.Format(CultureInfo.InvariantCulture, "کاربر هم اکنون دارای نقش '{0}' است.", role)
+        };
+    }
 
-        public override IdentityError UserLockoutNotEnabled()
+    public override IdentityError UserLockoutNotEnabled()
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(UserLockoutNotEnabled),
-                Description = "قفل شدن اکانت برای این کاربر تنظیم نشده‌است."
-            };
-        }
+            Code = nameof(UserLockoutNotEnabled),
+            Description = "قفل شدن اکانت برای این کاربر تنظیم نشده‌است."
+        };
+    }
 
-        public override IdentityError UserNotInRole(string role)
+    public override IdentityError UserNotInRole(string role)
+    {
+        return new IdentityError
         {
-            return new IdentityError
-            {
-                Code = nameof(UserNotInRole),
-                Description = "کاربر دارای نقش '{0}' نیست."
-            };
-        }
+            Code = nameof(UserNotInRole),
+            Description = "کاربر دارای نقش '{0}' نیست."
+        };
     }
 }

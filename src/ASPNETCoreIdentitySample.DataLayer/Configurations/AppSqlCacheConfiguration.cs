@@ -1,27 +1,22 @@
 using ASPNETCoreIdentitySample.Entities.Identity;
-using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public class AppSqlCacheConfiguration : IEntityTypeConfiguration<AppSqlCache>
 {
-    public class AppSqlCacheConfiguration : IEntityTypeConfiguration<AppSqlCache>
+    public void Configure(EntityTypeBuilder<AppSqlCache> builder)
     {
-        private readonly SiteSettings _siteSettings;
-
-        public AppSqlCacheConfiguration(SiteSettings siteSettings)
+        if (builder == null)
         {
-            _siteSettings = siteSettings;
+            throw new ArgumentNullException(nameof(builder));
         }
 
-        public void Configure(EntityTypeBuilder<AppSqlCache> builder)
-        {
-            // For Microsoft.Extensions.Caching.SqlServer
-            var cacheOptions = _siteSettings.CookieOptions.DistributedSqlServerCacheOptions;
-            builder.ToTable(cacheOptions.TableName, cacheOptions.SchemaName);
-            builder.HasIndex(e => e.ExpiresAtTime).HasDatabaseName("Index_ExpiresAtTime");
-            builder.Property(e => e.Id).HasMaxLength(449);
-            builder.Property(e => e.Value).IsRequired();
-        }
+        // For Microsoft.Extensions.Caching.SqlServer
+        builder.ToTable("AppSqlCache", "dbo");
+        builder.HasIndex(e => e.ExpiresAtTime).HasDatabaseName("Index_ExpiresAtTime");
+        builder.Property(e => e.Id).HasMaxLength(449);
+        builder.Property(e => e.Value).IsRequired();
     }
 }

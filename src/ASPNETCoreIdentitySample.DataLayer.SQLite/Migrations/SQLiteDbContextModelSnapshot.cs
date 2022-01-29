@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
     [DbContext(typeof(SQLiteDbContext))]
@@ -14,7 +16,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.8");
+                .UseCollation("NOCASE")
+                .HasAnnotation("ProductVersion", "6.0.1");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {
@@ -24,11 +27,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -38,11 +43,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -53,11 +60,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
@@ -71,17 +80,19 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FriendlyName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("XmlData")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FriendlyName")
                         .IsUnique();
 
-                    b.ToTable("AppDataProtectionKeys");
+                    b.ToTable("AppDataProtectionKeys", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.AppLogItem", b =>
@@ -92,11 +103,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -108,21 +121,26 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LogLevel")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Logger")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Message")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -131,10 +149,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StateJson")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Url")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
@@ -145,7 +165,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(449)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<DateTime?>("AbsoluteExpiration")
                         .HasColumnType("TEXT");
@@ -176,15 +197,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -193,15 +217,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -211,11 +238,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
@@ -223,7 +252,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("AppRoles");
+                    b.ToTable("AppRoles", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.RoleClaim", b =>
@@ -233,18 +262,22 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -254,11 +287,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -273,7 +308,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AppRoleClaims");
+                    b.ToTable("AppRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.User", b =>
@@ -290,15 +325,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -308,14 +346,16 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
@@ -325,13 +365,15 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("LastName")
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<DateTime?>("LastVisitDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -341,11 +383,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -355,34 +399,41 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PhotoFileName")
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
@@ -393,7 +444,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("AppUsers");
+                    b.ToTable("AppUsers", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserClaim", b =>
@@ -403,18 +454,22 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -424,11 +479,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -443,24 +500,28 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserClaims");
+                    b.ToTable("AppUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -470,11 +531,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -483,7 +546,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -492,7 +556,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserLogins");
+                    b.ToTable("AppUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserRole", b =>
@@ -505,11 +569,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -519,11 +585,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -535,7 +603,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AppUserRoles");
+                    b.ToTable("AppUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserToken", b =>
@@ -544,18 +612,22 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -565,11 +637,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -578,11 +652,12 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AppUserTokens");
+                    b.ToTable("AppUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Identity.UserUsedPassword", b =>
@@ -593,11 +668,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -608,15 +685,18 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -631,7 +711,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AppUserUsedPasswords");
+                    b.ToTable("AppUserUsedPasswords", (string)null);
                 });
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Product", b =>
@@ -645,11 +725,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("CreatedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("CreatedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("INTEGER");
@@ -659,11 +741,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 
                     b.Property<string>("ModifiedByBrowserName")
                         .HasMaxLength(1000)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ModifiedByIp")
                         .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int?>("ModifiedByUserId")
                         .HasColumnType("INTEGER");
@@ -674,7 +758,8 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 6)");

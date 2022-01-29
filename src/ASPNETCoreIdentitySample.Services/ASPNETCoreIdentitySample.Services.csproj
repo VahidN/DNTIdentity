@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <NoWarn>RCS1090</NoWarn>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\ASPNETCoreIdentitySample.Common\ASPNETCoreIdentitySample.Common.csproj" />
@@ -10,9 +9,9 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.ViewModels\ASPNETCoreIdentitySample.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DNTCommon.Web.Core" Version="2.9.4" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="5.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+    <PackageReference Include="DNTCommon.Web.Core" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 </Project>

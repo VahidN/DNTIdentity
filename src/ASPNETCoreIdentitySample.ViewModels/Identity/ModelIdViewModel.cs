@@ -1,7 +1,6 @@
-﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity
+﻿namespace ASPNETCoreIdentitySample.ViewModels.Identity;
+
+public class ModelIdViewModel
 {
-    public class ModelIdViewModel
-    {
-        public int Id { set; get; }
-    }
+    public int Id { set; get; }
 }

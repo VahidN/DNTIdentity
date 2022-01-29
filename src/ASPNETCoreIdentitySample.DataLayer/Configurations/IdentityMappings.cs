@@ -1,21 +1,24 @@
-﻿using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public static class IdentityMappings
 {
-    public static class IdentityMappings
+    /// <summary>
+    ///     Adds all of the ASP.NET Core Identity related mappings at once.
+    ///     More info: http://www.dntips.ir/post/2577
+    ///     and http://www.dntips.ir/post/2578
+    /// </summary>
+    public static void AddCustomIdentityMappings(this ModelBuilder modelBuilder)
     {
-        /// <summary>
-        /// Adds all of the ASP.NET Core Identity related mappings at once.
-        /// More info: http://www.dotnettips.info/post/2577
-        /// and http://www.dotnettips.info/post/2578
-        /// </summary>
-        public static void AddCustomIdentityMappings(this ModelBuilder modelBuilder, SiteSettings siteSettings)
+        if (modelBuilder == null)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityMappings).Assembly);
-
-            // IEntityTypeConfiguration's which have constructors with parameters
-            modelBuilder.ApplyConfiguration(new AppSqlCacheConfiguration(siteSettings));
+            throw new ArgumentNullException(nameof(modelBuilder));
         }
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdentityMappings).Assembly);
+
+        // IEntityTypeConfiguration's which have constructors with parameters
+        modelBuilder.ApplyConfiguration(new AppSqlCacheConfiguration());
     }
 }

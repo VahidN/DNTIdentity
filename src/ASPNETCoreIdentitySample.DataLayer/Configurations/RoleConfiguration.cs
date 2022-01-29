@@ -2,13 +2,17 @@ using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ASPNETCoreIdentitySample.DataLayer.Mappings
+namespace ASPNETCoreIdentitySample.DataLayer.Configurations;
+
+public class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    public void Configure(EntityTypeBuilder<Role> builder)
     {
-        public void Configure(EntityTypeBuilder<Role> builder)
+        if (builder == null)
         {
-            builder.ToTable("AppRoles");
+            throw new ArgumentNullException(nameof(builder));
         }
+
+        builder.ToTable("AppRoles");
     }
 }

@@ -1,14 +1,18 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ASPNETCoreIdentitySample.Services.Identity.Logger
+namespace ASPNETCoreIdentitySample.Services.Identity.Logger;
+
+public static class DbLoggerFactoryExtensions
 {
-    public static class DbLoggerFactoryExtensions
+    public static ILoggingBuilder AddDbLogger(this ILoggingBuilder builder)
     {
-        public static ILoggingBuilder AddDbLogger(this ILoggingBuilder builder)
+        if (builder == null)
         {
-            builder.Services.AddSingleton<ILoggerProvider, DbLoggerProvider>();
-            return builder;
+            throw new ArgumentNullException(nameof(builder));
         }
+
+        builder.Services.AddSingleton<ILoggerProvider, DbLoggerProvider>();
+        return builder;
     }
 }

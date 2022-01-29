@@ -1,33 +1,42 @@
-﻿using System;
-using ASPNETCoreIdentitySample.Common.PersianToolkit;
+﻿using ASPNETCoreIdentitySample.Common.PersianToolkit;
 using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ASPNETCoreIdentitySample.DataLayer.InMemoryDatabase
+namespace ASPNETCoreIdentitySample.DataLayer.InMemoryDatabase;
+
+public static class InMemoryDatabaseServiceCollectionExtensions
 {
-    public static class InMemoryDatabaseServiceCollectionExtensions
+    public static IServiceCollection AddConfiguredInMemoryDbContext(this IServiceCollection services,
+        SiteSettings siteSettings)
     {
-        public static IServiceCollection AddConfiguredInMemoryDbContext(this IServiceCollection services, SiteSettings siteSettings)
+        services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
+        services.AddDbContextPool<ApplicationDbContext, InMemoryDatabaseContext>(
+            (serviceProvider, optionsBuilder) =>
+                optionsBuilder.UseConfiguredInMemoryDatabase(siteSettings, serviceProvider));
+        return services;
+    }
+
+    public static void UseConfiguredInMemoryDatabase(
+        this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
+    {
+        if (optionsBuilder == null)
         {
-            services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
-            services.AddEntityFrameworkInMemoryDatabase(); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            services.AddDbContextPool<ApplicationDbContext, InMemoryDatabaseContext>(
-                (serviceProvider, optionsBuilder) => optionsBuilder.UseConfiguredInMemoryDatabase(siteSettings, serviceProvider));
-            return services;
+            throw new ArgumentNullException(nameof(optionsBuilder));
         }
 
-        public static void UseConfiguredInMemoryDatabase(
-            this DbContextOptionsBuilder optionsBuilder, SiteSettings siteSettings, IServiceProvider serviceProvider)
+        if (siteSettings == null)
         {
-            optionsBuilder.UseInMemoryDatabase(siteSettings.ConnectionStrings.LocalDb.InitialCatalog);
-            optionsBuilder.UseInternalServiceProvider(serviceProvider); // It's added to access services from the dbcontext, remove it if you are using the normal `AddDbContext` and normal constructor dependency injection.
-            optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor());
-            optionsBuilder.ConfigureWarnings(warnings =>
-            {
-                // ...
-            });
+            throw new ArgumentNullException(nameof(siteSettings));
         }
+
+        optionsBuilder.UseInMemoryDatabase(siteSettings.ConnectionStrings.LocalDb.InitialCatalog);
+        optionsBuilder.AddInterceptors(new PersianYeKeCommandInterceptor(),
+            serviceProvider.GetRequiredService<AuditableEntitiesInterceptor>());
+        optionsBuilder.ConfigureWarnings(warnings =>
+        {
+            // ...
+        });
     }
 }
