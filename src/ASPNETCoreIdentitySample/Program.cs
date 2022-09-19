@@ -17,7 +17,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 {
     services.Configure<SiteSettings>(options => configuration.Bind(options));
     services.Configure<ContentSecurityPolicyConfig>(options =>
-        configuration.GetSection("ContentSecurityPolicyConfig").Bind(options));
+                                                        configuration.GetSection("ContentSecurityPolicyConfig")
+                                                                     .Bind(options));
 
     // Adds all of the ASP.NET Core Identity related services and configurations at once.
     services.AddCustomIdentityServices(configuration);
@@ -26,14 +27,15 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     services.AddDNTCommonWeb();
     services.AddDNTCaptcha(options =>
-    {
-        options.UseCookieStorageProvider()
-            .AbsoluteExpiration(7)
-            .ShowThousandsSeparators(false)
-            .WithNoise(25, 3)
-            .WithEncryptionKey("This is my secure key!");
-    });
+                           {
+                               options.UseCookieStorageProvider()
+                                      .AbsoluteExpiration(7)
+                                      .ShowThousandsSeparators(false)
+                                      .WithNoise(25, 3)
+                                      .WithEncryptionKey("This is my secure key!");
+                           });
     services.AddCloudscribePagination();
+    services.AddWebOptimizerServices();
 
     services.AddControllersWithViews(options => { options.Filters.Add(typeof(ApplyCorrectYeKeFilterAttribute)); });
     services.AddRazorPages();
@@ -61,6 +63,8 @@ void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
         app.UseHsts();
     }
 
+    app.UseWebOptimizer();
+
     app.UseHttpsRedirection();
     app.UseExceptionHandler("/error/index/500");
     app.UseStatusCodePagesWithReExecute("/error/index/{0}");
@@ -78,19 +82,19 @@ void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
 void ConfigureEndpoints(IApplicationBuilder app)
 {
     app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
+                     {
+                         endpoints.MapControllers();
 
-        endpoints.MapControllerRoute(
-            "areaRoute",
-            "{area:exists}/{controller=Account}/{action=Index}/{id?}");
+                         endpoints.MapControllerRoute(
+                                                      "areaRoute",
+                                                      "{area:exists}/{controller=Account}/{action=Index}/{id?}");
 
-        endpoints.MapControllerRoute(
-            "default",
-            "{controller=Home}/{action=Index}/{id?}");
+                         endpoints.MapControllerRoute(
+                                                      "default",
+                                                      "{controller=Home}/{action=Index}/{id?}");
 
-        endpoints.MapRazorPages();
-    });
+                         endpoints.MapRazorPages();
+                     });
 }
 
 void ConfigureDatabase(IApplicationBuilder app)

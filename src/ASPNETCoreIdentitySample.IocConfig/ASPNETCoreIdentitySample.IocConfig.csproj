@@ -19,5 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" />
   </ItemGroup>
 </Project>

@@ -19,17 +19,11 @@
     <PackageReference Include="DNTBreadCrumb.Core" />
     <PackageReference Include="DNTCaptcha.Core" />
     <PackageReference Include="DNTCommon.Web.Core" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
   </PropertyGroup>
-  <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
-    <!--TODO: enable this line later -->
-    <!--<Exec Condition="'$(OS)' == 'Windows_NT'" LogStandardErrorAsError="true" Command="dotnet bundle" />-->
-  </Target>
-  <ItemGroup>
-    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="3.2.449" />
-  </ItemGroup>
   <ItemGroup>
     <!-- extends watching group to include *.js files -->
     <Watch Include="**\*.js" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;wwwroot\**\*;src\**\*" />
