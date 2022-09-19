@@ -246,3 +246,4 @@ ModelManifest.xml
 .fake/
 src/ASPNETCoreIdentitySample/package-lock.json
 src/ASPNETCoreIdentitySample/wwwroot/App_Data
+/src/ASPNETCoreIdentitySample/wwwroot/lib

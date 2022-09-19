@@ -35,13 +35,13 @@
     <Watch Include="**\*.js" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;wwwroot\**\*;src\**\*" />
   </ItemGroup>
 
-  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(MSBuildProjectDirectory)\node_modules') ">
-    <!-- Ensure Node.js is installed -->
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="npm install" />
-  </Target>
+    <Target Name="DebugEnsureLibManEnv" BeforeTargets="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
+        <!-- Ensure libman is installed -->
+        <Exec Command="libman --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="libman is required to build and run this project. To continue, please run `dotnet tool install -g Microsoft.Web.LibraryManager.Cli`, and then restart your command prompt or IDE." />
+        <Message Importance="high" Text="Restoring dependencies using 'libman'. This may take several minutes..." />
+        <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="libman restore" />
+    </Target>
 </Project>

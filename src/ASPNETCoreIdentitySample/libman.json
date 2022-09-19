@@ -1,0 +1,42 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library":"bootstrap@4.3.1",
+      "destination": "wwwroot/lib/bootstrap"
+    },
+    {
+      "library":"@ghalamborm/bootstrap4-rtl@1.6.0",
+      "destination": "wwwroot/lib/bootstrap4-rtl"
+    },
+    {
+      "library":    "popper.js@1.15.0",
+      "destination": "wwwroot/lib/popperjs"
+    },
+    {
+      "library":    "components-font-awesome@5.9.0",
+      "destination": "wwwroot/lib/components-font-awesome"
+    },
+    {
+      "library":    "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery"
+    },
+    {
+      "library":    "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive"
+    },
+    {
+      "library":    "jquery-validation@1.19.0",
+      "destination": "wwwroot/lib/jquery-validation"
+    },
+    {
+      "library":    "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive"
+    },
+    {
+      "library":    "samim-font@1.0.2",
+      "destination": "wwwroot/lib/samim-font"
+    }
+  ]
+}
