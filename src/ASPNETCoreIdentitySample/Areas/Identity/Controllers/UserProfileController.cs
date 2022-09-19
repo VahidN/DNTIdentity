@@ -228,7 +228,7 @@ public class UserProfileController : Controller
         _usersPhotoService.SetUserDefaultPhoto(user);
 
         var photoFile = model.Photo;
-        if (photoFile?.Length > 0)
+        if (photoFile is not null && photoFile.Length > 0)
         {
             var imageOptions = _siteOptions.Value.UserAvatarImageOptions;
             if (!photoFile.IsValidImageFile(imageOptions.MaxWidth, imageOptions.MaxHeight))

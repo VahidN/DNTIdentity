@@ -7,9 +7,9 @@
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="DNTCommon.Web.Core" Version="3.3.0" />
-    <PackageReference Include="cloudscribe.Web.Pagination" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="DNTCommon.Web.Core" />
+    <PackageReference Include="cloudscribe.Web.Pagination" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <PackageReference Include="System.ComponentModel.Annotations" />
   </ItemGroup>
 </Project>
