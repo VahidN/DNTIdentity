@@ -1,4 +1,5 @@
 ﻿@model ChangePasswordViewModel
+@inject IPasswordRules PasswordRules
 @{
     ViewData["Title"] = "تغییر کلمه‌ی عبور";
 }
@@ -21,25 +22,29 @@
         <form asp-controller="ChangePassword"
               asp-action="Index"
               method="post">
-            <partial name="_CustomValidationSummary" />
+            <partial name="_CustomValidationSummary"/>
             <div class="form-group row">
                 <label asp-for="OldPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="OldPassword" class="form-control" />
+                    <input dir="ltr" asp-for="OldPassword" autocomplete="current-password" class="form-control"/>
                     <span asp-validation-for="OldPassword" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="NewPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="NewPassword" class="form-control" />
+                    <input dir="ltr" asp-for="NewPassword"
+                           passwordrules="@PasswordRules.GetPasswordRules()"
+                           autocomplete="new-password" class="form-control"/>
                     <span asp-validation-for="NewPassword" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="ConfirmPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control" />
+                    <input dir="ltr" asp-for="ConfirmPassword"
+                           passwordrules="@PasswordRules.GetPasswordRules()"
+                           autocomplete="new-password" class="form-control"/>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>

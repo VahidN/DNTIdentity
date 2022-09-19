@@ -24,7 +24,7 @@
               asp-action="Index"
               method="post"
               enctype="multipart/form-data">
-            <partial name="_CustomValidationSummary" />
+            <partial name="_CustomValidationSummary"/>
             <div class="form-group row">
                 <label asp-for="FirstName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
@@ -42,7 +42,7 @@
             <div class="form-group row">
                 <label asp-for="UserName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="UserName" onblur="triggerRemoteValidation()" class="form-control"/>
+                    <input dir="ltr" asp-for="UserName" autocomplete="username" onblur="triggerRemoteValidation()" class="form-control"/>
                     <span asp-validation-for="UserName" class="text-danger"></span>
                     <span class="optional-label">(جهت لاگین)</span>
                 </div>
@@ -58,8 +58,8 @@
                 <label class="col col-md-2 col-form-label text-md-left"></label>
                 <div class=" col col-md-10">
                     <div class="form-check">
-                      <input asp-for="IsEmailPublic"/>
-                      <label asp-for="IsEmailPublic"></label>
+                        <input asp-for="IsEmailPublic"/>
+                        <label asp-for="IsEmailPublic"></label>
                     </div>
                 </div>
             </div>
@@ -67,8 +67,8 @@
                 <label class="col col-md-2 col-form-label text-md-left"></label>
                 <div class=" col col-md-10">
                     <div class="form-check">
-                      <input asp-for="TwoFactorEnabled" />
-                      <label asp-for="TwoFactorEnabled"></label>
+                        <input asp-for="TwoFactorEnabled"/>
+                        <label asp-for="TwoFactorEnabled"></label>
                     </div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
     </ul>
 </div>
 
-@section Scripts
+@section Scripts
 {
     <script type="text/javascript">
         function triggerRemoteValidation() {

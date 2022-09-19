@@ -18,9 +18,11 @@ public static class AddCustomServicesExtensions
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<IPrincipal>(provider =>
-            provider.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.User ?? ClaimsPrincipal.Current);
+                                           provider.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.User ??
+                                           ClaimsPrincipal.Current);
 
         services.AddScoped<ILookupNormalizer, CustomNormalizer>();
+        services.AddScoped<IPasswordRules, PasswordRules>();
 
         services.AddScoped<ISecurityStampValidator, CustomSecurityStampValidator>();
         services.AddScoped<SecurityStampValidator<User>, CustomSecurityStampValidator>();
@@ -37,7 +39,9 @@ public static class AddCustomServicesExtensions
         services.AddScoped<IdentityErrorDescriber, CustomIdentityErrorDescriber>();
 
         services.AddScoped<IApplicationUserStore, ApplicationUserStore>();
-        services.AddScoped<UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>, ApplicationUserStore>();
+        services
+            .AddScoped<UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken,
+                RoleClaim>, ApplicationUserStore>();
 
         services.AddScoped<IApplicationUserManager, ApplicationUserManager>();
         services.AddScoped<UserManager<User>, ApplicationUserManager>();

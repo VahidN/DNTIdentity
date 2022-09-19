@@ -1,4 +1,5 @@
 ﻿@model RegisterViewModel
+@inject IPasswordRules PasswordRules
 @{
     ViewData["Title"] = "ثبت نام";
 }
@@ -11,25 +12,25 @@
         <form asp-controller="Register"
               asp-action="Index"
               method="post">
-            <partial name="_CustomValidationSummary" />
+            <partial name="_CustomValidationSummary"/>
             <div class="form-group row">
                 <label asp-for="FirstName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="FirstName" class="form-control" />
+                    <input dir="rtl" asp-for="FirstName" class="form-control"/>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="LastName" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="rtl" asp-for="LastName" class="form-control" />
+                    <input dir="rtl" asp-for="LastName" class="form-control"/>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="Username" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Username" onblur="triggerRemoteValidation()" class="form-control" />
+                    <input dir="ltr" asp-for="Username" autocomplete="username" onblur="triggerRemoteValidation()" class="form-control"/>
                     <span asp-validation-for="Username" class="text-danger"></span>
                     <span class="optional-label">(جهت لاگین)</span>
                 </div>
@@ -37,21 +38,23 @@
             <div class="form-group row">
                 <label asp-for="Email" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control" />
+                    <input dir="ltr" asp-for="Email" onblur="triggerRemoteValidation()" class="form-control"/>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="Password" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="Password" class="form-control" />
+                    <input dir="ltr" asp-for="Password"
+                           passwordrules="@PasswordRules.GetPasswordRules()"
+                           autocomplete="new-password" class="form-control"/>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row">
                 <label asp-for="ConfirmPassword" class="col-md-2 col-form-label text-md-left"></label>
                 <div class="col-md-10">
-                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control" />
+                    <input dir="ltr" asp-for="ConfirmPassword" class="form-control"/>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
@@ -71,8 +74,7 @@
                                  asp-back-color="#ccc"
                                  asp-text-box-class="text-box form-control"
                                  asp-text-box-template="<div class='input-group'><span class='input-group-prepend'><span class='input-group-text'><i class='fas fa-lock'></i></span></span>{0}</div>"
-                                 asp-validation-message-class="text-danger"
-                                 />
+                                 asp-validation-message-class="text-danger"/>
                 </div>
             </div>
             <div class="form-group row">
@@ -84,7 +86,7 @@
     </div>
 </div>
 
-@section Scripts
+@section Scripts
 {
     <script type="text/javascript">
         function triggerRemoteValidation() {
