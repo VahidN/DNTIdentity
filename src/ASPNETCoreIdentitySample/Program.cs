@@ -45,15 +45,14 @@ void ConfigureLogging(ILoggingBuilder logging, IHostEnvironment env, IConfigurat
 {
     logging.ClearProviders();
 
-    logging.AddDebug();
-
     if (env.IsDevelopment())
     {
+        logging.AddDebug();
         logging.AddConsole();
     }
 
-    logging.AddDbLogger(); // You can change its Log Level using the `appsettings.json` file -> Logging -> LogLevel -> Default
     logging.AddConfiguration(configuration.GetSection("Logging"));
+    logging.AddDbLogger(); // You can change its Log Level using the `appsettings.json` file -> Logging -> LogLevel -> Default
 }
 
 void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
