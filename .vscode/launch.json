@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/src/ASPNETCoreIdentitySample/bin/Debug/net6.0/ASPNETCoreIdentitySample.dll",
+            "program": "${workspaceRoot}/src/ASPNETCoreIdentitySample/bin/Debug/net7.0/ASPNETCoreIdentitySample.dll",
             "args": [],
             "cwd": "${workspaceRoot}/src/ASPNETCoreIdentitySample",
             "stopAtEntry": false,

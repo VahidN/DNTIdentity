@@ -11,15 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
     [DbContext(typeof(SQLiteDbContext))]
-    [Migration("20220129143038_V2022_01_29_1758")]
-    partial class V2022_01_29_1758
+    [Migration("20221109153404_V2022_11_09_1903")]
+    partial class V202211091903
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("NOCASE")
-                .HasAnnotation("ProductVersion", "6.0.1");
+                .HasAnnotation("ProductVersion", "7.0.0");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {

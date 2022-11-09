@@ -17,7 +17,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .UseCollation("NOCASE")
-                .HasAnnotation("ProductVersion", "6.0.1");
+                .HasAnnotation("ProductVersion", "7.0.0");
 
             modelBuilder.Entity("ASPNETCoreIdentitySample.Entities.Category", b =>
                 {

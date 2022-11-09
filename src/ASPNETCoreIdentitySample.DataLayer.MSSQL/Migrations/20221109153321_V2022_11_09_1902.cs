@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
 {
-    public partial class V2022_01_29_1755 : Migration
+    /// <inheritdoc />
+    public partial class V202211091902 : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -422,6 +424,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.MSSQL.Migrations
                 column: "CategoryId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

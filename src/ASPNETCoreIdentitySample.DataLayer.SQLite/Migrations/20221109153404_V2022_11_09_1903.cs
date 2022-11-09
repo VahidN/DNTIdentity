@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
 {
-    public partial class V2022_01_29_1758 : Migration
+    /// <inheritdoc />
+    public partial class V202211091903 : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -419,6 +421,7 @@ namespace ASPNETCoreIdentitySample.DataLayer.SQLite.Migrations
                 column: "CategoryId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
