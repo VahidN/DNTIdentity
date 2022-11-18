@@ -42,7 +42,7 @@
 		<Using Include="System.Net.Http.Json"/>
 		<Using Include="System.Text.Json"/>
 	</ItemGroup>
-	<ItemGroup>
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<PackageReference Include="Meziantou.Analyzer">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
