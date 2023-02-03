@@ -28,15 +28,9 @@ public class DbLogger : ILogger
         _loggerProvider = loggerProvider ?? throw new ArgumentNullException(nameof(loggerProvider));
     }
 
-    public IDisposable BeginScope<TState>(TState state)
-    {
-        return new NoopDisposable();
-    }
+    public IDisposable BeginScope<TState>(TState state) => new NoopDisposable();
 
-    public bool IsEnabled(LogLevel logLevel)
-    {
-        return logLevel >= _minLevel;
-    }
+    public bool IsEnabled(LogLevel logLevel) => logLevel >= _minLevel;
 
     public void Log<TState>(
         LogLevel logLevel,
@@ -69,15 +63,15 @@ public class DbLogger : ILogger
 
         var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
         var appLogItem = new AppLogItem
-        {
-            Url = httpContextAccessor?.HttpContext != null
-                ? httpContextAccessor.HttpContext.Request.Path.ToString()
-                : string.Empty,
-            EventId = eventId.Id,
-            LogLevel = logLevel.ToString(),
-            Logger = _loggerName,
-            Message = message
-        };
+                         {
+                             Url = httpContextAccessor?.HttpContext != null
+                                       ? httpContextAccessor.HttpContext.Request.Path.ToString()
+                                       : string.Empty,
+                             EventId = eventId.Id,
+                             LogLevel = logLevel.ToString(),
+                             Logger = _loggerName,
+                             Message = message,
+                         };
         var props = httpContextAccessor?.GetShadowProperties();
         SetStateJson(state, appLogItem);
         _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
@@ -88,12 +82,13 @@ public class DbLogger : ILogger
         try
         {
             appLogItem.StateJson = JsonSerializer.Serialize(
-                state,
-                new JsonSerializerOptions
-                {
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    WriteIndented = true
-                });
+                                                            state,
+                                                            new JsonSerializerOptions
+                                                            {
+                                                                DefaultIgnoreCondition =
+                                                                    JsonIgnoreCondition.WhenWritingNull,
+                                                                WriteIndented = true,
+                                                            });
         }
         catch
         {
@@ -101,7 +96,7 @@ public class DbLogger : ILogger
         }
     }
 
-    private class NoopDisposable : IDisposable
+    private sealed class NoopDisposable : IDisposable
     {
         public void Dispose()
         {
@@ -109,8 +104,9 @@ public class DbLogger : ILogger
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private static void Dispose(bool disposing)
         {
+            // empty on purpose
         }
     }
 }

@@ -11,6 +11,9 @@ roslynator_object_creation_type_style = implicit_when_type_is_obvious
 # CA5395: Action method xyz needs to specify the HTTP request kind explicitly
 dotnet_diagnostic.CA5395.severity = suggestion
 
+# CA1852:  Type can be sealed because it has no subtypes in its containing assembly and is not externally visible
+dotnet_diagnostic.CA1852.severity = suggestion
+
 # CA5391:  Method Index handles a HttpPost request without performing antiforgery token validation. You also need to ensure that your HTML form sends an antiforgery token.
 dotnet_diagnostic.CA5391.severity = suggestion
 
