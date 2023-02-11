@@ -10,7 +10,7 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 ///     More info: http://www.dntips.ir/post/2581
 /// </summary>
 [Authorize(Policy = ConstantPolicies.DynamicPermission), Area(AreaConstants.IdentityArea),
- BreadCrumb(UseDefaultRouteUrl = true, Order = 0), DisplayName("کنترلر نمونه با سطح دسترسی پویا در يك ناحيه خاص")]
+ BreadCrumb(UseDefaultRouteUrl = true, Order = 0), DisplayName("کنترلر نمونه با سطح دسترسی پویا در یک ناحیه خاص")]
 public class DynamicPermissionsAreaSampleController : Controller
 {
     [DisplayName("ایندکس"), BreadCrumb(Order = 1)]
