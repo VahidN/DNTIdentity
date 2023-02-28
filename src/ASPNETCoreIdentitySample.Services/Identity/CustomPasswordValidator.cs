@@ -12,7 +12,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// </summary>
 public class CustomPasswordValidator : PasswordValidator<User>
 {
-    private readonly ISet<string> _passwordsBanList;
+    private readonly HashSet<string> _passwordsBanList;
     private readonly IUsedPasswordsService _usedPasswordsService;
 
     public CustomPasswordValidator(
@@ -29,7 +29,7 @@ public class CustomPasswordValidator : PasswordValidator<User>
         _passwordsBanList =
             new HashSet<string>(configurationRoot.Value.PasswordsBanList, StringComparer.OrdinalIgnoreCase);
 
-        if (!_passwordsBanList.Any())
+        if (_passwordsBanList.Count == 0)
         {
             throw new InvalidOperationException("Please fill the passwords ban list in the appsettings.json file.");
         }
@@ -95,7 +95,7 @@ public class CustomPasswordValidator : PasswordValidator<User>
             return IdentityResult.Failed(errors.ToArray());
         }
 
-        return !errors.Any() ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
+        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
     }
 
     private static bool AreAllCharsEqual(string data)

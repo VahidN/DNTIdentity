@@ -42,7 +42,7 @@ public class CustomUserValidator : UserValidator<User>
         ValidateEmail(user, errors);
         ValidateUserName(user, errors);
 
-        return !errors.Any() ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
+        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
     }
 
     private void ValidateEmail(User user, List<IdentityError> errors)

@@ -12,7 +12,7 @@ public class DistributedCacheTicketStore : ITicketStore
 {
     private const string KeyPrefix = "AuthSessionStore-";
     private readonly IDistributedCache _cache;
-    private readonly IDataSerializer<AuthenticationTicket> _ticketSerializer = TicketSerializer.Default;
+    private readonly TicketSerializer _ticketSerializer = TicketSerializer.Default;
 
     public DistributedCacheTicketStore(IDistributedCache cache)
     {

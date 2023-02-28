@@ -12,7 +12,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger;
 public class DbLoggerProvider : ILoggerProvider
 {
     private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly IList<LoggerItem> _currentBatch = new List<LoggerItem>();
+    private readonly List<LoggerItem> _currentBatch = new List<LoggerItem>();
     private readonly TimeSpan _interval = TimeSpan.FromSeconds(2);
 
     private readonly BlockingCollection<LoggerItem> _messageQueue = new(new ConcurrentQueue<LoggerItem>());

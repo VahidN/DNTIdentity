@@ -11,6 +11,11 @@ roslynator_object_creation_type_style = implicit_when_type_is_obvious
 # CA5395: Action method xyz needs to specify the HTTP request kind explicitly
 dotnet_diagnostic.CA5395.severity = suggestion
 
+# CA1510: Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance
+dotnet_diagnostic.CA1510.severity = suggestion
+dotnet_diagnostic.S4487.severity = suggestion
+dotnet_diagnostic.S1144.severity = suggestion
+
 # CA1852:  Type can be sealed because it has no subtypes in its containing assembly and is not externally visible
 dotnet_diagnostic.CA1852.severity = suggestion
 
