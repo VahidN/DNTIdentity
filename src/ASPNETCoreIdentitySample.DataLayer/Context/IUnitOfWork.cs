@@ -21,9 +21,7 @@ public interface IUnitOfWork : IDisposable
     void ExecuteSqlInterpolatedCommand(FormattableString query);
     void ExecuteSqlRawCommand(string query, params object[] parameters);
 
-    void BeginTransaction();
-    void RollbackTransaction();
-    void CommitTransaction();
+    Task ExecuteTransactionAsync(Func<Task> action);
 
     int SaveChanges(bool acceptAllChangesOnSuccess);
     int SaveChanges();

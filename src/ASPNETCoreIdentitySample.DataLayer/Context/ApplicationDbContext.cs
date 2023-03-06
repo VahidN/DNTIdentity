@@ -5,7 +5,6 @@ using ASPNETCoreIdentitySample.Entities.AuditableEntity;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ASPNETCoreIdentitySample.DataLayer.Context;
 
@@ -18,9 +17,6 @@ public class ApplicationDbContext :
     IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
     IUnitOfWork
 {
-    private bool _isDisposed;
-    private IDbContextTransaction _transaction;
-
     // we can't use constructor injection anymore, because we are using the `AddDbContextPool<>`
     public ApplicationDbContext(DbContextOptions options)
         : base(options)
@@ -58,58 +54,16 @@ public class ApplicationDbContext :
         Set<TEntity>().AddRange(entities);
     }
 
-    public void BeginTransaction()
+    public async Task ExecuteTransactionAsync(Func<Task> action)
     {
-        _transaction = Database.BeginTransaction();
-    }
-
-    public void RollbackTransaction()
-    {
-        if (_transaction == null)
-        {
-            throw new InvalidOperationException("Please call `BeginTransaction()` method first.");
-        }
-
-        _transaction.Rollback();
-    }
-
-    public void CommitTransaction()
-    {
-        if (_transaction == null)
-        {
-            throw new InvalidOperationException("Please call `BeginTransaction()` method first.");
-        }
-
-        _transaction.Commit();
-    }
-
-    [SuppressMessage("Microsoft.Usage", "CA2215:Dispose methods should call base class dispose",
-        Justification = "base.Dispose() is called")]
-    public sealed override void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_isDisposed)
-        {
-            try
-            {
-                if (disposing)
-                {
-                    _transaction?.Dispose();
-                    _transaction = null;
-                }
-            }
-            finally
-            {
-                _isDisposed = true;
-            }
-        }
-
-        base.Dispose();
+        // https://www.dntips.ir/post/3247
+        var strategy = Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
+                                    {
+                                        await using var transaction = await Database.BeginTransactionAsync();
+                                        await action();
+                                        await transaction.CommitAsync();
+                                    });
     }
 
     public void ExecuteSqlInterpolatedCommand(FormattableString query)
@@ -126,14 +80,12 @@ public class ApplicationDbContext :
     {
         var value = Entry(entity).Property(propertyName).CurrentValue;
         return value != null
-            ? (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture)
-            : default;
+                   ? (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture)
+                   : default;
     }
 
-    public object GetShadowPropertyValue(object entity, string propertyName)
-    {
-        return Entry(entity).Property(propertyName).CurrentValue;
-    }
+    public object GetShadowPropertyValue(object entity, string propertyName) =>
+        Entry(entity).Property(propertyName).CurrentValue;
 
     public void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class
     {
