@@ -36,5 +36,6 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.SqlServer" Version="7.0.3" />
     <PackageVersion Include="cloudscribe.Web.Pagination" Version="6.0.0" />
     <PackageVersion Include="LigerShark.WebOptimizer.Core" Version="3.0.378" />
+    <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
 </Project>

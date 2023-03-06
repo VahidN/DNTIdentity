@@ -20,6 +20,7 @@
     <PackageReference Include="DNTCaptcha.Core" />
     <PackageReference Include="DNTCommon.Web.Core" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PlatformTarget>anycpu</PlatformTarget>
@@ -28,14 +29,4 @@
     <!-- extends watching group to include *.js files -->
     <Watch Include="**\*.js" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;wwwroot\**\*;src\**\*" />
   </ItemGroup>
-
-    <Target Name="DebugEnsureLibManEnv" BeforeTargets="BeforeBuild" Condition=" '$(Configuration)' == 'Debug' ">
-        <!-- Ensure libman is installed -->
-        <Exec Command="libman --version" ContinueOnError="true">
-            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-        </Exec>
-        <Error Condition="'$(ErrorCode)' != '0'" Text="libman is required to build and run this project. To continue, please run `dotnet tool install -g Microsoft.Web.LibraryManager.Cli`, and then restart your command prompt or IDE." />
-        <Message Importance="high" Text="Restoring dependencies using 'libman'. This may take several minutes..." />
-        <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="libman restore" />
-    </Target>
 </Project>
