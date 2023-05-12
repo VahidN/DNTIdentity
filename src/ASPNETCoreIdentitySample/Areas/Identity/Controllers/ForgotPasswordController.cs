@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Language = DNTCaptcha.Core.Language;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Area(AreaConstants.IdentityArea), AllowAnonymous,
- BreadCrumb(Title = "بازیابی کلمه‌ی عبور", UseDefaultRouteUrl = true, Order = 0)]
+[Area(AreaConstants.IdentityArea)]
+[AllowAnonymous]
+[BreadCrumb(Title = "بازیابی کلمه‌ی عبور", UseDefaultRouteUrl = true, Order = 0)]
 public class ForgotPasswordController : Controller
 {
     private readonly IEmailSender _emailSender;
@@ -38,19 +38,14 @@ public class ForgotPasswordController : Controller
     }
 
     [BreadCrumb(Title = "تائید کلمه‌ی عبور فراموش شده", Order = 1)]
-    public IActionResult ForgotPasswordConfirmation()
-    {
-        return View();
-    }
+    public IActionResult ForgotPasswordConfirmation() => View();
 
     [BreadCrumb(Title = "ایندکس", Order = 1)]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Index() => View();
 
-    [HttpPost, ValidateAntiForgeryToken, ValidateDNTCaptcha(CaptchaGeneratorLanguage = Language.Persian,
-         CaptchaGeneratorDisplayMode = DisplayMode.SumOfTwoNumbers)]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ValidateDNTCaptcha]
     public async Task<IActionResult> Index(ForgotPasswordViewModel model)
     {
         if (model is null)
@@ -68,16 +63,16 @@ public class ForgotPasswordController : Controller
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _emailSender.SendEmailAsync(
-                    model.Email,
-                    "بازیابی کلمه‌ی عبور",
-                    "~/Areas/Identity/Views/EmailTemplates/_PasswordReset.cshtml",
-                    new PasswordResetViewModel
-                    {
-                        UserId = user.Id,
-                        Token = code,
-                        EmailSignature = _siteOptions.Value.Smtp.FromName,
-                        MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                    })
+                                              model.Email,
+                                              "بازیابی کلمه‌ی عبور",
+                                              "~/Areas/Identity/Views/EmailTemplates/_PasswordReset.cshtml",
+                                              new PasswordResetViewModel
+                                              {
+                                                  UserId = user.Id,
+                                                  Token = code,
+                                                  EmailSignature = _siteOptions.Value.Smtp.FromName,
+                                                  MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString(),
+                                              })
                 ;
 
             return View("ForgotPasswordConfirmation");
@@ -89,7 +84,10 @@ public class ForgotPasswordController : Controller
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken, ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidatePassword(string password, string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -99,17 +97,15 @@ public class ForgotPasswordController : Controller
         }
 
         var result = await _passwordValidator.ValidateAsync(
-            (UserManager<User>)_userManager, user, password);
+                                                            (UserManager<User>)_userManager, user, password);
         return Json(result.Succeeded ? "true" : result.DumpErrors(true));
     }
 
     [BreadCrumb(Title = "تغییر کلمه‌ی عبور", Order = 1)]
-    public IActionResult ResetPassword(string code = null)
-    {
-        return code == null ? View("Error") : View();
-    }
+    public IActionResult ResetPassword(string code = null) => code == null ? View("Error") : View();
 
-    [HttpPost, ValidateAntiForgeryToken]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
         if (model is null)
@@ -144,8 +140,5 @@ public class ForgotPasswordController : Controller
     }
 
     [BreadCrumb(Title = "تائیدیه تغییر کلمه‌ی عبور", Order = 1)]
-    public IActionResult ResetPasswordConfirmation()
-    {
-        return View();
-    }
+    public IActionResult ResetPasswordConfirmation() => View();
 }

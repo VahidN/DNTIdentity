@@ -91,8 +91,7 @@ public class RegisterController : Controller
         return View();
     }
 
-    [HttpPost, ValidateAntiForgeryToken, ValidateDNTCaptcha(CaptchaGeneratorLanguage = Language.Persian,
-         CaptchaGeneratorDisplayMode = DisplayMode.SumOfTwoNumbers)]
+    [HttpPost, ValidateAntiForgeryToken, ValidateDNTCaptcha]
     public async Task<IActionResult> Index(RegisterViewModel model)
     {
         if (model is null)

@@ -10,8 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Area(AreaConstants.IdentityArea), AllowAnonymous,
- BreadCrumb(Title = "ورود به سیستم", UseDefaultRouteUrl = true, Order = 0)]
+[Area(AreaConstants.IdentityArea)]
+[AllowAnonymous]
+[BreadCrumb(Title = "ورود به سیستم", UseDefaultRouteUrl = true, Order = 0)]
 public class LoginController : Controller
 {
     private readonly IApplicationSignInManager _signInManager;
@@ -28,15 +29,17 @@ public class LoginController : Controller
         _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
     }
 
-    [BreadCrumb(Title = "ایندکس", Order = 1), NoBrowserCache]
+    [BreadCrumb(Title = "ایندکس", Order = 1)]
+    [NoBrowserCache]
     public IActionResult Index(string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
-    [HttpPost, ValidateAntiForgeryToken, ValidateDNTCaptcha(CaptchaGeneratorLanguage = Language.Persian,
-         CaptchaGeneratorDisplayMode = DisplayMode.SumOfTwoNumbers)]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ValidateDNTCaptcha]
     public async Task<IActionResult> Index(LoginViewModel model, string returnUrl = null)
     {
         if (model is null)
@@ -68,10 +71,10 @@ public class LoginController : Controller
             }
 
             var result = await _signInManager.PasswordSignInAsync(
-                model.Username,
-                model.Password,
-                model.RememberMe,
-                true);
+                                                                  model.Username,
+                                                                  model.Password,
+                                                                  model.RememberMe,
+                                                                  true);
             if (result.Succeeded)
             {
                 if (Url.IsLocalUrl(returnUrl))
@@ -85,9 +88,9 @@ public class LoginController : Controller
             if (result.RequiresTwoFactor)
             {
                 return RedirectToAction(
-                    nameof(TwoFactorController.SendCode),
-                    "TwoFactor",
-                    new { ReturnUrl = returnUrl, model.RememberMe });
+                                        nameof(TwoFactorController.SendCode),
+                                        "TwoFactor",
+                                        new { ReturnUrl = returnUrl, model.RememberMe });
             }
 
             if (result.IsLockedOut)
@@ -112,8 +115,8 @@ public class LoginController : Controller
     public async Task<IActionResult> LogOff()
     {
         var user = User.Identity is { IsAuthenticated: true }
-            ? await _userManager.FindByNameAsync(User.Identity.Name)
-            : null;
+                       ? await _userManager.FindByNameAsync(User.Identity.Name)
+                       : null;
         await _signInManager.SignOutAsync();
         if (user != null)
         {

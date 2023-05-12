@@ -8,6 +8,9 @@ roslynator_accessibility_modifiers = explicit
 roslynator_enum_has_flag_style = operator
 roslynator_object_creation_type_style = implicit_when_type_is_obvious
 
+# S2094: Remove this empty class, write its code or make it an "interface".
+dotnet_diagnostic.S2094.severity = suggestion
+
 # CA5395: Action method xyz needs to specify the HTTP request kind explicitly
 dotnet_diagnostic.CA5395.severity = suggestion
 
