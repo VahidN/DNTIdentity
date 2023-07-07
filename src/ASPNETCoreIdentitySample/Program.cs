@@ -6,14 +6,14 @@ using DNTCommon.Web.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureLogging(builder.Logging, builder.Environment, builder.Configuration);
-ConfigureServices(builder.Services, builder.Configuration);
+ConfigureServices(builder.Services, builder.Configuration, builder.Environment);
 var webApp = builder.Build();
 ConfigureMiddlewares(webApp, webApp.Environment);
 ConfigureEndpoints(webApp);
 ConfigureDatabase(webApp);
 webApp.Run();
 
-void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+void ConfigureServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
 {
     services.Configure<SiteSettings>(options => configuration.Bind(options));
     services.Configure<ContentSecurityPolicyConfig>(options =>
@@ -30,8 +30,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
                            {
                                options.UseCookieStorageProvider()
                                       .AbsoluteExpiration(7)
+                                      .ShowExceptionsInResponse(env.IsDevelopment())
                                       .ShowThousandsSeparators(false)
-                                      .WithNoise(25, 3)
                                       .WithEncryptionKey("This is my secure key!");
                            });
     services.AddCloudscribePagination();

@@ -9,13 +9,14 @@ public static class ServerInfo
         {
             Directory.CreateDirectory(appDataFolderPath);
         }
+
         return appDataFolderPath;
     }
 
     public static string GetWwwRootPath()
     {
         return Path.Combine(
-            AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries).First(),
-            "wwwroot");
+                            AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries)[0],
+                            "wwwroot");
     }
 }

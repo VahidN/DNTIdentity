@@ -49,10 +49,10 @@ public class UsedPasswordsService : IUsedPasswordsService
         }
 
         await _userUsedPasswords.AddAsync(new UserUsedPassword
-        {
-            UserId = user.Id,
-            HashedPassword = user.PasswordHash
-        });
+                                          {
+                                              UserId = user.Id,
+                                              HashedPassword = user.PasswordHash,
+                                          });
         await _uow.SaveChangesAsync();
     }
 
@@ -60,8 +60,8 @@ public class UsedPasswordsService : IUsedPasswordsService
     {
         var lastPasswordHistory =
             await _userUsedPasswords //.AsNoTracking() --> removes shadow properties
-                .OrderByDescending(userUsedPassword => userUsedPassword.Id)
-                .FirstOrDefaultAsync(userUsedPassword => userUsedPassword.UserId == userId);
+                  .OrderByDescending(userUsedPassword => userUsedPassword.Id)
+                  .FirstOrDefaultAsync(userUsedPassword => userUsedPassword.UserId == userId);
         if (lastPasswordHistory == null)
         {
             return null;
@@ -97,14 +97,14 @@ public class UsedPasswordsService : IUsedPasswordsService
 
         var userId = user.Id;
         var usedPasswords = await _userUsedPasswords
-            .AsNoTracking()
-            .Where(userUsedPassword => userUsedPassword.UserId == userId)
-            .OrderByDescending(userUsedPassword => userUsedPassword.Id)
-            .Select(userUsedPassword => userUsedPassword.HashedPassword)
-            .Take(_notAllowedPreviouslyUsedPasswords)
-            .ToListAsync();
-        return usedPasswords.Any(hashedPassword =>
-            _passwordHasher.VerifyHashedPassword(user, hashedPassword, newPassword) !=
-            PasswordVerificationResult.Failed);
+                                  .AsNoTracking()
+                                  .Where(userUsedPassword => userUsedPassword.UserId == userId)
+                                  .OrderByDescending(userUsedPassword => userUsedPassword.Id)
+                                  .Select(userUsedPassword => userUsedPassword.HashedPassword)
+                                  .Take(_notAllowedPreviouslyUsedPasswords)
+                                  .ToListAsync();
+        return usedPasswords.Exists(hashedPassword =>
+                                        _passwordHasher.VerifyHashedPassword(user, hashedPassword, newPassword) !=
+                                        PasswordVerificationResult.Failed);
     }
 }

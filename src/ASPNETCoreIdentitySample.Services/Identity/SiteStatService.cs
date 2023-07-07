@@ -28,11 +28,11 @@ public class SiteStatService : ISiteStatService
         var now = DateTime.UtcNow;
         var minutes = now.AddMinutes(-minutesToTake);
         return _users.AsNoTracking()
-            .Where(user => user.LastVisitDateTime != null && user.LastVisitDateTime.Value <= now
-                                                          && user.LastVisitDateTime.Value >= minutes)
-            .OrderByDescending(user => user.LastVisitDateTime)
-            .Take(numbersToTake)
-            .ToListAsync();
+                     .Where(user => user.LastVisitDateTime != null && user.LastVisitDateTime.Value <= now
+                                                                   && user.LastVisitDateTime.Value >= minutes)
+                     .OrderByDescending(user => user.LastVisitDateTime)
+                     .Take(numbersToTake)
+                     .ToListAsync();
     }
 
     public Task<List<User>> GetTodayBirthdayListAsync()
@@ -41,18 +41,18 @@ public class SiteStatService : ISiteStatService
         var day = now.Day;
         var month = now.Month;
         return _users.AsNoTracking()
-            .Where(user => user.BirthDate != null && user.IsActive
-                                                  && user.BirthDate.Value.Day == day
-                                                  && user.BirthDate.Value.Month == month)
-            .ToListAsync();
+                     .Where(user => user.BirthDate != null && user.IsActive
+                                                           && user.BirthDate.Value.Day == day
+                                                           && user.BirthDate.Value.Month == month)
+                     .ToListAsync();
     }
 
     public async Task<AgeStatViewModel> GetUsersAverageAge()
     {
         var users = await _users.AsNoTracking()
-            .Where(x => x.BirthDate != null && x.IsActive)
-            .OrderBy(x => x.BirthDate)
-            .ToListAsync();
+                                .Where(x => x.BirthDate != null && x.IsActive)
+                                .OrderBy(x => x.BirthDate)
+                                .ToListAsync();
 
         var count = users.Count;
         if (count == 0)
@@ -63,12 +63,12 @@ public class SiteStatService : ISiteStatService
         var sum = users.Where(user => user.BirthDate != null).Sum(user => (int?)user.BirthDate.Value.GetAge()) ?? 0;
 
         return new AgeStatViewModel
-        {
-            AverageAge = sum / count,
-            MaxAgeUser = users.First(),
-            MinAgeUser = users.Last(),
-            UsersCount = count
-        };
+               {
+                   AverageAge = sum / count,
+                   MaxAgeUser = users[0],
+                   MinAgeUser = users[^1],
+                   UsersCount = count,
+               };
     }
 
     public async Task UpdateUserLastVisitDateTimeAsync(ClaimsPrincipal claimsPrincipal)
