@@ -41,7 +41,7 @@ public static class IdentityExtensions
         var results = new StringBuilder();
         if (!result.Succeeded)
         {
-            foreach (var errorDescription in result.Errors.Select(x => x.Description))
+            foreach (var errorDescription in result.Errors.Select(x => x.Description).Distinct())
             {
                 if (string.IsNullOrWhiteSpace(errorDescription))
                 {

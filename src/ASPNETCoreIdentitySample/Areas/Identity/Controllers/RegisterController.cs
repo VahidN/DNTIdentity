@@ -12,11 +12,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Language = DNTCaptcha.Core.Language;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Area(AreaConstants.IdentityArea), AllowAnonymous, BreadCrumb(Title = "ثبت نام", UseDefaultRouteUrl = true, Order = 0)]
+[Area(AreaConstants.IdentityArea)]
+[AllowAnonymous]
+[BreadCrumb(Title = "ثبت نام", UseDefaultRouteUrl = true, Order = 0)]
 public class RegisterController : Controller
 {
     private readonly IEmailSender _emailSender;
@@ -42,22 +43,31 @@ public class RegisterController : Controller
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken, ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidateUsername(string username, string email)
     {
         var result = await _userValidator.ValidateAsync(
-            (UserManager<User>)_userManager, new User { UserName = username, Email = email });
+                                                        (UserManager<User>)_userManager,
+                                                        new User { UserName = username, Email = email });
         return Json(result.Succeeded ? "true" : result.DumpErrors(true));
     }
 
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken, ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidatePassword(string password, string username)
     {
         var result = await _passwordValidator.ValidateAsync(
-            (UserManager<User>)_userManager, new User { UserName = username }, password);
+                                                            (UserManager<User>)_userManager,
+                                                            new User { UserName = username },
+                                                            password);
         return Json(result.Succeeded ? "true" : result.DumpErrors(true));
     }
 
@@ -80,18 +90,14 @@ public class RegisterController : Controller
     }
 
     [BreadCrumb(Title = "تائیدیه ایمیل", Order = 1)]
-    public IActionResult ConfirmedRegisteration()
-    {
-        return View();
-    }
+    public IActionResult ConfirmedRegisteration() => View();
 
     [BreadCrumb(Title = "ایندکس", Order = 1)]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Index() => View();
 
-    [HttpPost, ValidateAntiForgeryToken, ValidateDNTCaptcha]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ValidateDNTCaptcha]
     public async Task<IActionResult> Index(RegisterViewModel model)
     {
         if (model is null)
@@ -102,12 +108,12 @@ public class RegisterController : Controller
         if (ModelState.IsValid)
         {
             var user = new User
-            {
-                UserName = model.Username,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName
-            };
+                       {
+                           UserName = model.Username,
+                           Email = model.Email,
+                           FirstName = model.FirstName,
+                           LastName = model.LastName,
+                       };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -117,16 +123,17 @@ public class RegisterController : Controller
                     //ControllerExtensions.ShortControllerName<RegisterController>(), //TODO: use everywhere .................
 
                     await _emailSender.SendEmailAsync(
-                        user.Email,
-                        "لطفا اکانت خود را تائید کنید",
-                        "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
-                        new RegisterEmailConfirmationViewModel
-                        {
-                            User = user,
-                            EmailConfirmationToken = code,
-                            EmailSignature = _siteOptions.Value.Smtp.FromName,
-                            MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                        });
+                                                      user.Email,
+                                                      "لطفا اکانت خود را تائید کنید",
+                                                      "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
+                                                      new RegisterEmailConfirmationViewModel
+                                                      {
+                                                          User = user,
+                                                          EmailConfirmationToken = code,
+                                                          EmailSignature = _siteOptions.Value.Smtp.FromName,
+                                                          MessageDateTime =
+                                                              DateTime.UtcNow.ToLongPersianDateTimeString(),
+                                                      });
 
                     return RedirectToAction(nameof(ConfirmYourEmail));
                 }
@@ -134,18 +141,12 @@ public class RegisterController : Controller
                 return RedirectToAction(nameof(ConfirmedRegisteration));
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+            ModelState.AddModelError("", result.DumpErrors(true));
         }
 
         return View(model);
     }
 
     [BreadCrumb(Title = "ایمیل خود را تائید کنید", Order = 1)]
-    public IActionResult ConfirmYourEmail()
-    {
-        return View();
-    }
+    public IActionResult ConfirmYourEmail() => View();
 }

@@ -15,8 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Authorize(Roles = ConstantRoles.Admin), Area(AreaConstants.IdentityArea),
- BreadCrumb(Title = "تغییر کلمه‌ی عبور كاربر توسط مدير سيستم", UseDefaultRouteUrl = true, Order = 0)]
+[Authorize(Roles = ConstantRoles.Admin)]
+[Area(AreaConstants.IdentityArea)]
+[BreadCrumb(Title = "تغییر کلمه‌ی عبور كاربر توسط مدير سيستم", UseDefaultRouteUrl = true, Order = 0)]
 public class ChangeUserPasswordController : Controller
 {
     private readonly IEmailSender _emailSender;
@@ -57,13 +58,14 @@ public class ChangeUserPasswordController : Controller
         }
 
         return View(new ChangeUserPasswordViewModel
-        {
-            UserId = user.Id,
-            Name = user.UserName
-        });
+                    {
+                        UserId = user.Id,
+                        Name = user.UserName,
+                    });
     }
 
-    [HttpPost, ValidateAntiForgeryToken]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(ChangeUserPasswordViewModel model)
     {
         if (model is null)
@@ -91,23 +93,20 @@ public class ChangeUserPasswordController : Controller
             await _signInManager.RefreshSignInAsync(user);
 
             await _emailSender.SendEmailAsync(
-                user.Email,
-                "اطلاع رسانی تغییر کلمه‌ی عبور",
-                "~/Areas/Identity/Views/EmailTemplates/_ChangePasswordNotification.cshtml",
-                new ChangePasswordNotificationViewModel
-                {
-                    User = user,
-                    EmailSignature = _siteOptions.Value.Smtp.FromName,
-                    MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
-                });
+                                              user.Email,
+                                              "اطلاع رسانی تغییر کلمه‌ی عبور",
+                                              "~/Areas/Identity/Views/EmailTemplates/_ChangePasswordNotification.cshtml",
+                                              new ChangePasswordNotificationViewModel
+                                              {
+                                                  User = user,
+                                                  EmailSignature = _siteOptions.Value.Smtp.FromName,
+                                                  MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString(),
+                                              });
 
             return RedirectToAction(nameof(Index), "UserCard", new { id = user.Id });
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
+        ModelState.AddModelError("", result.DumpErrors(true));
 
         return View(model);
     }
@@ -115,12 +114,17 @@ public class ChangeUserPasswordController : Controller
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken, ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidatePassword(string newPassword, int userId)
     {
         var user = await _userManager.FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture));
         var result = await _passwordValidator.ValidateAsync(
-            (UserManager<User>)_userManager, user, newPassword);
+                                                            (UserManager<User>)_userManager,
+                                                            user,
+                                                            newPassword);
         return Json(result.Succeeded ? "true" : result.DumpErrors(true));
     }
 }

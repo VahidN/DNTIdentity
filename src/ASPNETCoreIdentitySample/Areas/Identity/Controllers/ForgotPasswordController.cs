@@ -97,7 +97,9 @@ public class ForgotPasswordController : Controller
         }
 
         var result = await _passwordValidator.ValidateAsync(
-                                                            (UserManager<User>)_userManager, user, password);
+                                                            (UserManager<User>)_userManager,
+                                                            user,
+                                                            password);
         return Json(result.Succeeded ? "true" : result.DumpErrors(true));
     }
 
@@ -131,10 +133,7 @@ public class ForgotPasswordController : Controller
             return RedirectToAction(nameof(ResetPasswordConfirmation));
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(string.Empty, error.Description);
-        }
+        ModelState.AddModelError("", result.DumpErrors(true));
 
         return View();
     }

@@ -2,6 +2,7 @@
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
                 <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+                <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>

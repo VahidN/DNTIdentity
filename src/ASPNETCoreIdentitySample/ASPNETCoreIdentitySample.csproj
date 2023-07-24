@@ -28,5 +28,6 @@
   <ItemGroup>
     <!-- extends watching group to include *.js files -->
     <Watch Include="**\*.js" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*;wwwroot\**\*;src\**\*" />
+    <None Include="*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>
