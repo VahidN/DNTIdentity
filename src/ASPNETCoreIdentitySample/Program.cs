@@ -73,6 +73,7 @@ void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
     app.UseStaticFiles();
 
     app.UseRouting();
+    app.UseRateLimiter();
 
     app.UseAuthentication();
     app.UseAuthorization();
