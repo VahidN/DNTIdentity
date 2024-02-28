@@ -13,7 +13,6 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// </summary>
 public class CustomSecurityStampValidator : SecurityStampValidator<User>
 {
-    private readonly ISystemClock _clock;
     private readonly IOptions<SecurityStampValidatorOptions> _options;
     private readonly IApplicationSignInManager _signInManager;
     private readonly ISiteStatService _siteStatService;
@@ -21,15 +20,14 @@ public class CustomSecurityStampValidator : SecurityStampValidator<User>
     public CustomSecurityStampValidator(
         IOptions<SecurityStampValidatorOptions> options,
         IApplicationSignInManager signInManager,
-        ISystemClock clock,
         ISiteStatService siteStatService,
         ILoggerFactory logger)
-        : base(options, (SignInManager<User>)signInManager, clock, logger)
+        : base(options, (SignInManager<User>)signInManager, logger)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
         _siteStatService = siteStatService ?? throw new ArgumentNullException(nameof(siteStatService));
-        _clock = clock;
+
     }
 
     public TimeSpan UpdateLastModifiedDate { get; set; } = TimeSpan.FromMinutes(2);
@@ -48,9 +46,9 @@ public class CustomSecurityStampValidator : SecurityStampValidator<User>
         }
 
         var currentUtc = DateTimeOffset.UtcNow;
-        if (context.Options != null && _clock != null)
+        if (context.Options != null)
         {
-            currentUtc = _clock.UtcNow;
+            currentUtc = TimeProvider.GetUtcNow();
         }
 
         var issuedUtc = context.Properties.IssuedUtc;

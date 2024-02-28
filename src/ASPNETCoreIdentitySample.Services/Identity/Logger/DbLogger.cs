@@ -76,19 +76,16 @@ public class DbLogger : ILogger
         SetStateJson(state, appLogItem);
         _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
     }
-
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        WriteIndented = true,
+    };
     private static void SetStateJson<TState>(TState state, AppLogItem appLogItem)
     {
         try
         {
-            appLogItem.StateJson = JsonSerializer.Serialize(
-                                                            state,
-                                                            new JsonSerializerOptions
-                                                            {
-                                                                DefaultIgnoreCondition =
-                                                                    JsonIgnoreCondition.WhenWritingNull,
-                                                                WriteIndented = true,
-                                                            });
+            appLogItem.StateJson = JsonSerializer.Serialize(state, JsonSerializerOptions);
         }
         catch
         {
