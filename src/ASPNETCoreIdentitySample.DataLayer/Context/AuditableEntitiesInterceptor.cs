@@ -26,9 +26,9 @@ public class AuditableEntitiesInterceptor : SaveChangesInterceptor
         DbContextEventData eventData,
         InterceptionResult<int> result)
     {
-        if (eventData == null)
+        if (eventData?.Context is null)
         {
-            throw new ArgumentNullException(nameof(eventData));
+            return result;
         }
 
         BeforeSaveTriggers(eventData.Context);
@@ -40,9 +40,9 @@ public class AuditableEntitiesInterceptor : SaveChangesInterceptor
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        if (eventData == null)
+        if (eventData?.Context is null)
         {
-            throw new ArgumentNullException(nameof(eventData));
+            return ValueTask.FromResult(result);
         }
 
         BeforeSaveTriggers(eventData.Context);
