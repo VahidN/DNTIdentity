@@ -1,7 +1,8 @@
-namespace ASPNETCoreIdentitySample.Common.WebToolkit;
+﻿namespace ASPNETCoreIdentitySample.Common.WebToolkit;
 
 public static class ServerInfo
 {
+    private static readonly string[] BinSplitArray = new[] { "bin" };
     public static string GetAppDataFolderPath()
     {
         var appDataFolderPath = Path.Combine(GetWwwRootPath(), "App_Data");
@@ -16,7 +17,7 @@ public static class ServerInfo
     public static string GetWwwRootPath()
     {
         return Path.Combine(
-                            AppContext.BaseDirectory.Split(new[] { "bin" }, StringSplitOptions.RemoveEmptyEntries)[0],
-                            "wwwroot");
+            AppContext.BaseDirectory.Split(BinSplitArray, StringSplitOptions.RemoveEmptyEntries)[0],
+            "wwwroot");
     }
 }

@@ -45,7 +45,7 @@ public class CustomNormalizer : ILookupNormalizer
         var emailParts = email.Split('@');
         var name = emailParts[0].Replace(".", string.Empty, StringComparison.OrdinalIgnoreCase);
 
-        var plusIndex = name.IndexOf("+", StringComparison.OrdinalIgnoreCase);
+        var plusIndex = name.IndexOf('+', StringComparison.OrdinalIgnoreCase);
         if (plusIndex != -1)
         {
             name = name.Substring(0, plusIndex);
