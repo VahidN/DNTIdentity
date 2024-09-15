@@ -1,5 +1,4 @@
-﻿using System.Runtime.Versioning;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.ViewModels.Identity;
@@ -17,9 +16,7 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/2578
 /// </summary>
-public class ApplicationUserManager :
-    UserManager<User>,
-    IApplicationUserManager
+public class ApplicationUserManager : UserManager<User>, IApplicationUserManager
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IdentityErrorDescriber _errors;
@@ -37,8 +34,7 @@ public class ApplicationUserManager :
     private readonly IEnumerable<IUserValidator<User>> _userValidators;
     private User _currentUserInScope;
 
-    public ApplicationUserManager(
-        IApplicationUserStore store,
+    public ApplicationUserManager(IApplicationUserStore store,
         IOptions<IdentityOptions> optionsAccessor,
         IPasswordHasher<User> passwordHasher,
         IEnumerable<IUserValidator<User>> userValidators,
@@ -49,12 +45,9 @@ public class ApplicationUserManager :
         ILogger<ApplicationUserManager> logger,
         IHttpContextAccessor contextAccessor,
         IUnitOfWork uow,
-        IUsedPasswordsService usedPasswordsService)
-        : base(
-            (UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>)
-            store,
-            optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services,
-            logger)
+        IUsedPasswordsService usedPasswordsService) : base(
+        (UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>)store,
+        optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _userStore = store ?? throw new ArgumentNullException(nameof(store));
         _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(optionsAccessor));
@@ -74,20 +67,17 @@ public class ApplicationUserManager :
 
     #region BaseClass
 
-    string IApplicationUserManager.CreateTwoFactorRecoveryCode()
-    {
-        return base.CreateTwoFactorRecoveryCode();
-    }
+    string IApplicationUserManager.CreateTwoFactorRecoveryCode() => base.CreateTwoFactorRecoveryCode();
 
     Task<PasswordVerificationResult> IApplicationUserManager.VerifyPasswordAsync(IUserPasswordStore<User> store,
-        User user, string password)
-    {
-        return base.VerifyPasswordAsync(store, user, password);
-    }
+        User user,
+        string password)
+        => base.VerifyPasswordAsync(store, user, password);
 
     public override async Task<IdentityResult> CreateAsync(User user)
     {
         var result = await base.CreateAsync(user);
+
         if (result.Succeeded)
         {
             await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
@@ -99,6 +89,7 @@ public class ApplicationUserManager :
     public override async Task<IdentityResult> CreateAsync(User user, string password)
     {
         var result = await base.CreateAsync(user, password);
+
         if (result.Succeeded)
         {
             await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
@@ -107,10 +98,12 @@ public class ApplicationUserManager :
         return result;
     }
 
-    public override async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword,
+    public override async Task<IdentityResult> ChangePasswordAsync(User user,
+        string currentPassword,
         string newPassword)
     {
         var result = await base.ChangePasswordAsync(user, currentPassword, newPassword);
+
         if (result.Succeeded)
         {
             await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
@@ -122,6 +115,7 @@ public class ApplicationUserManager :
     public override async Task<IdentityResult> ResetPasswordAsync(User user, string token, string newPassword)
     {
         var result = await base.ResetPasswordAsync(user, token, newPassword);
+
         if (result.Succeeded)
         {
             await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
@@ -134,20 +128,12 @@ public class ApplicationUserManager :
 
     #region CustomMethods
 
-    public User FindById(int userId)
-    {
-        return _users.Find(userId);
-    }
+    public User FindById(int userId) => _users.Find(userId);
 
     public Task<User> FindByIdIncludeUserRolesAsync(int userId)
-    {
-        return _users.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Id == userId);
-    }
+        => _users.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Id == userId);
 
-    public Task<List<User>> GetAllUsersAsync()
-    {
-        return Users.ToListAsync();
-    }
+    public Task<List<User>> GetAllUsersAsync() => Users.ToListAsync();
 
     public User GetCurrentUser()
     {
@@ -157,12 +143,14 @@ public class ApplicationUserManager :
         }
 
         var currentUserId = GetCurrentUserId();
+
         if (string.IsNullOrWhiteSpace(currentUserId))
         {
             return null;
         }
 
         var userId = int.Parse(currentUserId, NumberStyles.Number, CultureInfo.InvariantCulture);
+
         return _currentUserInScope = FindById(userId);
     }
 
@@ -176,22 +164,18 @@ public class ApplicationUserManager :
         return _currentUserInScope ??= await GetUserAsync(_contextAccessor.HttpContext.User);
     }
 
-    public string GetCurrentUserId()
-    {
-        return _contextAccessor.HttpContext?.User.Identity?.GetUserId();
-    }
+    public string GetCurrentUserId() => _contextAccessor.HttpContext?.User.Identity?.GetUserId();
 
     public int? GetCurrentIntUserId()
     {
         var userId = _contextAccessor.HttpContext?.User.Identity?.GetUserId();
+
         if (string.IsNullOrEmpty(userId))
         {
             return null;
         }
 
-        return !int.TryParse(userId, NumberStyles.Number, CultureInfo.InvariantCulture, out var result)
-            ? null
-            : result;
+        return !int.TryParse(userId, NumberStyles.Number, CultureInfo.InvariantCulture, out var result) ? null : result;
     }
 
     IPasswordHasher<User> IApplicationUserManager.PasswordHasher
@@ -206,24 +190,22 @@ public class ApplicationUserManager :
 
     IQueryable<User> IApplicationUserManager.Users => base.Users;
 
-    public string GetCurrentUserName()
-    {
-        return _contextAccessor.HttpContext?.User.Identity?.GetUserName();
-    }
+    public string GetCurrentUserName() => _contextAccessor.HttpContext?.User.Identity?.GetUserName();
 
     public async Task<bool> HasPasswordAsync(int userId)
     {
         var user = await FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture));
+
         return user?.PasswordHash != null;
     }
 
     public async Task<bool> HasPhoneNumberAsync(int userId)
     {
         var user = await FindByIdAsync(userId.ToString(CultureInfo.InvariantCulture));
+
         return user?.PhoneNumber != null;
     }
 
-    [SupportedOSPlatform("windows")]
     public async Task<byte[]> GetEmailImageAsync(int? userId)
     {
         if (userId == null)
@@ -232,6 +214,7 @@ public class ApplicationUserManager :
         }
 
         var user = await FindByIdAsync(userId.Value.ToString(CultureInfo.InvariantCulture));
+
         if (user == null)
         {
             return "?".TextToImage(new TextToImageOptions());
@@ -314,6 +297,7 @@ public class ApplicationUserManager :
         }
 
         query = query.OrderBy(x => x.Id);
+
         return new PagedUsersListViewModel
         {
             Paging =
@@ -325,9 +309,10 @@ public class ApplicationUserManager :
         };
     }
 
-    public async Task<PagedUsersListViewModel> GetPagedUsersListAsync(
-        int pageNumber, int recordsPerPage,
-        string sortByField, SortOrder sortOrder,
+    public async Task<PagedUsersListViewModel> GetPagedUsersListAsync(int pageNumber,
+        int recordsPerPage,
+        string sortByField,
+        SortOrder sortOrder,
         bool showAllUsers)
     {
         var skipRecords = pageNumber * recordsPerPage;
@@ -344,6 +329,7 @@ public class ApplicationUserManager :
                 query = sortOrder == SortOrder.Descending
                     ? query.OrderByDescending(x => x.Id)
                     : query.OrderBy(x => x.Id);
+
                 break;
         }
 
@@ -361,6 +347,7 @@ public class ApplicationUserManager :
     public async Task<IdentityResult> UpdateUserAndSecurityStampAsync(int userId, Action<User> action)
     {
         var user = await FindByIdIncludeUserRolesAsync(userId);
+
         if (user == null)
         {
             return IdentityResult.Failed(new IdentityError
@@ -373,6 +360,7 @@ public class ApplicationUserManager :
         action?.Invoke(user);
 
         var result = await UpdateAsync(user);
+
         if (!result.Succeeded)
         {
             return result;
@@ -381,10 +369,12 @@ public class ApplicationUserManager :
         return await UpdateSecurityStampAsync(user);
     }
 
-    public async Task<IdentityResult> AddOrUpdateUserRolesAsync(int userId, IList<int> selectedRoleIds,
+    public async Task<IdentityResult> AddOrUpdateUserRolesAsync(int userId,
+        IList<int> selectedRoleIds,
         Action<User> action = null)
     {
         var user = await FindByIdIncludeUserRolesAsync(userId);
+
         if (user == null)
         {
             return IdentityResult.Failed(new IdentityError
@@ -399,15 +389,22 @@ public class ApplicationUserManager :
         selectedRoleIds ??= new List<int>();
 
         var newRolesToAdd = selectedRoleIds.Except(currentUserRoleIds).ToList();
+
         foreach (var roleId in newRolesToAdd)
         {
-            user.Roles.Add(new UserRole { RoleId = roleId, UserId = user.Id });
+            user.Roles.Add(new UserRole
+            {
+                RoleId = roleId,
+                UserId = user.Id
+            });
         }
 
         var removedRoles = currentUserRoleIds.Except(selectedRoleIds).ToList();
+
         foreach (var roleId in removedRoles)
         {
             var userRole = user.Roles.SingleOrDefault(ur => ur.RoleId == roleId);
+
             if (userRole != null)
             {
                 user.Roles.Remove(userRole);
@@ -417,6 +414,7 @@ public class ApplicationUserManager :
         action?.Invoke(user);
 
         var result = await UpdateAsync(user);
+
         if (!result.Succeeded)
         {
             return result;
@@ -425,11 +423,10 @@ public class ApplicationUserManager :
         return await UpdateSecurityStampAsync(user);
     }
 
-    Task<IdentityResult> IApplicationUserManager.UpdatePasswordHash(User user, string newPassword,
+    Task<IdentityResult> IApplicationUserManager.UpdatePasswordHash(User user,
+        string newPassword,
         bool validatePassword)
-    {
-        return base.UpdatePasswordHash(user, newPassword, validatePassword);
-    }
+        => base.UpdatePasswordHash(user, newPassword, validatePassword);
 
     #endregion
 }

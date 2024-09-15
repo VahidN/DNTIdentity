@@ -1,6 +1,4 @@
-﻿using System.Runtime.Versioning;
-using ASPNETCoreIdentitySample.Common.GuardToolkit;
-using ASPNETCoreIdentitySample.Common.IdentityToolkit;
+﻿using ASPNETCoreIdentitySample.Common.IdentityToolkit;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
@@ -17,7 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Authorize, Area(AreaConstants.IdentityArea), BreadCrumb(Title = "مشخصات کاربری", UseDefaultRouteUrl = true, Order = 0)]
+[Authorize]
+[Area(AreaConstants.IdentityArea)]
+[BreadCrumb(Title = "مشخصات کاربری", UseDefaultRouteUrl = true, Order = 0)]
 public class UserProfileController : Controller
 {
     private readonly IEmailSender _emailSender;
@@ -31,8 +31,7 @@ public class UserProfileController : Controller
     private readonly IUsersPhotoService _usersPhotoService;
     private readonly IUserValidator<User> _userValidator;
 
-    public UserProfileController(
-        IApplicationUserManager userManager,
+    public UserProfileController(IApplicationUserManager userManager,
         IApplicationRoleManager roleManager,
         IApplicationSignInManager signInManager,
         IProtectionProviderService protectionProviderService,
@@ -46,8 +45,10 @@ public class UserProfileController : Controller
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+
         _protectionProviderService = protectionProviderService ??
                                      throw new ArgumentNullException(nameof(protectionProviderService));
+
         _userValidator = userValidator ?? throw new ArgumentNullException(nameof(userValidator));
         _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
         _usersPhotoService = usersPhotoService ?? throw new ArgumentNullException(nameof(usersPhotoService));
@@ -56,52 +57,59 @@ public class UserProfileController : Controller
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    [Authorize(Roles = ConstantRoles.Admin), BreadCrumb(Title = "ایندکس", Order = 1)]
+    [Authorize(Roles = ConstantRoles.Admin)]
+    [BreadCrumb(Title = "ایندکس", Order = 1)]
     public async Task<IActionResult> AdminEdit(int? id)
     {
         if (!id.HasValue)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
         var user = await _userManager.FindByIdAsync(id.Value.ToString(CultureInfo.InvariantCulture));
-        return await RenderForm(user, true);
+
+        return await RenderForm(user, isAdminEdit: true);
     }
 
     [BreadCrumb(Title = "ایندکس", Order = 1)]
     public async Task<IActionResult> Index()
     {
         var user = await _userManager.GetCurrentUserAsync();
-        return await RenderForm(user, false);
+
+        return await RenderForm(user, isAdminEdit: false);
     }
 
-    [SupportedOSPlatform("windows"), HttpPost, ValidateAntiForgeryToken]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(UserProfileViewModel model)
     {
         if (model is null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
         if (ModelState.IsValid)
         {
             var pid = _protectionProviderService.Decrypt(model.Pid);
+
             if (string.IsNullOrWhiteSpace(pid))
             {
-                return View("Error");
+                return View(viewName: "Error");
             }
 
             if (!string.Equals(pid, _userManager.GetCurrentUserId(), StringComparison.Ordinal) &&
                 !_roleManager.IsCurrentUserInRole(ConstantRoles.Admin))
             {
                 _logger.LogWarningMessage($"سعی در دسترسی غیرمجاز به ویرایش اطلاعات کاربر {pid}");
-                return View("Error");
+
+                return View(viewName: "Error");
             }
 
             var user = await _userManager.FindByIdAsync(pid);
+
             if (user == null)
             {
-                return View("NotFound");
+                return View(viewName: "NotFound");
             }
 
             user.FirstName = model.FirstName;
@@ -128,6 +136,7 @@ public class UserProfileController : Controller
             }
 
             var updateResult = await _userManager.UpdateAsync(user);
+
             if (updateResult.Succeeded)
             {
                 if (!model.IsAdminEdit)
@@ -136,10 +145,8 @@ public class UserProfileController : Controller
                     await _signInManager.RefreshSignInAsync(user);
                 }
 
-                await _emailSender.SendEmailAsync(
-                    user.Email,
-                    "اطلاع رسانی به روز رسانی مشخصات کاربری",
-                    "~/Areas/Identity/Views/EmailTemplates/_UserProfileUpdateNotification.cshtml",
+                await _emailSender.SendEmailAsync(user.Email, subject: "اطلاع رسانی به روز رسانی مشخصات کاربری",
+                    viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_UserProfileUpdateNotification.cshtml",
                     new UserProfileUpdateNotificationViewModel
                     {
                         User = user,
@@ -147,10 +154,13 @@ public class UserProfileController : Controller
                         MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
                     });
 
-                return RedirectToAction(nameof(Index), "UserCard", new { id = user.Id });
+                return RedirectToAction(nameof(Index), controllerName: "UserCard", new
+                {
+                    id = user.Id
+                });
             }
 
-            ModelState.AddModelError("", updateResult.DumpErrors(true));
+            ModelState.AddModelError(key: "", updateResult.DumpErrors(useHtmlNewLine: true));
         }
 
         return View(nameof(Index), model);
@@ -159,13 +169,17 @@ public class UserProfileController : Controller
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken, ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidateUsername(string username, string email, string pid)
     {
         pid = _protectionProviderService.Decrypt(pid);
+
         if (string.IsNullOrWhiteSpace(pid))
         {
-            return Json("اطلاعات وارد شده معتبر نیست.");
+            return Json(data: "اطلاعات وارد شده معتبر نیست.");
         }
 
         var user = await _userManager.FindByIdAsync(pid);
@@ -173,18 +187,18 @@ public class UserProfileController : Controller
         user.Email = email;
 
         var result = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
-        return Json(result.Succeeded ? "true" : result.DumpErrors(true));
+
+        return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
     }
 
     private static void UpdateUserBirthDate(UserProfileViewModel model, User user)
     {
-        if (model.DateOfBirthYear.HasValue &&
-            model.DateOfBirthMonth.HasValue &&
-            model.DateOfBirthDay.HasValue)
+        if (model.DateOfBirthYear.HasValue && model.DateOfBirthMonth.HasValue && model.DateOfBirthDay.HasValue)
         {
             var date =
-                $"{model.DateOfBirthYear.Value.ToString(CultureInfo.InvariantCulture)}/{model.DateOfBirthMonth.Value.ToString("00", CultureInfo.InvariantCulture)}/{model.DateOfBirthDay.Value.ToString("00", CultureInfo.InvariantCulture)}";
-            user.BirthDate = date.ToGregorianDateTime(true);
+                $"{model.DateOfBirthYear.Value.ToString(CultureInfo.InvariantCulture)}/{model.DateOfBirthMonth.Value.ToString(format: "00", CultureInfo.InvariantCulture)}/{model.DateOfBirthDay.Value.ToString(format: "00", CultureInfo.InvariantCulture)}";
+
+            user.BirthDate = date.ToGregorianDateTime(convertToUtc: true);
         }
         else
         {
@@ -222,27 +236,31 @@ public class UserProfileController : Controller
         return View(nameof(Index), userProfile);
     }
 
-    [SupportedOSPlatform("windows")]
     private async Task<bool> UpdateUserAvatarImage(UserProfileViewModel model, User user)
     {
         _usersPhotoService.SetUserDefaultPhoto(user);
 
         var photoFile = model.Photo;
+
         if (photoFile is not null && photoFile.Length > 0)
         {
             var imageOptions = _siteOptions.Value.UserAvatarImageOptions;
+
             if (!photoFile.IsValidImageFile(imageOptions.MaxWidth, imageOptions.MaxHeight))
             {
-                ModelState.AddModelError("",
+                ModelState.AddModelError(key: "",
                     Invariant(
                         $"حداکثر اندازه تصویر قابل ارسال {imageOptions.MaxHeight} در {imageOptions.MaxWidth} پیکسل است"));
+
                 model.PhotoFileName = user.PhotoFileName;
+
                 return false;
             }
 
             var uploadsRootFolder = _usersPhotoService.GetUsersAvatarsFolderPath();
             var photoFileName = Invariant($"{user.Id}{Path.GetExtension(photoFile.FileName)}");
             var filePath = Path.Combine(uploadsRootFolder, photoFileName);
+
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await photoFile.CopyToAsync(fileStream);
@@ -259,21 +277,21 @@ public class UserProfileController : Controller
         if (!string.Equals(user.Email, model.Email, StringComparison.Ordinal))
         {
             user.Email = model.Email;
-            var userValidator =
-                await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+            var userValidator = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+
             if (!userValidator.Succeeded)
             {
-                ModelState.AddModelError("", userValidator.DumpErrors(true));
+                ModelState.AddModelError(key: "", userValidator.DumpErrors(useHtmlNewLine: true));
+
                 return false;
             }
 
             user.EmailConfirmed = false;
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            await _emailSender.SendEmailAsync(
-                user.Email,
-                "لطفا اکانت خود را تائید کنید",
-                "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
+
+            await _emailSender.SendEmailAsync(user.Email, subject: "لطفا اکانت خود را تائید کنید",
+                viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
                 new RegisterEmailConfirmationViewModel
                 {
                     User = user,
@@ -291,11 +309,12 @@ public class UserProfileController : Controller
         if (!string.Equals(user.UserName, model.UserName, StringComparison.Ordinal))
         {
             user.UserName = model.UserName;
-            var userValidator =
-                await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+            var userValidator = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+
             if (!userValidator.Succeeded)
             {
-                ModelState.AddModelError("", userValidator.DumpErrors(true));
+                ModelState.AddModelError(key: "", userValidator.DumpErrors(useHtmlNewLine: true));
+
                 return false;
             }
         }

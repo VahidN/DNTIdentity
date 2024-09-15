@@ -11,14 +11,14 @@ var webApp = builder.Build();
 ConfigureMiddlewares(webApp, webApp.Environment);
 ConfigureEndpoints(webApp);
 ConfigureDatabase(webApp);
-webApp.Run();
+await webApp.RunAsync();
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
 {
     services.Configure<SiteSettings>(options => configuration.Bind(options));
-    services.Configure<ContentSecurityPolicyConfig>(options =>
-                                                        configuration.GetSection("ContentSecurityPolicyConfig")
-                                                                     .Bind(options));
+
+    services.Configure<ContentSecurityPolicyConfig>(options
+        => configuration.GetSection(key: "ContentSecurityPolicyConfig").Bind(options));
 
     // Adds all of the ASP.NET Core Identity related services and configurations at once.
     services.AddCustomIdentityServices(configuration);
@@ -26,14 +26,16 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddMvc(options => options.UseYeKeModelBinder());
 
     services.AddDNTCommonWeb();
+
     services.AddDNTCaptcha(options =>
-                           {
-                               options.UseCookieStorageProvider()
-                                      .AbsoluteExpiration(7)
-                                      .ShowExceptionsInResponse(env.IsDevelopment())
-                                      .ShowThousandsSeparators(false)
-                                      .WithEncryptionKey("This is my secure key!");
-                           });
+    {
+        options.UseCookieStorageProvider()
+            .AbsoluteExpiration(minutes: 7)
+            .ShowExceptionsInResponse(env.IsDevelopment())
+            .ShowThousandsSeparators(show: false)
+            .WithEncryptionKey(key: "This is my secure key!");
+    });
+
     services.AddCloudscribePagination();
     services.AddWebOptimizerServices();
 
@@ -51,7 +53,7 @@ void ConfigureLogging(ILoggingBuilder logging, IHostEnvironment env, IConfigurat
         logging.AddConsole();
     }
 
-    logging.AddConfiguration(configuration.GetSection("Logging"));
+    logging.AddConfiguration(configuration.GetSection(key: "Logging"));
     logging.AddDbLogger(); // You can change its Log Level using the `appsettings.json` file -> Logging -> LogLevel -> Default
 }
 
@@ -65,8 +67,8 @@ void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
     app.UseWebOptimizer();
 
     app.UseHttpsRedirection();
-    app.UseExceptionHandler("/error/index/500");
-    app.UseStatusCodePagesWithReExecute("/error/index/{0}");
+    app.UseExceptionHandler(errorHandlingPath: "/error/index/500");
+    app.UseStatusCodePagesWithReExecute(pathFormat: "/error/index/{0}");
 
     app.UseContentSecurityPolicy();
 
@@ -80,24 +82,16 @@ void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
 }
 
 void ConfigureEndpoints(IApplicationBuilder app)
-{
-    app.UseEndpoints(endpoints =>
-                     {
-                         endpoints.MapControllers();
+    => app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
 
-                         endpoints.MapControllerRoute(
-                                                      "areaRoute",
-                                                      "{area:exists}/{controller=Account}/{action=Index}/{id?}");
+        endpoints.MapControllerRoute(name: "areaRoute",
+            pattern: "{area:exists}/{controller=Account}/{action=Index}/{id?}");
 
-                         endpoints.MapControllerRoute(
-                                                      "default",
-                                                      "{controller=Home}/{action=Index}/{id?}");
+        endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                         endpoints.MapRazorPages();
-                     });
-}
+        endpoints.MapRazorPages();
+    });
 
-void ConfigureDatabase(IApplicationBuilder app)
-{
-    app.ApplicationServices.InitializeDb();
-}
+void ConfigureDatabase(IApplicationBuilder app) => app.ApplicationServices.InitializeDb();

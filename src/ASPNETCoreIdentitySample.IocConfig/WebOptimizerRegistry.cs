@@ -14,7 +14,7 @@ public static class WebOptimizerRegistry
                                                            "wwwroot/lib/bootstrap4-rtl/bootstrap-rtl.css",
                                                            "wwwroot/lib/components-font-awesome/css/solid.min.css",
                                                            "wwwroot/lib/components-font-awesome/css/fontawesome.min.css",
-                                                           "Content/custom.css"
+                                                           "wwwroot/content/custom.css"
                                                           )
                                              .UseContentRoot()
                                              .AdjustRelativePaths();
@@ -25,10 +25,10 @@ public static class WebOptimizerRegistry
                                                                   "wwwroot/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
                                                                   "wwwroot/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js",
                                                                   "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
-                                                                  "scripts/jquery.bootstrap-modal-confirm.js",
-                                                                  "scripts/jquery.bootstrap-modal-alert.js",
-                                                                  "scripts/jquery.bootstrap-modal-ajax-form.js",
-                                                                  "scripts/custom.js"
+                                                                  "wwwroot/scripts/jquery.bootstrap-modal-confirm.js",
+                                                                  "wwwroot/scripts/jquery.bootstrap-modal-alert.js",
+                                                                  "wwwroot/scripts/jquery.bootstrap-modal-ajax-form.js",
+                                                                  "wwwroot/scripts/custom.js"
                                                                  )
                                              .UseContentRoot();
 
