@@ -86,17 +86,7 @@ public class ApplicationUserManager : UserManager<User>, IApplicationUserManager
         return result;
     }
 
-    public override async Task<IdentityResult> CreateAsync(User user, string password)
-    {
-        var result = await base.CreateAsync(user, password);
-
-        if (result.Succeeded)
-        {
-            await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
-        }
-
-        return result;
-    }
+    public override Task<IdentityResult> CreateAsync(User user, string password) => base.CreateAsync(user, password);
 
     public override async Task<IdentityResult> ChangePasswordAsync(User user,
         string currentPassword,
