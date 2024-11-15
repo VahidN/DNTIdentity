@@ -15,12 +15,12 @@ public class CustomPasswordValidator : PasswordValidator<User>
     private readonly HashSet<string> _passwordsBanList;
     private readonly IUsedPasswordsService _usedPasswordsService;
 
-    public CustomPasswordValidator(
-        IdentityErrorDescriber errors, // How to use CustomIdentityErrorDescriber
+    public CustomPasswordValidator(IdentityErrorDescriber errors, // How to use CustomIdentityErrorDescriber
         IOptionsSnapshot<SiteSettings> configurationRoot,
         IUsedPasswordsService usedPasswordsService) : base(errors)
     {
         _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
+
         if (configurationRoot == null)
         {
             throw new ArgumentNullException(nameof(configurationRoot));
@@ -31,7 +31,8 @@ public class CustomPasswordValidator : PasswordValidator<User>
 
         if (_passwordsBanList.Count == 0)
         {
-            throw new InvalidOperationException("Please fill the passwords ban list in the appsettings.json file.");
+            throw new InvalidOperationException(
+                message: "Please fill the passwords ban list in the appsettings.json file.");
         }
     }
 
@@ -46,7 +47,8 @@ public class CustomPasswordValidator : PasswordValidator<User>
                 Code = "PasswordIsNotSet",
                 Description = "لطفا کلمه‌ی عبور را تکمیل کنید."
             });
-            return IdentityResult.Failed(errors.ToArray());
+
+            return IdentityResult.Failed([.. errors]);
         }
 
         if (string.IsNullOrWhiteSpace(user?.UserName))
@@ -56,12 +58,13 @@ public class CustomPasswordValidator : PasswordValidator<User>
                 Code = "UserNameIsNotSet",
                 Description = "لطفا نام کاربری را تکمیل کنید."
             });
-            return IdentityResult.Failed(errors.ToArray());
+
+            return IdentityResult.Failed([.. errors]);
         }
 
         // First use the built-in validator
         var result = await base.ValidateAsync(manager, user, password);
-        errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
+        errors = result.Succeeded ? [] : result.Errors.ToList();
 
         // Extending the built-in validator
         if (password.Contains(user.UserName, StringComparison.OrdinalIgnoreCase))
@@ -71,7 +74,8 @@ public class CustomPasswordValidator : PasswordValidator<User>
                 Code = "PasswordContainsUserName",
                 Description = "کلمه‌ی عبور نمی‌تواند حاوی قسمتی از نام کاربری باشد."
             });
-            return IdentityResult.Failed(errors.ToArray());
+
+            return IdentityResult.Failed([.. errors]);
         }
 
         if (!IsSafePasword(password))
@@ -81,7 +85,8 @@ public class CustomPasswordValidator : PasswordValidator<User>
                 Code = "PasswordIsNotSafe",
                 Description = "کلمه‌ی عبور وارد شده به سادگی قابل حدس زدن است."
             });
-            return IdentityResult.Failed(errors.ToArray());
+
+            return IdentityResult.Failed([.. errors]);
         }
 
         if (await _usedPasswordsService.IsPreviouslyUsedPasswordAsync(user, password))
@@ -92,10 +97,11 @@ public class CustomPasswordValidator : PasswordValidator<User>
                 Description =
                     "لطفا کلمه‌ی عبور دیگری را انتخاب کنید. این کلمه‌ی عبور پیشتر توسط شما استفاده شده‌است و تکراری می‌باشد."
             });
-            return IdentityResult.Failed(errors.ToArray());
+
+            return IdentityResult.Failed([.. errors]);
         }
 
-        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
+        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed([.. errors]);
     }
 
     private static bool AreAllCharsEqual(string data)
@@ -106,8 +112,9 @@ public class CustomPasswordValidator : PasswordValidator<User>
         }
 
         data = data.ToLowerInvariant();
-        var firstElement = data.ElementAt(0);
+        var firstElement = data.ElementAt(index: 0);
         var euqalCharsLen = data.ToCharArray().Count(x => x == firstElement);
+
         if (euqalCharsLen == data.Length)
         {
             return true;

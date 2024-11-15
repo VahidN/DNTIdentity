@@ -14,10 +14,8 @@ public class CustomUserValidator : UserValidator<User>
 {
     private readonly ISet<string> _emailsBanList;
 
-    public CustomUserValidator(
-        IdentityErrorDescriber errors, // How to use CustomIdentityErrorDescriber
-        IOptionsSnapshot<SiteSettings> configurationRoot
-    ) : base(errors)
+    public CustomUserValidator(IdentityErrorDescriber errors, // How to use CustomIdentityErrorDescriber
+        IOptionsSnapshot<SiteSettings> configurationRoot) : base(errors)
     {
         if (configurationRoot == null)
         {
@@ -28,7 +26,8 @@ public class CustomUserValidator : UserValidator<User>
 
         if (!_emailsBanList.Any())
         {
-            throw new InvalidOperationException("Please fill the emails ban list in the appsettings.json file.");
+            throw new InvalidOperationException(
+                message: "Please fill the emails ban list in the appsettings.json file.");
         }
     }
 
@@ -36,18 +35,19 @@ public class CustomUserValidator : UserValidator<User>
     {
         // First use the built-in validator
         var result = await base.ValidateAsync(manager, user);
-        var errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();
+        var errors = result.Succeeded ? [] : result.Errors.ToList();
 
         // Extending the built-in validator
         ValidateEmail(user, errors);
         ValidateUserName(user, errors);
 
-        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
+        return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed([.. errors]);
     }
 
     private void ValidateEmail(User user, List<IdentityError> errors)
     {
         var userEmail = user?.Email;
+
         if (string.IsNullOrWhiteSpace(userEmail))
         {
             if (string.IsNullOrWhiteSpace(userEmail))
@@ -75,6 +75,7 @@ public class CustomUserValidator : UserValidator<User>
     private static void ValidateUserName(User user, List<IdentityError> errors)
     {
         var userName = user?.UserName;
+
         if (string.IsNullOrWhiteSpace(userName))
         {
             errors.Add(new IdentityError

@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASPNETCoreIdentitySample.DataLayer.MSSQL;
 
-public class MsSqlDbContext : ApplicationDbContext
+public class MsSqlDbContext(DbContextOptions options) : ApplicationDbContext(options)
 {
-    public MsSqlDbContext(DbContextOptions options) : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         if (builder == null)

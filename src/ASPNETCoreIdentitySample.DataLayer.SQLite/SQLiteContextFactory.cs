@@ -28,7 +28,7 @@ public class SQLiteContextFactory : IDesignTimeDbContextFactory<SQLiteDbContext>
             .AddJsonFile("appsettings.json", false, true)
             .Build();
         services.AddSingleton(_ => configuration);
-        services.Configure<SiteSettings>(options => configuration.Bind(options));
+        services.Configure<SiteSettings>(configuration.Bind);
 
         var buildServiceProvider = services.BuildServiceProvider();
         var siteSettings = buildServiceProvider.GetRequiredService<IOptionsSnapshot<SiteSettings>>();

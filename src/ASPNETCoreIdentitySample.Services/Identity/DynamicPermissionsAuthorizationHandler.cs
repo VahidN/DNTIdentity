@@ -5,22 +5,17 @@ using Microsoft.AspNetCore.Routing;
 
 namespace ASPNETCoreIdentitySample.Services.Identity;
 
-public class DynamicPermissionsAuthorizationHandler : AuthorizationHandler<DynamicPermissionRequirement>
+public class DynamicPermissionsAuthorizationHandler(
+    ISecurityTrimmingService securityTrimmingService,
+    IHttpContextAccessor httpContextAccessor) : AuthorizationHandler<DynamicPermissionRequirement>
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ISecurityTrimmingService _securityTrimmingService;
+    private readonly IHttpContextAccessor _httpContextAccessor =
+        httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
 
-    public DynamicPermissionsAuthorizationHandler(
-        ISecurityTrimmingService securityTrimmingService,
-        IHttpContextAccessor httpContextAccessor)
-    {
-        _securityTrimmingService =
-            securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
-        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-    }
+    private readonly ISecurityTrimmingService _securityTrimmingService =
+        securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
 
-    protected override Task HandleRequirementAsync(
-        AuthorizationHandlerContext context,
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
         DynamicPermissionRequirement requirement)
     {
         if (context == null)
@@ -30,13 +25,13 @@ public class DynamicPermissionsAuthorizationHandler : AuthorizationHandler<Dynam
 
         var routeData = _httpContextAccessor.HttpContext?.GetRouteData();
 
-        var areaName = routeData?.Values["area"]?.ToString();
+        var areaName = routeData?.Values[key: "area"]?.ToString();
         var area = string.IsNullOrWhiteSpace(areaName) ? string.Empty : areaName;
 
-        var controllerName = routeData?.Values["controller"]?.ToString();
+        var controllerName = routeData?.Values[key: "controller"]?.ToString();
         var controller = string.IsNullOrWhiteSpace(controllerName) ? string.Empty : controllerName;
 
-        var actionName = routeData?.Values["action"]?.ToString();
+        var actionName = routeData?.Values[key: "action"]?.ToString();
         var action = string.IsNullOrWhiteSpace(actionName) ? string.Empty : actionName;
 
         // This is just a sample: How to access form values from an AuthorizationHandler

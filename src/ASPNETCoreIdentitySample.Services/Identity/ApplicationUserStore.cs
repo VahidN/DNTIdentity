@@ -10,22 +10,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/2578
 /// </summary>
-public class ApplicationUserStore :
-    UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>,
-    IApplicationUserStore
+public class ApplicationUserStore(IUnitOfWork uow, IdentityErrorDescriber describer)
+    : UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>(
+        (ApplicationDbContext)uow, describer), IApplicationUserStore
 {
-    private readonly IdentityErrorDescriber _describer;
-    private readonly IUnitOfWork _uow;
-
-    public ApplicationUserStore(
-        IUnitOfWork uow,
-        IdentityErrorDescriber describer)
-        : base((ApplicationDbContext)uow, describer)
-    {
-        _uow = uow ?? throw new ArgumentNullException(nameof(uow));
-        _describer = describer ?? throw new ArgumentNullException(nameof(describer));
-    }
-
     #region BaseClass
 
     protected override UserClaim CreateUserClaim(User user, Claim claim)
@@ -35,8 +23,13 @@ public class ApplicationUserStore :
             throw new ArgumentNullException(nameof(user));
         }
 
-        var userClaim = new UserClaim { UserId = user.Id };
+        var userClaim = new UserClaim
+        {
+            UserId = user.Id
+        };
+
         userClaim.InitializeFromClaim(claim);
+
         return userClaim;
     }
 
@@ -96,48 +89,35 @@ public class ApplicationUserStore :
         };
     }
 
-    Task IApplicationUserStore.AddUserTokenAsync(UserToken token)
-    {
-        return base.AddUserTokenAsync(token);
-    }
+    Task IApplicationUserStore.AddUserTokenAsync(UserToken token) => base.AddUserTokenAsync(token);
 
     Task<Role> IApplicationUserStore.FindRoleAsync(string normalizedRoleName, CancellationToken cancellationToken)
-    {
-        return base.FindRoleAsync(normalizedRoleName, cancellationToken);
-    }
+        => base.FindRoleAsync(normalizedRoleName, cancellationToken);
 
-    Task<UserToken> IApplicationUserStore.FindTokenAsync(User user, string loginProvider, string name,
+    Task<UserToken> IApplicationUserStore.FindTokenAsync(User user,
+        string loginProvider,
+        string name,
         CancellationToken cancellationToken)
-    {
-        return base.FindTokenAsync(user, loginProvider, name, cancellationToken);
-    }
+        => base.FindTokenAsync(user, loginProvider, name, cancellationToken);
 
     Task<User> IApplicationUserStore.FindUserAsync(int userId, CancellationToken cancellationToken)
-    {
-        return base.FindUserAsync(userId, cancellationToken);
-    }
+        => base.FindUserAsync(userId, cancellationToken);
 
-    Task<UserLogin> IApplicationUserStore.FindUserLoginAsync(int userId, string loginProvider, string providerKey,
+    Task<UserLogin> IApplicationUserStore.FindUserLoginAsync(int userId,
+        string loginProvider,
+        string providerKey,
         CancellationToken cancellationToken)
-    {
-        return base.FindUserLoginAsync(userId, loginProvider, providerKey, cancellationToken);
-    }
+        => base.FindUserLoginAsync(userId, loginProvider, providerKey, cancellationToken);
 
-    Task<UserLogin> IApplicationUserStore.FindUserLoginAsync(string loginProvider, string providerKey,
+    Task<UserLogin> IApplicationUserStore.FindUserLoginAsync(string loginProvider,
+        string providerKey,
         CancellationToken cancellationToken)
-    {
-        return base.FindUserLoginAsync(loginProvider, providerKey, cancellationToken);
-    }
+        => base.FindUserLoginAsync(loginProvider, providerKey, cancellationToken);
 
     Task<UserRole> IApplicationUserStore.FindUserRoleAsync(int userId, int roleId, CancellationToken cancellationToken)
-    {
-        return base.FindUserRoleAsync(userId, roleId, cancellationToken);
-    }
+        => base.FindUserRoleAsync(userId, roleId, cancellationToken);
 
-    Task IApplicationUserStore.RemoveUserTokenAsync(UserToken token)
-    {
-        return base.RemoveUserTokenAsync(token);
-    }
+    Task IApplicationUserStore.RemoveUserTokenAsync(UserToken token) => base.RemoveUserTokenAsync(token);
 
     #endregion
 

@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Security.Principal;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Authentication;
@@ -14,21 +13,19 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 ///     How to add existing db user's claims to the user's active directory claims.
 ///     More info: http://www.dntips.ir/post/2762
 /// </summary>
-public class ApplicationClaimsTransformation : IClaimsTransformation
+public class ApplicationClaimsTransformation(
+    IApplicationUserManager userManager,
+    IApplicationRoleManager roleManager,
+    ILogger<ApplicationClaimsTransformation> logger) : IClaimsTransformation
 {
-    private readonly ILogger<ApplicationClaimsTransformation> _logger;
-    private readonly IApplicationRoleManager _roleManager;
-    private readonly IApplicationUserManager _userManager;
+    private readonly ILogger<ApplicationClaimsTransformation> _logger =
+        logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public ApplicationClaimsTransformation(
-        IApplicationUserManager userManager,
-        IApplicationRoleManager roleManager,
-        ILogger<ApplicationClaimsTransformation> logger)
-    {
-        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly IApplicationRoleManager _roleManager =
+        roleManager ?? throw new ArgumentNullException(nameof(roleManager));
+
+    private readonly IApplicationUserManager _userManager =
+        userManager ?? throw new ArgumentNullException(nameof(userManager));
 
     public async Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
     {
@@ -37,7 +34,7 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
             throw new ArgumentNullException(nameof(principal));
         }
 
-        if (!(principal.Identity is ClaimsIdentity identity) || !IsNtlm(identity))
+        if (principal.Identity is not ClaimsIdentity identity || !IsNtlm(identity))
         {
             return principal;
         }
@@ -48,15 +45,17 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
         return principal;
     }
 
-    private async Task<IEnumerable<Claim>> AddExistingUserClaimsAsync(IIdentity identity)
+    private async Task<IEnumerable<Claim>> AddExistingUserClaimsAsync(ClaimsIdentity identity)
     {
         var claims = new List<Claim>();
+
         var user = await _userManager.Users.Include(u => u.Claims)
-                .FirstOrDefaultAsync(u => u.UserName == identity.Name)
-            ;
+            .FirstOrDefaultAsync(u => u.UserName == identity.Name);
+
         if (user == null)
         {
             _logger.LogErrorMessage($"Couldn't find {identity.Name}.");
+
             return claims;
         }
 
@@ -67,8 +66,7 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
 
         if (_userManager.SupportsUserSecurityStamp)
         {
-            claims.Add(new Claim(options.SecurityStampClaimType,
-                await _userManager.GetSecurityStampAsync(user)));
+            claims.Add(new Claim(options.SecurityStampClaimType, await _userManager.GetSecurityStampAsync(user)));
         }
 
         if (_userManager.SupportsUserClaim)
@@ -79,6 +77,7 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
         if (_userManager.SupportsUserRole)
         {
             var roles = await _userManager.GetRolesAsync(user);
+
             foreach (var roleName in roles)
             {
                 claims.Add(new Claim(options.RoleClaimType, roleName));
@@ -91,6 +90,7 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
                 if (_roleManager.SupportsRoleClaims)
                 {
                     var role = await _roleManager.FindByNameAsync(roleName);
+
                     if (role != null)
                     {
                         claims.AddRange(await _roleManager.GetClaimsAsync(role));
@@ -102,8 +102,6 @@ public class ApplicationClaimsTransformation : IClaimsTransformation
         return claims;
     }
 
-    private static bool IsNtlm(IIdentity identity)
-    {
-        return string.Equals(identity.AuthenticationType, "NTLM", StringComparison.OrdinalIgnoreCase);
-    }
+    private static bool IsNtlm(ClaimsIdentity identity)
+        => string.Equals(identity.AuthenticationType, b: "NTLM", StringComparison.OrdinalIgnoreCase);
 }

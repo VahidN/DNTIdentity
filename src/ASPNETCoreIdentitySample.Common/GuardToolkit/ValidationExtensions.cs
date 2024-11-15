@@ -13,19 +13,24 @@ public static class ValidationExtensions
         }
 
         var errors = new StringBuilder();
+
         var entities = context.ChangeTracker.Entries()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+            .Where(e => e.State is EntityState.Added or EntityState.Modified)
             .Select(e => e.Entity);
+
         foreach (var entity in entities)
         {
             var validationContext = new ValidationContext(entity);
             var validationResults = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(entity, validationContext, validationResults, true))
+
+            if (!Validator.TryValidateObject(entity, validationContext, validationResults, validateAllProperties: true))
             {
                 foreach (var validationResult in validationResults)
                 {
                     var names = validationResult.MemberNames.Aggregate((s1, s2) => $"{s1}, {s2}");
-                    errors.AppendFormat(CultureInfo.InvariantCulture, "{0}: {1}", names, validationResult.ErrorMessage);
+
+                    errors.AppendFormat(CultureInfo.InvariantCulture, format: "{0}: {1}", names,
+                        validationResult.ErrorMessage);
                 }
             }
         }

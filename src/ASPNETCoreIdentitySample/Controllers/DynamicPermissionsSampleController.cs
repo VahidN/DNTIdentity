@@ -10,43 +10,30 @@ namespace ASPNETCoreIdentitySample.Controllers;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/2581
 /// </summary>
-[Authorize(Policy = ConstantPolicies.DynamicPermission), BreadCrumb(UseDefaultRouteUrl = true, Order = 0),
- DisplayName("کنترلر نمونه با سطح دسترسی پویا")]
+[Authorize(Policy = ConstantPolicies.DynamicPermission)]
+[BreadCrumb(UseDefaultRouteUrl = true, Order = 0)]
+[DisplayName(displayName: "کنترلر نمونه با سطح دسترسی پویا")]
 public class DynamicPermissionsSampleController : Controller
 {
-    [DisplayName("ایندکس"), BreadCrumb(Order = 1)]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    [DisplayName(displayName: "ایندکس")]
+    [BreadCrumb(Order = 1)]
+    public IActionResult Index() => View();
 
-    [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult Index(RoleViewModel model)
-    {
-        return View(model);
-    }
+    [HttpPost] [ValidateAntiForgeryToken] public IActionResult Index(RoleViewModel model) => View(model);
 
-    [DisplayName("گزارش از لیست کتاب‌ها"), BreadCrumb(Order = 1)]
-    public IActionResult Books()
-    {
-        return View("Index");
-    }
+    [DisplayName(displayName: "گزارش از لیست کتاب‌ها")]
+    [BreadCrumb(Order = 1)]
+    public IActionResult Books() => View(viewName: "Index");
 
-    [DisplayName("گزارش از لیست مراجعان"), BreadCrumb(Order = 1)]
-    public IActionResult Users()
-    {
-        return View("Index");
-    }
+    [DisplayName(displayName: "گزارش از لیست مراجعان")]
+    [BreadCrumb(Order = 1)]
+    public IActionResult Users() => View(viewName: "Index");
 
-    [DisplayName("گزارش از لیست امانات"), BreadCrumb(Order = 1)]
-    public IActionResult BooksGiven()
-    {
-        return View("Index");
-    }
+    [DisplayName(displayName: "گزارش از لیست امانات")]
+    [BreadCrumb(Order = 1)]
+    public IActionResult BooksGiven() => View(viewName: "Index");
 
-    [DisplayName("گزارش از لیست مفقودی‌ها"), BreadCrumb(Order = 1)]
-    public IActionResult BooksMissings()
-    {
-        return View("Index");
-    }
+    [DisplayName(displayName: "گزارش از لیست مفقودی‌ها")]
+    [BreadCrumb(Order = 1)]
+    public IActionResult BooksMissings() => View(viewName: "Index");
 }

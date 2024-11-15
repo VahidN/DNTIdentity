@@ -108,7 +108,7 @@ public class PersianYeKeCommandInterceptor : DbCommandInterceptor
                 case DbType.String:
                 case DbType.StringFixedLength:
                 case DbType.Xml:
-                    if (parameter.Value is not DBNull && parameter.Value is string)
+                    if (parameter.Value is not DBNull and string)
                     {
                         parameter.Value =
                             Convert.ToString(parameter.Value, CultureInfo.InvariantCulture).ApplyCorrectYeKe();

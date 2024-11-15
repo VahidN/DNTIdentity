@@ -18,45 +18,18 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 [Authorize]
 [Area(AreaConstants.IdentityArea)]
 [BreadCrumb(Title = "مشخصات کاربری", UseDefaultRouteUrl = true, Order = 0)]
-public class UserProfileController : Controller
+public class UserProfileController(
+    IApplicationUserManager userManager,
+    IApplicationRoleManager roleManager,
+    IApplicationSignInManager signInManager,
+    IProtectionProviderService protectionProviderService,
+    IUserValidator<User> userValidator,
+    IUsedPasswordsService usedPasswordsService,
+    IUsersPhotoService usersPhotoService,
+    IOptionsSnapshot<SiteSettings> siteOptions,
+    IEmailSender emailSender,
+    ILogger<UserProfileController> logger) : Controller
 {
-    private readonly IEmailSender _emailSender;
-    private readonly ILogger<UserProfileController> _logger;
-    private readonly IProtectionProviderService _protectionProviderService;
-    private readonly IApplicationRoleManager _roleManager;
-    private readonly IApplicationSignInManager _signInManager;
-    private readonly IOptionsSnapshot<SiteSettings> _siteOptions;
-    private readonly IUsedPasswordsService _usedPasswordsService;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IUsersPhotoService _usersPhotoService;
-    private readonly IUserValidator<User> _userValidator;
-
-    public UserProfileController(IApplicationUserManager userManager,
-        IApplicationRoleManager roleManager,
-        IApplicationSignInManager signInManager,
-        IProtectionProviderService protectionProviderService,
-        IUserValidator<User> userValidator,
-        IUsedPasswordsService usedPasswordsService,
-        IUsersPhotoService usersPhotoService,
-        IOptionsSnapshot<SiteSettings> siteOptions,
-        IEmailSender emailSender,
-        ILogger<UserProfileController> logger)
-    {
-        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-
-        _protectionProviderService = protectionProviderService ??
-                                     throw new ArgumentNullException(nameof(protectionProviderService));
-
-        _userValidator = userValidator ?? throw new ArgumentNullException(nameof(userValidator));
-        _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
-        _usersPhotoService = usersPhotoService ?? throw new ArgumentNullException(nameof(usersPhotoService));
-        _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
-        _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     [Authorize(Roles = ConstantRoles.Admin)]
     [BreadCrumb(Title = "ایندکس", Order = 1)]
     public async Task<IActionResult> AdminEdit(int? id)
@@ -66,7 +39,7 @@ public class UserProfileController : Controller
             return View(viewName: "Error");
         }
 
-        var user = await _userManager.FindByIdAsync(id.Value.ToString(CultureInfo.InvariantCulture));
+        var user = await userManager.FindByIdAsync(id.Value.ToString(CultureInfo.InvariantCulture));
 
         return await RenderForm(user, isAdminEdit: true);
     }
@@ -74,7 +47,7 @@ public class UserProfileController : Controller
     [BreadCrumb(Title = "ایندکس", Order = 1)]
     public async Task<IActionResult> Index()
     {
-        var user = await _userManager.GetCurrentUserAsync();
+        var user = await userManager.GetCurrentUserAsync();
 
         return await RenderForm(user, isAdminEdit: false);
     }
@@ -90,22 +63,22 @@ public class UserProfileController : Controller
 
         if (ModelState.IsValid)
         {
-            var pid = _protectionProviderService.Decrypt(model.Pid);
+            var pid = protectionProviderService.Decrypt(model.Pid);
 
             if (string.IsNullOrWhiteSpace(pid))
             {
                 return View(viewName: "Error");
             }
 
-            if (!string.Equals(pid, _userManager.GetCurrentUserId(), StringComparison.Ordinal) &&
-                !_roleManager.IsCurrentUserInRole(ConstantRoles.Admin))
+            if (!string.Equals(pid, userManager.GetCurrentUserId(), StringComparison.Ordinal) &&
+                !roleManager.IsCurrentUserInRole(ConstantRoles.Admin))
             {
-                _logger.LogWarningMessage($"سعی در دسترسی غیرمجاز به ویرایش اطلاعات کاربر {pid}");
+                logger.LogWarningMessage($"سعی در دسترسی غیرمجاز به ویرایش اطلاعات کاربر {pid}");
 
                 return View(viewName: "Error");
             }
 
-            var user = await _userManager.FindByIdAsync(pid);
+            var user = await userManager.FindByIdAsync(pid);
 
             if (user == null)
             {
@@ -135,22 +108,22 @@ public class UserProfileController : Controller
                 return View(nameof(Index), model);
             }
 
-            var updateResult = await _userManager.UpdateAsync(user);
+            var updateResult = await userManager.UpdateAsync(user);
 
             if (updateResult.Succeeded)
             {
                 if (!model.IsAdminEdit)
                 {
                     // reflect the changes in the current user's Identity cookie
-                    await _signInManager.RefreshSignInAsync(user);
+                    await signInManager.RefreshSignInAsync(user);
                 }
 
-                await _emailSender.SendEmailAsync(user.Email, subject: "اطلاع رسانی به روز رسانی مشخصات کاربری",
+                await emailSender.SendEmailAsync(user.Email, subject: "اطلاع رسانی به روز رسانی مشخصات کاربری",
                     viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_UserProfileUpdateNotification.cshtml",
                     new UserProfileUpdateNotificationViewModel
                     {
                         User = user,
-                        EmailSignature = _siteOptions.Value.Smtp.FromName,
+                        EmailSignature = siteOptions.Value.Smtp.FromName,
                         MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
                     });
 
@@ -175,18 +148,18 @@ public class UserProfileController : Controller
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidateUsername(string username, string email, string pid)
     {
-        pid = _protectionProviderService.Decrypt(pid);
+        pid = protectionProviderService.Decrypt(pid);
 
         if (string.IsNullOrWhiteSpace(pid))
         {
             return Json(data: "اطلاعات وارد شده معتبر نیست.");
         }
 
-        var user = await _userManager.FindByIdAsync(pid);
+        var user = await userManager.FindByIdAsync(pid);
         user.UserName = username;
         user.Email = email;
 
-        var result = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+        var result = await userValidator.ValidateAsync((UserManager<User>)userManager, user);
 
         return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
     }
@@ -208,7 +181,7 @@ public class UserProfileController : Controller
 
     private async Task<IActionResult> RenderForm(User user, bool isAdminEdit)
     {
-        _usersPhotoService.SetUserDefaultPhoto(user);
+        usersPhotoService.SetUserDefaultPhoto(user);
 
         var userProfile = new UserProfileViewModel
         {
@@ -219,10 +192,10 @@ public class UserProfileController : Controller
             UserName = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Pid = _protectionProviderService.Encrypt(user.Id.ToString(CultureInfo.InvariantCulture)),
+            Pid = protectionProviderService.Encrypt(user.Id.ToString(CultureInfo.InvariantCulture)),
             IsEmailPublic = user.IsEmailPublic,
             TwoFactorEnabled = user.TwoFactorEnabled,
-            IsPasswordTooOld = await _usedPasswordsService.IsLastUserPasswordTooOldAsync(user.Id)
+            IsPasswordTooOld = await usedPasswordsService.IsLastUserPasswordTooOldAsync(user.Id)
         };
 
         if (user.BirthDate.HasValue)
@@ -238,13 +211,13 @@ public class UserProfileController : Controller
 
     private async Task<bool> UpdateUserAvatarImage(UserProfileViewModel model, User user)
     {
-        _usersPhotoService.SetUserDefaultPhoto(user);
+        usersPhotoService.SetUserDefaultPhoto(user);
 
         var photoFile = model.Photo;
 
         if (photoFile is not null && photoFile.Length > 0)
         {
-            var imageOptions = _siteOptions.Value.UserAvatarImageOptions;
+            var imageOptions = siteOptions.Value.UserAvatarImageOptions;
 
             if (!photoFile.IsValidImageFile(imageOptions.MaxWidth, imageOptions.MaxHeight))
             {
@@ -257,7 +230,7 @@ public class UserProfileController : Controller
                 return false;
             }
 
-            var uploadsRootFolder = _usersPhotoService.GetUsersAvatarsFolderPath();
+            var uploadsRootFolder = usersPhotoService.GetUsersAvatarsFolderPath();
             var photoFileName = Invariant($"{user.Id}{Path.GetExtension(photoFile.FileName)}");
             var filePath = Path.Combine(uploadsRootFolder, photoFileName);
 
@@ -277,26 +250,26 @@ public class UserProfileController : Controller
         if (!string.Equals(user.Email, model.Email, StringComparison.Ordinal))
         {
             user.Email = model.Email;
-            var userValidator = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+            var validator = await userValidator.ValidateAsync((UserManager<User>)userManager, user);
 
-            if (!userValidator.Succeeded)
+            if (!validator.Succeeded)
             {
-                ModelState.AddModelError(key: "", userValidator.DumpErrors(useHtmlNewLine: true));
+                ModelState.AddModelError(key: "", validator.DumpErrors(useHtmlNewLine: true));
 
                 return false;
             }
 
             user.EmailConfirmed = false;
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            await _emailSender.SendEmailAsync(user.Email, subject: "لطفا اکانت خود را تائید کنید",
+            await emailSender.SendEmailAsync(user.Email, subject: "لطفا اکانت خود را تائید کنید",
                 viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
                 new RegisterEmailConfirmationViewModel
                 {
                     User = user,
                     EmailConfirmationToken = code,
-                    EmailSignature = _siteOptions.Value.Smtp.FromName,
+                    EmailSignature = siteOptions.Value.Smtp.FromName,
                     MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
                 });
         }
@@ -309,11 +282,11 @@ public class UserProfileController : Controller
         if (!string.Equals(user.UserName, model.UserName, StringComparison.Ordinal))
         {
             user.UserName = model.UserName;
-            var userValidator = await _userValidator.ValidateAsync((UserManager<User>)_userManager, user);
+            var validator = await userValidator.ValidateAsync((UserManager<User>)userManager, user);
 
-            if (!userValidator.Succeeded)
+            if (!validator.Succeeded)
             {
-                ModelState.AddModelError(key: "", userValidator.DumpErrors(useHtmlNewLine: true));
+                ModelState.AddModelError(key: "", validator.DumpErrors(useHtmlNewLine: true));
 
                 return false;
             }

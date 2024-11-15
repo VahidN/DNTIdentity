@@ -4,12 +4,9 @@ namespace ASPNETCoreIdentitySample.Entities;
 
 public class Category : IAuditableEntity
 {
-    public int Id { get; set; }
+    public Category() => Products = [];
 
-    public Category()
-    {
-        Products = new HashSet<Product>();
-    }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 

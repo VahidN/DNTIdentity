@@ -7,15 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ASPNETCoreIdentitySample.Controllers;
 
 [BreadCrumb(Title = "خطا", UseDefaultRouteUrl = true, Order = 0, GlyphIcon = "fas fa-warning")]
-public class ErrorController : Controller
+public class ErrorController(ILogger<ErrorController> logger) : Controller
 {
-    private readonly ILogger<ErrorController> _logger;
-
-    public ErrorController(ILogger<ErrorController> logger)
-    {
-        _logger = logger;
-    }
-
     /// <summary>
     ///     More info: http://www.dntips.ir/post/2446
     /// </summary>
@@ -25,41 +18,46 @@ public class ErrorController : Controller
         var logBuilder = new StringBuilder();
 
         var statusCodeReExecuteFeature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-        logBuilder.Append("Error ").Append(id).Append(" for ").Append(Request.Method).Append(' ')
-            .Append(statusCodeReExecuteFeature?.OriginalPath ?? Request.Path.Value).Append(Request.QueryString.Value)
-            .AppendLine("\n");
+
+        logBuilder.Append(value: "Error ")
+            .Append(id)
+            .Append(value: " for ")
+            .Append(Request.Method)
+            .Append(value: ' ')
+            .Append(statusCodeReExecuteFeature?.OriginalPath ?? Request.Path.Value)
+            .Append(Request.QueryString.Value)
+            .AppendLine(value: "\n");
 
         var exceptionHandlerFeature = HttpContext.Features.Get<IExceptionHandlerFeature>();
+
         if (exceptionHandlerFeature?.Error != null)
         {
             var exception = exceptionHandlerFeature.Error;
-            logBuilder.Append("<h1>Exception: ").Append(exception.Message).Append("</h1>")
+
+            logBuilder.Append(value: "<h1>Exception: ")
+                .Append(exception.Message)
+                .Append(value: "</h1>")
                 .AppendLine(exception.StackTrace);
         }
 
         foreach (var header in Request.Headers)
         {
             var headerValues = header.Value.ToString();
-            logBuilder.Append(header.Key).Append(": ").AppendLine(headerValues);
+            logBuilder.Append(header.Key).Append(value: ": ").AppendLine(headerValues);
         }
 
-        _logger.LogErrorMessage(logBuilder.ToString());
+        logger.LogErrorMessage(logBuilder.ToString());
 
         if (id == null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
-        switch (id.Value)
+        return id.Value switch
         {
-            case 401:
-            case 403:
-                return View("AccessDenied");
-            case 404:
-                return View("NotFound");
-
-            default:
-                return View("Error");
-        }
+            401 or 403 => View(viewName: "AccessDenied"),
+            404 => View(viewName: "NotFound"),
+            _ => View(viewName: "Error")
+        };
     }
 }

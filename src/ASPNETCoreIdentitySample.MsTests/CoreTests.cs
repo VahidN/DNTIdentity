@@ -28,10 +28,12 @@ public class CoreTests
         services.AddScoped<IWebHostEnvironment, TestHostingEnvironment>();
 
         var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
             .Build();
-        services.Configure<SiteSettings>(options => configuration.Bind(options))
+
+        services.Configure<SiteSettings>(configuration.Bind)
             .PostConfigure<SiteSettings>(x => { x.ActiveDatabase = ActiveDatabase.InMemoryDatabase; });
+
         services.AddSingleton(provider => configuration);
 
         services.AddCustomIdentityServices(configuration);
@@ -49,11 +51,9 @@ public class CoreTests
 
     [TestMethod]
     public void TestUserAdminExists()
-    {
-        _serviceProvider.RunScopedService<IUnitOfWork>(context =>
+        => _serviceProvider.RunScopedService<IUnitOfWork>(context =>
         {
             var users = context.Set<User>();
             Assert.IsTrue(users.Any(x => x.UserName == "Admin"));
         });
-    }
 }

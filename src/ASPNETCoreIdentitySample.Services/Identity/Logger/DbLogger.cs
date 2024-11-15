@@ -10,13 +10,18 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger;
 
 public class DbLogger : ILogger
 {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    {
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        WriteIndented = true
+    };
+
     private readonly string _loggerName;
     private readonly DbLoggerProvider _loggerProvider;
     private readonly LogLevel _minLevel;
     private readonly IServiceProvider _serviceProvider;
 
-    public DbLogger(
-        DbLoggerProvider loggerProvider,
+    public DbLogger(DbLoggerProvider loggerProvider,
         IServiceProvider serviceProvider,
         string loggerName,
         IOptions<SiteSettings> siteSettings)
@@ -32,8 +37,7 @@ public class DbLogger : ILogger
 
     public bool IsEnabled(LogLevel logLevel) => logLevel >= _minLevel;
 
-    public void Log<TState>(
-        LogLevel logLevel,
+    public void Log<TState>(LogLevel logLevel,
         EventId eventId,
         TState state,
         Exception exception,
@@ -62,25 +66,28 @@ public class DbLogger : ILogger
         }
 
         var httpContextAccessor = _serviceProvider.GetService<IHttpContextAccessor>();
+
         var appLogItem = new AppLogItem
-                         {
-                             Url = httpContextAccessor?.HttpContext != null
-                                       ? httpContextAccessor.HttpContext.Request.Path.ToString()
-                                       : string.Empty,
-                             EventId = eventId.Id,
-                             LogLevel = logLevel.ToString(),
-                             Logger = _loggerName,
-                             Message = message,
-                         };
+        {
+            Url = httpContextAccessor?.HttpContext != null
+                ? httpContextAccessor.HttpContext.Request.Path.ToString()
+                : string.Empty,
+            EventId = eventId.Id,
+            LogLevel = logLevel.ToString(),
+            Logger = _loggerName,
+            Message = message
+        };
+
         var props = httpContextAccessor?.GetShadowProperties();
         SetStateJson(state, appLogItem);
-        _loggerProvider.AddLogItem(new LoggerItem { Props = props, AppLogItem = appLogItem });
+
+        _loggerProvider.AddLogItem(new LoggerItem
+        {
+            Props = props,
+            AppLogItem = appLogItem
+        });
     }
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
-    {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-        WriteIndented = true,
-    };
+
     private static void SetStateJson<TState>(TState state, AppLogItem appLogItem)
     {
         try
@@ -97,13 +104,16 @@ public class DbLogger : ILogger
     {
         public void Dispose()
         {
-            Dispose(true);
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
         private static void Dispose(bool disposing)
         {
-            // empty on purpose
+            if (disposing)
+            {
+                // empty on purpose
+            }
         }
     }
 }

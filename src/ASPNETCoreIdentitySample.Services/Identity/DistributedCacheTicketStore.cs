@@ -8,21 +8,17 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 ///     More info: http://www.dntips.ir/post/2581
 ///     And http://www.dntips.ir/post/2575
 /// </summary>
-public class DistributedCacheTicketStore : ITicketStore
+public class DistributedCacheTicketStore(IDistributedCache cache) : ITicketStore
 {
     private const string KeyPrefix = "AuthSessionStore-";
-    private readonly IDistributedCache _cache;
+    private readonly IDistributedCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     private readonly TicketSerializer _ticketSerializer = TicketSerializer.Default;
-
-    public DistributedCacheTicketStore(IDistributedCache cache)
-    {
-        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-    }
 
     public async Task<string> StoreAsync(AuthenticationTicket ticket)
     {
-        var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
+        var key = $"{KeyPrefix}{Guid.NewGuid():N}";
         await RenewAsync(key, ticket);
+
         return key;
     }
 
@@ -32,11 +28,13 @@ public class DistributedCacheTicketStore : ITicketStore
         {
             throw new ArgumentNullException(nameof(ticket));
         }
+
         // NOTE: Using `services.enableImmediateLogout();` will cause this method to be called per each request.
 
         var options = new DistributedCacheEntryOptions();
 
         var expiresUtc = ticket.Properties.ExpiresUtc;
+
         if (expiresUtc.HasValue)
         {
             options.SetAbsoluteExpiration(expiresUtc.Value);
@@ -44,7 +42,7 @@ public class DistributedCacheTicketStore : ITicketStore
 
         if (ticket.Properties.AllowRefresh ?? false)
         {
-            options.SetSlidingExpiration(TimeSpan.FromMinutes(30)); // TODO: configurable.
+            options.SetSlidingExpiration(TimeSpan.FromMinutes(minutes: 30)); // TODO: configurable.
         }
 
         return _cache.SetAsync(key, _ticketSerializer.Serialize(ticket), options);
@@ -53,11 +51,9 @@ public class DistributedCacheTicketStore : ITicketStore
     public async Task<AuthenticationTicket> RetrieveAsync(string key)
     {
         var value = await _cache.GetAsync(key);
+
         return value != null ? _ticketSerializer.Deserialize(value) : null;
     }
 
-    public Task RemoveAsync(string key)
-    {
-        return _cache.RemoveAsync(key);
-    }
+    public Task RemoveAsync(string key) => _cache.RemoveAsync(key);
 }

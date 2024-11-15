@@ -8,14 +8,13 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     How to override the default (1 day) TokenLifeSpan for the email confirmations.
 /// </summary>
-public class ConfirmEmailDataProtectorTokenProvider<TUser> : DataProtectorTokenProvider<TUser>
+public class ConfirmEmailDataProtectorTokenProvider<TUser>(
+    IDataProtectionProvider dataProtectionProvider,
+    IOptions<ConfirmEmailDataProtectionTokenProviderOptions> options,
+    ILogger<ConfirmEmailDataProtectorTokenProvider<TUser>> logger)
+    : DataProtectorTokenProvider<TUser>(dataProtectionProvider, options, logger)
     where TUser : class
 {
-    public ConfirmEmailDataProtectorTokenProvider(IDataProtectionProvider dataProtectionProvider,
-        IOptions<ConfirmEmailDataProtectionTokenProviderOptions> options,
-        ILogger<ConfirmEmailDataProtectorTokenProvider<TUser>> logger) : base(dataProtectionProvider, options, logger)
-    {
-        // NOTE: DataProtectionTokenProviderOptions.TokenLifespan is set to TimeSpan.FromDays(1)
-        // which is low for the `ConfirmEmail` task.
-    }
+    // NOTE: DataProtectionTokenProviderOptions.TokenLifespan is set to TimeSpan.FromDays(1)
+    // which is low for the `ConfirmEmail` task.
 }

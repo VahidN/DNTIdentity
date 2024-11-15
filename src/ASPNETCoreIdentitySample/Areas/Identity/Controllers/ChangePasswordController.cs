@@ -17,40 +17,24 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 [Authorize]
 [Area(AreaConstants.IdentityArea)]
 [BreadCrumb(Title = "تغییر کلمه‌ی عبور", UseDefaultRouteUrl = true, Order = 0)]
-public class ChangePasswordController : Controller
+public class ChangePasswordController(
+    IApplicationUserManager userManager,
+    IApplicationSignInManager signInManager,
+    IEmailSender emailSender,
+    IPasswordValidator<User> passwordValidator,
+    IUsedPasswordsService usedPasswordsService,
+    IOptionsSnapshot<SiteSettings> siteOptions) : Controller
 {
-    private readonly IEmailSender _emailSender;
-    private readonly IPasswordValidator<User> _passwordValidator;
-    private readonly IApplicationSignInManager _signInManager;
-    private readonly IOptionsSnapshot<SiteSettings> _siteOptions;
-    private readonly IUsedPasswordsService _usedPasswordsService;
-    private readonly IApplicationUserManager _userManager;
-
-    public ChangePasswordController(
-        IApplicationUserManager userManager,
-        IApplicationSignInManager signInManager,
-        IEmailSender emailSender,
-        IPasswordValidator<User> passwordValidator,
-        IUsedPasswordsService usedPasswordsService,
-        IOptionsSnapshot<SiteSettings> siteOptions)
-    {
-        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-        _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(passwordValidator));
-        _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
-        _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
-        _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
-    }
-
     [BreadCrumb(Title = "ایندکس", Order = 1)]
     public async Task<IActionResult> Index()
     {
         var userId = User.Identity?.GetUserId<int>() ?? 0;
-        var passwordChangeDate = await _usedPasswordsService.GetLastUserPasswordChangeDateAsync(userId);
+        var passwordChangeDate = await usedPasswordsService.GetLastUserPasswordChangeDateAsync(userId);
+
         return View(new ChangePasswordViewModel
-                    {
-                        LastUserPasswordChangeDate = passwordChangeDate,
-                    });
+        {
+            LastUserPasswordChangeDate = passwordChangeDate
+        });
     }
 
     [HttpPost]
@@ -59,7 +43,7 @@ public class ChangePasswordController : Controller
     {
         if (model is null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
         if (!ModelState.IsValid)
@@ -67,35 +51,38 @@ public class ChangePasswordController : Controller
             return View(model);
         }
 
-        var user = await _userManager.GetCurrentUserAsync();
+        var user = await userManager.GetCurrentUserAsync();
+
         if (user == null)
         {
-            return View("NotFound");
+            return View(viewName: "NotFound");
         }
 
-        var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+        var result = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
         if (result.Succeeded)
         {
-            await _userManager.UpdateSecurityStampAsync(user);
+            await userManager.UpdateSecurityStampAsync(user);
 
             // reflect the changes in the Identity cookie
-            await _signInManager.RefreshSignInAsync(user);
+            await signInManager.RefreshSignInAsync(user);
 
-            await _emailSender.SendEmailAsync(
-                                              user.Email,
-                                              "اطلاع رسانی تغییر کلمه‌ی عبور",
-                                              "~/Areas/Identity/Views/EmailTemplates/_ChangePasswordNotification.cshtml",
-                                              new ChangePasswordNotificationViewModel
-                                              {
-                                                  User = user,
-                                                  EmailSignature = _siteOptions.Value.Smtp.FromName,
-                                                  MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString(),
-                                              });
+            await emailSender.SendEmailAsync(user.Email, subject: "اطلاع رسانی تغییر کلمه‌ی عبور",
+                viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_ChangePasswordNotification.cshtml",
+                new ChangePasswordNotificationViewModel
+                {
+                    User = user,
+                    EmailSignature = siteOptions.Value.Smtp.FromName,
+                    MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
+                });
 
-            return RedirectToAction(nameof(Index), "UserCard", new { id = user.Id });
+            return RedirectToAction(nameof(Index), controllerName: "UserCard", new
+            {
+                id = user.Id
+            });
         }
 
-        ModelState.AddModelError("", result.DumpErrors(true));
+        ModelState.AddModelError(key: "", result.DumpErrors(useHtmlNewLine: true));
 
         return View(model);
     }
@@ -109,11 +96,9 @@ public class ChangePasswordController : Controller
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidatePassword(string newPassword)
     {
-        var user = await _userManager.GetCurrentUserAsync();
-        var result = await _passwordValidator.ValidateAsync(
-                                                            (UserManager<User>)_userManager,
-                                                            user,
-                                                            newPassword);
-        return Json(result.Succeeded ? "true" : result.DumpErrors(true));
+        var user = await userManager.GetCurrentUserAsync();
+        var result = await passwordValidator.ValidateAsync((UserManager<User>)userManager, user, newPassword);
+
+        return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
     }
 }

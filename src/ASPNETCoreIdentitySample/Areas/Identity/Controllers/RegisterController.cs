@@ -18,28 +18,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 [Area(AreaConstants.IdentityArea)]
 [AllowAnonymous]
 [BreadCrumb(Title = "ثبت نام", UseDefaultRouteUrl = true, Order = 0)]
-public class RegisterController : Controller
+public class RegisterController(
+    IApplicationUserManager userManager,
+    IPasswordValidator<User> passwordValidator,
+    IUserValidator<User> userValidator,
+    IEmailSender emailSender,
+    IOptionsSnapshot<SiteSettings> siteOptions) : Controller
 {
-    private readonly IEmailSender _emailSender;
-    private readonly IPasswordValidator<User> _passwordValidator;
-    private readonly IOptionsSnapshot<SiteSettings> _siteOptions;
-    private readonly IApplicationUserManager _userManager;
-    private readonly IUserValidator<User> _userValidator;
-
-    public RegisterController(
-        IApplicationUserManager userManager,
-        IPasswordValidator<User> passwordValidator,
-        IUserValidator<User> userValidator,
-        IEmailSender emailSender,
-        IOptionsSnapshot<SiteSettings> siteOptions)
-    {
-        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _passwordValidator = passwordValidator ?? throw new ArgumentNullException(nameof(passwordValidator));
-        _userValidator = userValidator ?? throw new ArgumentNullException(nameof(userValidator));
-        _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
-        _siteOptions = siteOptions ?? throw new ArgumentNullException(nameof(siteOptions));
-    }
-
     /// <summary>
     ///     For [Remote] validation
     /// </summary>
@@ -49,10 +34,13 @@ public class RegisterController : Controller
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidateUsername(string username, string email)
     {
-        var result = await _userValidator.ValidateAsync(
-                                                        (UserManager<User>)_userManager,
-                                                        new User { UserName = username, Email = email });
-        return Json(result.Succeeded ? "true" : result.DumpErrors(true));
+        var result = await userValidator.ValidateAsync((UserManager<User>)userManager, new User
+        {
+            UserName = username,
+            Email = email
+        });
+
+        return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
     }
 
     /// <summary>
@@ -64,11 +52,12 @@ public class RegisterController : Controller
     [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
     public async Task<IActionResult> ValidatePassword(string password, string username)
     {
-        var result = await _passwordValidator.ValidateAsync(
-                                                            (UserManager<User>)_userManager,
-                                                            new User { UserName = username },
-                                                            password);
-        return Json(result.Succeeded ? "true" : result.DumpErrors(true));
+        var result = await passwordValidator.ValidateAsync((UserManager<User>)userManager, new User
+        {
+            UserName = username
+        }, password);
+
+        return Json(result.Succeeded ? "true" : result.DumpErrors(useHtmlNewLine: true));
     }
 
     [BreadCrumb(Title = "تائید ایمیل", Order = 1)]
@@ -76,16 +65,18 @@ public class RegisterController : Controller
     {
         if (userId == null || code == null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await userManager.FindByIdAsync(userId);
+
         if (user == null)
         {
-            return View("NotFound");
+            return View(viewName: "NotFound");
         }
 
-        var result = await _userManager.ConfirmEmailAsync(user, code);
+        var result = await userManager.ConfirmEmailAsync(user, code);
+
         return View(result.Succeeded ? nameof(ConfirmEmail) : "Error");
     }
 
@@ -102,38 +93,38 @@ public class RegisterController : Controller
     {
         if (model is null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
         if (ModelState.IsValid)
         {
             var user = new User
-                       {
-                           UserName = model.Username,
-                           Email = model.Email,
-                           FirstName = model.FirstName,
-                           LastName = model.LastName,
-                       };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            {
+                UserName = model.Username,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
+            };
+
+            var result = await userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
-                if (_siteOptions.Value.EnableEmailConfirmation)
+                if (siteOptions.Value.EnableEmailConfirmation)
                 {
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
                     //ControllerExtensions.ShortControllerName<RegisterController>(), //TODO: use everywhere .................
 
-                    await _emailSender.SendEmailAsync(
-                                                      user.Email,
-                                                      "لطفا اکانت خود را تائید کنید",
-                                                      "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
-                                                      new RegisterEmailConfirmationViewModel
-                                                      {
-                                                          User = user,
-                                                          EmailConfirmationToken = code,
-                                                          EmailSignature = _siteOptions.Value.Smtp.FromName,
-                                                          MessageDateTime =
-                                                              DateTime.UtcNow.ToLongPersianDateTimeString(),
-                                                      });
+                    await emailSender.SendEmailAsync(user.Email, subject: "لطفا اکانت خود را تائید کنید",
+                        viewNameOrPath: "~/Areas/Identity/Views/EmailTemplates/_RegisterEmailConfirmation.cshtml",
+                        new RegisterEmailConfirmationViewModel
+                        {
+                            User = user,
+                            EmailConfirmationToken = code,
+                            EmailSignature = siteOptions.Value.Smtp.FromName,
+                            MessageDateTime = DateTime.UtcNow.ToLongPersianDateTimeString()
+                        });
 
                     return RedirectToAction(nameof(ConfirmYourEmail));
                 }
@@ -141,7 +132,7 @@ public class RegisterController : Controller
                 return RedirectToAction(nameof(ConfirmedRegisteration));
             }
 
-            ModelState.AddModelError("", result.DumpErrors(true));
+            ModelState.AddModelError(key: "", result.DumpErrors(useHtmlNewLine: true));
         }
 
         return View(model);

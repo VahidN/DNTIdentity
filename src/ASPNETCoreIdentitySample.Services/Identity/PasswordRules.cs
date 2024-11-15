@@ -7,39 +7,35 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/3407
 /// </summary>
-public class PasswordRules : IPasswordRules
+public class PasswordRules(IOptions<IdentityOptions> optionsAccessor) : IPasswordRules
 {
-    private readonly IdentityOptions _options;
-
-    public PasswordRules(
-        IOptions<IdentityOptions> optionsAccessor) =>
-        _options = optionsAccessor?.Value;
+    private readonly IdentityOptions _options = optionsAccessor?.Value;
 
     public string GetPasswordRules()
     {
         var options = _options.Password;
 
         var passwordRules = new StringBuilder();
-        passwordRules.AppendFormat(CultureInfo.InvariantCulture, "minlength: {0};", options.RequiredLength);
+        passwordRules.AppendFormat(CultureInfo.InvariantCulture, format: "minlength: {0};", options.RequiredLength);
 
         if (options.RequireLowercase)
         {
-            passwordRules.Append(" required: lower;");
+            passwordRules.Append(value: " required: lower;");
         }
 
         if (options.RequireUppercase)
         {
-            passwordRules.Append(" required: upper;");
+            passwordRules.Append(value: " required: upper;");
         }
 
         if (options.RequireDigit)
         {
-            passwordRules.Append(" required: digit;");
+            passwordRules.Append(value: " required: digit;");
         }
 
         if (options.RequireNonAlphanumeric)
         {
-            passwordRules.Append(" required: special;");
+            passwordRules.Append(value: " required: special;");
         }
 
         return passwordRules.ToString();

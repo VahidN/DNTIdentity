@@ -10,24 +10,10 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/2578
 /// </summary>
-public class ApplicationRoleStore :
-    RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>,
-    IApplicationRoleStore
+public class ApplicationRoleStore(IUnitOfWork uow, IdentityErrorDescriber describer)
+    : RoleStore<Role, ApplicationDbContext, int, UserRole, RoleClaim>((ApplicationDbContext)uow, describer),
+        IApplicationRoleStore
 {
-    private readonly IdentityErrorDescriber _describer;
-    private readonly IUnitOfWork _uow;
-
-    public ApplicationRoleStore(
-        IUnitOfWork uow,
-        IdentityErrorDescriber describer)
-        : base((ApplicationDbContext)uow, describer)
-    {
-        _uow = uow ?? throw new ArgumentNullException(nameof(uow));
-        _describer = describer ?? throw new ArgumentNullException(nameof(describer));
-    }
-
-    #region BaseClass
-
     protected override RoleClaim CreateRoleClaim(Role role, Claim claim)
     {
         if (role == null)
@@ -47,10 +33,4 @@ public class ApplicationRoleStore :
             ClaimValue = claim.Value
         };
     }
-
-    #endregion
-
-    #region CustomMethods
-
-    #endregion
 }

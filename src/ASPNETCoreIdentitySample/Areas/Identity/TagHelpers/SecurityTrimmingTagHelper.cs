@@ -9,36 +9,31 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers;
 ///     More info: http://www.dntips.ir/post/2527
 ///     And http://www.dntips.ir/post/2581
 /// </summary>
-[HtmlTargetElement("security-trimming")]
-public class SecurityTrimmingTagHelper : TagHelper
+[HtmlTargetElement(tag: "security-trimming")]
+public class SecurityTrimmingTagHelper(ISecurityTrimmingService securityTrimmingService) : TagHelper
 {
-    private readonly ISecurityTrimmingService _securityTrimmingService;
-
-    public SecurityTrimmingTagHelper(ISecurityTrimmingService securityTrimmingService)
-    {
-        _securityTrimmingService =
-            securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
-    }
+    private readonly ISecurityTrimmingService _securityTrimmingService =
+        securityTrimmingService ?? throw new ArgumentNullException(nameof(securityTrimmingService));
 
     /// <summary>
     ///     The name of the action method.
     /// </summary>
-    [HtmlAttributeName("asp-action")]
+    [HtmlAttributeName(name: "asp-action")]
     public string Action { get; set; }
 
     /// <summary>
     ///     The name of the area.
     /// </summary>
-    [HtmlAttributeName("asp-area")]
+    [HtmlAttributeName(name: "asp-area")]
     public string Area { get; set; }
 
     /// <summary>
     ///     The name of the controller.
     /// </summary>
-    [HtmlAttributeName("asp-controller")]
+    [HtmlAttributeName(name: "asp-controller")]
     public string Controller { get; set; }
 
-    [ViewContext, HtmlAttributeNotBound] public ViewContext ViewContext { get; set; }
+    [ViewContext] [HtmlAttributeNotBound] public ViewContext ViewContext { get; set; }
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {

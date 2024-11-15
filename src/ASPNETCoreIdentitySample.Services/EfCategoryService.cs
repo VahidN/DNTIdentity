@@ -24,6 +24,6 @@ public class EfCategoryService : ICategoryService
 
     public IList<Category> GetAllCategories()
     {
-        return _categories.ToList();
+        return [.. _categories];
     }
 }

@@ -23,6 +23,6 @@ public class EfProductService : IProductService
 
     public IList<Product> GetAllProducts()
     {
-        return _products.Include(x => x.Category).ToList();
+        return [.. _products.Include(x => x.Category)];
     }
 }

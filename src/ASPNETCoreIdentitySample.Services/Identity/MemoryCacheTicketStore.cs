@@ -10,20 +10,16 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 ///     More info: http://www.dntips.ir/post/2581
 ///     And http://www.dntips.ir/post/2575
 /// </summary>
-public class MemoryCacheTicketStore : ITicketStore
+public class MemoryCacheTicketStore(IMemoryCache cache) : ITicketStore
 {
     private const string KeyPrefix = "AuthSessionStore-";
-    private readonly IMemoryCache _cache;
-
-    public MemoryCacheTicketStore(IMemoryCache cache)
-    {
-        _cache = cache ?? throw new ArgumentNullException(nameof(cache));
-    }
+    private readonly IMemoryCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
     public async Task<string> StoreAsync(AuthenticationTicket ticket)
     {
-        var key = $"{KeyPrefix}{Guid.NewGuid().ToString("N")}";
+        var key = $"{KeyPrefix}{Guid.NewGuid():N}";
         await RenewAsync(key, ticket);
+
         return key;
     }
 
@@ -34,7 +30,7 @@ public class MemoryCacheTicketStore : ITicketStore
             throw new ArgumentNullException(nameof(ticket));
         }
 
-        var options = new MemoryCacheEntryOptions().SetSize(1);
+        var options = new MemoryCacheEntryOptions().SetSize(size: 1);
         var expiresUtc = ticket.Properties.ExpiresUtc;
 
         if (expiresUtc.HasValue)
@@ -44,23 +40,25 @@ public class MemoryCacheTicketStore : ITicketStore
 
         if (ticket.Properties.AllowRefresh ?? false)
         {
-            options.SetSlidingExpiration(TimeSpan.FromMinutes(60)); //TODO: configurable.
+            options.SetSlidingExpiration(TimeSpan.FromMinutes(minutes: 60)); //TODO: configurable.
         }
 
         _cache.Set(key, ticket, options);
 
-        return Task.FromResult(0);
+        return Task.FromResult(result: 0);
     }
 
     public Task<AuthenticationTicket> RetrieveAsync(string key)
     {
         _cache.TryGetValue(key, out AuthenticationTicket ticket);
+
         return Task.FromResult(ticket);
     }
 
     public Task RemoveAsync(string key)
     {
         _cache.Remove(key);
-        return Task.FromResult(0);
+
+        return Task.FromResult(result: 0);
     }
 }

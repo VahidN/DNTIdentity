@@ -10,24 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.Controllers;
 
-[Authorize(Roles = ConstantRoles.Admin), Area(AreaConstants.IdentityArea),
- BreadCrumb(Title = "مدیریت نقش‌ها", UseDefaultRouteUrl = true, Order = 0)]
-public class RolesManagerController : Controller
+[Authorize(Roles = ConstantRoles.Admin)]
+[Area(AreaConstants.IdentityArea)]
+[BreadCrumb(Title = "مدیریت نقش‌ها", UseDefaultRouteUrl = true, Order = 0)]
+public class RolesManagerController(IApplicationRoleManager roleManager) : Controller
 {
     private const string RoleNotFound = "نقش درخواستی یافت نشد.";
     private const int DefaultPageSize = 7;
 
-    private readonly IApplicationRoleManager _roleManager;
-
-    public RolesManagerController(IApplicationRoleManager roleManager)
-    {
-        _roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
-    }
-
     [BreadCrumb(Title = "ایندکس", Order = 1)]
     public IActionResult Index()
     {
-        var roles = _roleManager.GetAllCustomRolesAndUsersCountList();
+        var roles = roleManager.GetAllCustomRolesAndUsersCountList();
+
         return View(roles);
     }
 
@@ -46,21 +41,28 @@ public class RolesManagerController : Controller
 
         if (model.Id == 0)
         {
-            return PartialView("_Create", new RoleViewModel());
+            return PartialView(viewName: "_Create", new RoleViewModel());
         }
 
-        var role = await _roleManager.FindByIdAsync(model.Id.ToString(CultureInfo.InvariantCulture));
+        var role = await roleManager.FindByIdAsync(model.Id.ToString(CultureInfo.InvariantCulture));
+
         if (role == null)
         {
-            ModelState.AddModelError("", RoleNotFound);
-            return PartialView("_Create", new RoleViewModel());
+            ModelState.AddModelError(key: "", RoleNotFound);
+
+            return PartialView(viewName: "_Create", new RoleViewModel());
         }
 
-        return PartialView("_Create",
-            new RoleViewModel { Id = role.Id.ToString(CultureInfo.InvariantCulture), Name = role.Name });
+        return PartialView(viewName: "_Create", new RoleViewModel
+        {
+            Id = role.Id.ToString(CultureInfo.InvariantCulture),
+            Name = role.Name
+        });
     }
 
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditRole(RoleViewModel model)
     {
         if (model is null)
@@ -70,28 +72,35 @@ public class RolesManagerController : Controller
 
         if (ModelState.IsValid)
         {
-            var role = await _roleManager.FindByIdAsync(model.Id);
+            var role = await roleManager.FindByIdAsync(model.Id);
+
             if (role == null)
             {
-                ModelState.AddModelError("", RoleNotFound);
+                ModelState.AddModelError(key: "", RoleNotFound);
             }
             else
             {
                 role.Name = model.Name;
-                var result = await _roleManager.UpdateAsync(role);
+                var result = await roleManager.UpdateAsync(role);
+
                 if (result.Succeeded)
                 {
-                    return Json(new { success = true });
+                    return Json(new
+                    {
+                        success = true
+                    });
                 }
 
                 ModelState.AddErrorsFromResult(result);
             }
         }
 
-        return PartialView("_Create", model);
+        return PartialView(viewName: "_Create", model);
     }
 
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddRole(RoleViewModel model)
     {
         if (model is null)
@@ -101,16 +110,20 @@ public class RolesManagerController : Controller
 
         if (ModelState.IsValid)
         {
-            var result = await _roleManager.CreateAsync(new Role(model.Name));
+            var result = await roleManager.CreateAsync(new Role(model.Name));
+
             if (result.Succeeded)
             {
-                return Json(new { success = true });
+                return Json(new
+                {
+                    success = true
+                });
             }
 
             ModelState.AddErrorsFromResult(result);
         }
 
-        return PartialView("_Create", model);
+        return PartialView(viewName: "_Create", model);
     }
 
     [AjaxOnly]
@@ -123,21 +136,28 @@ public class RolesManagerController : Controller
 
         if (model == null)
         {
-            return BadRequest("model is null.");
+            return BadRequest(error: "model is null.");
         }
 
-        var role = await _roleManager.FindByIdAsync(model.Id.ToString(CultureInfo.InvariantCulture));
+        var role = await roleManager.FindByIdAsync(model.Id.ToString(CultureInfo.InvariantCulture));
+
         if (role == null)
         {
-            ModelState.AddModelError("", RoleNotFound);
-            return PartialView("_Delete", new RoleViewModel());
+            ModelState.AddModelError(key: "", RoleNotFound);
+
+            return PartialView(viewName: "_Delete", new RoleViewModel());
         }
 
-        return PartialView("_Delete",
-            new RoleViewModel { Id = role.Id.ToString(CultureInfo.InvariantCulture), Name = role.Name });
+        return PartialView(viewName: "_Delete", new RoleViewModel
+        {
+            Id = role.Id.ToString(CultureInfo.InvariantCulture),
+            Name = role.Name
+        });
     }
 
-    [AjaxOnly, HttpPost, ValidateAntiForgeryToken]
+    [AjaxOnly]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(RoleViewModel model)
     {
         if (!ModelState.IsValid)
@@ -147,44 +167,46 @@ public class RolesManagerController : Controller
 
         if (string.IsNullOrWhiteSpace(model?.Id))
         {
-            return BadRequest("model is null.");
+            return BadRequest(error: "model is null.");
         }
 
-        var role = await _roleManager.FindByIdAsync(model.Id);
+        var role = await roleManager.FindByIdAsync(model.Id);
+
         if (role == null)
         {
-            ModelState.AddModelError("", RoleNotFound);
+            ModelState.AddModelError(key: "", RoleNotFound);
         }
         else
         {
-            var result = await _roleManager.DeleteAsync(role);
+            var result = await roleManager.DeleteAsync(role);
+
             if (result.Succeeded)
             {
-                return Json(new { success = true });
+                return Json(new
+                {
+                    success = true
+                });
             }
 
             ModelState.AddErrorsFromResult(result);
         }
 
-        return PartialView("_Delete", model);
+        return PartialView(viewName: "_Delete", model);
     }
 
     [BreadCrumb(Title = "لیست کاربران دارای نقش", Order = 1)]
-    public async Task<IActionResult> UsersInRole(int? id, int? page = 1, string field = "Id",
+    public async Task<IActionResult> UsersInRole(int? id,
+        int? page = 1,
+        string field = "Id",
         SortOrder order = SortOrder.Ascending)
     {
         if (id == null)
         {
-            return View("Error");
+            return View(viewName: "Error");
         }
 
-        var model = await _roleManager.GetPagedApplicationUsersInRoleListAsync(
-            id.Value,
-            page.Value - 1,
-            DefaultPageSize,
-            field,
-            order,
-            true);
+        var model = await roleManager.GetPagedApplicationUsersInRoleListAsync(id.Value, page.Value - 1, DefaultPageSize,
+            field, order, showAllUsers: true);
 
         model.Paging.CurrentPage = page.Value;
         model.Paging.ItemsPerPage = DefaultPageSize;
@@ -192,7 +214,7 @@ public class RolesManagerController : Controller
 
         if (HttpContext.Request.IsAjaxRequest())
         {
-            return PartialView("~/Areas/Identity/Views/UsersManager/_UsersList.cshtml", model);
+            return PartialView(viewName: "~/Areas/Identity/Views/UsersManager/_UsersList.cshtml", model);
         }
 
         return View(model);

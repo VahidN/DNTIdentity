@@ -13,17 +13,13 @@ namespace ASPNETCoreIdentitySample.DataLayer.Context;
 ///     and http://www.dntips.ir/post/2578
 ///     plus http://www.dntips.ir/post/2491
 /// </summary>
-public class ApplicationDbContext :
-    IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
-    IUnitOfWork
+public class ApplicationDbContext(DbContextOptions options)
+    : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>(options), IUnitOfWork
 {
     // we can't use constructor injection anymore, because we are using the `AddDbContextPool<>`
-    public ApplicationDbContext(DbContextOptions options)
-        : base(options)
-    {
-    }
 
     public virtual DbSet<Category> Categories { set; get; }
+
     public virtual DbSet<Product> Products { set; get; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -46,56 +42,51 @@ public class ApplicationDbContext :
     #region BaseClass
 
     public virtual DbSet<AppLogItem> AppLogItems { get; set; }
+
     public virtual DbSet<AppSqlCache> AppSqlCache { get; set; }
+
     public virtual DbSet<AppDataProtectionKey> AppDataProtectionKeys { get; set; }
 
-    public void AddRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
-    {
-        Set<TEntity>().AddRange(entities);
-    }
+    public void AddRange<TEntity>(IEnumerable<TEntity> entities)
+        where TEntity : class
+        => Set<TEntity>().AddRange(entities);
 
     public async Task ExecuteTransactionAsync(Func<Task> action)
     {
         // https://www.dntips.ir/post/3247
         var strategy = Database.CreateExecutionStrategy();
+
         await strategy.ExecuteAsync(async () =>
-                                    {
-                                        await using var transaction = await Database.BeginTransactionAsync();
-                                        await action();
-                                        await transaction.CommitAsync();
-                                    });
+        {
+            await using var transaction = await Database.BeginTransactionAsync();
+            await action();
+            await transaction.CommitAsync();
+        });
     }
 
-    public void ExecuteSqlInterpolatedCommand(FormattableString query)
-    {
-        Database.ExecuteSqlInterpolated(query);
-    }
+    public void ExecuteSqlInterpolatedCommand(FormattableString query) => Database.ExecuteSqlInterpolated(query);
 
     public void ExecuteSqlRawCommand(string query, params object[] parameters)
-    {
-        Database.ExecuteSqlRaw(query, parameters);
-    }
+        => Database.ExecuteSqlRaw(query, parameters);
 
-    public T GetShadowPropertyValue<T>(object entity, string propertyName) where T : IConvertible
+    public T GetShadowPropertyValue<T>(object entity, string propertyName)
+        where T : IConvertible
     {
         var value = Entry(entity).Property(propertyName).CurrentValue;
-        return value != null
-                   ? (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture)
-                   : default;
+
+        return value != null ? (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture) : default;
     }
 
-    public object GetShadowPropertyValue(object entity, string propertyName) =>
-        Entry(entity).Property(propertyName).CurrentValue;
+    public object GetShadowPropertyValue(object entity, string propertyName)
+        => Entry(entity).Property(propertyName).CurrentValue;
 
-    public void MarkAsChanged<TEntity>(TEntity entity) where TEntity : class
-    {
-        Update(entity);
-    }
+    public void MarkAsChanged<TEntity>(TEntity entity)
+        where TEntity : class
+        => Update(entity);
 
-    public void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
-    {
-        Set<TEntity>().RemoveRange(entities);
-    }
+    public void RemoveRange<TEntity>(IEnumerable<TEntity> entities)
+        where TEntity : class
+        => Set<TEntity>().RemoveRange(entities);
 
     #endregion
 }

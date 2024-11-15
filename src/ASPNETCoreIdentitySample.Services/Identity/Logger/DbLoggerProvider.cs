@@ -12,8 +12,8 @@ namespace ASPNETCoreIdentitySample.Services.Identity.Logger;
 public class DbLoggerProvider : ILoggerProvider
 {
     private readonly CancellationTokenSource _cancellationTokenSource = new();
-    private readonly List<LoggerItem> _currentBatch = new List<LoggerItem>();
-    private readonly TimeSpan _interval = TimeSpan.FromSeconds(2);
+    private readonly List<LoggerItem> _currentBatch = [];
+    private readonly TimeSpan _interval = TimeSpan.FromSeconds(seconds: 2);
 
     private readonly BlockingCollection<LoggerItem> _messageQueue = new(new ConcurrentQueue<LoggerItem>());
 
@@ -22,9 +22,7 @@ public class DbLoggerProvider : ILoggerProvider
     private readonly IOptions<SiteSettings> _siteSettings;
     private bool _isDisposed;
 
-    public DbLoggerProvider(
-        IOptions<SiteSettings> siteSettings,
-        IServiceProvider serviceProvider)
+    public DbLoggerProvider(IOptions<SiteSettings> siteSettings, IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         _siteSettings = siteSettings ?? throw new ArgumentNullException(nameof(siteSettings));
@@ -32,13 +30,11 @@ public class DbLoggerProvider : ILoggerProvider
     }
 
     public ILogger CreateLogger(string categoryName)
-    {
-        return new DbLogger(this, _serviceProvider, categoryName, _siteSettings);
-    }
+        => new DbLogger(this, _serviceProvider, categoryName, _siteSettings);
 
     public void Dispose()
     {
-        Dispose(true);
+        Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
 
@@ -62,7 +58,7 @@ public class DbLoggerProvider : ILoggerProvider
         }
     }
 
-    internal void AddLogItem(LoggerItem appLogItem)
+    public void AddLogItem(LoggerItem appLogItem)
     {
         if (!_messageQueue.IsAddingCompleted)
         {
@@ -121,7 +117,8 @@ public class DbLoggerProvider : ILoggerProvider
         }
     }
 
-    [SuppressMessage("Microsoft.Usage", "CA1031:catch a more specific allowed exception type, or rethrow the exception",
+    [SuppressMessage(category: "Microsoft.Usage",
+        checkId: "CA1031:catch a more specific allowed exception type, or rethrow the exception",
         Justification = "don't throw exceptions from logger")]
     private void Stop()
     {

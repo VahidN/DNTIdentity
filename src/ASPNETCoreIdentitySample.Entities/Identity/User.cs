@@ -12,13 +12,13 @@ public class User : IdentityUser<int>, IAuditableEntity
 {
     public User()
     {
-        UserUsedPasswords = new HashSet<UserUsedPassword>();
-        UserTokens = new HashSet<UserToken>();
+        UserUsedPasswords = [];
+        UserTokens = [];
     }
 
-    [StringLength(450)] public string FirstName { get; set; }
+    [StringLength(maximumLength: 450)] public string FirstName { get; set; }
 
-    [StringLength(450)] public string LastName { get; set; }
+    [StringLength(maximumLength: 450)] public string LastName { get; set; }
 
     [NotMapped]
     public string DisplayName
@@ -26,11 +26,12 @@ public class User : IdentityUser<int>, IAuditableEntity
         get
         {
             var displayName = $"{FirstName} {LastName}";
+
             return string.IsNullOrWhiteSpace(displayName) ? UserName : displayName;
         }
     }
 
-    [StringLength(450)] public string PhotoFileName { get; set; }
+    [StringLength(maximumLength: 450)] public string PhotoFileName { get; set; }
 
     public DateTime? BirthDate { get; set; }
 

@@ -4,21 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreIdentitySample.Areas.Identity.ViewComponents;
 
-public class TodayBirthDaysViewComponent : ViewComponent
+public class TodayBirthDaysViewComponent(ISiteStatService siteStatService) : ViewComponent
 {
-    private readonly ISiteStatService _siteStatService;
-
-    public TodayBirthDaysViewComponent(ISiteStatService siteStatService)
-    {
-        _siteStatService = siteStatService;
-    }
-
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var usersList = await _siteStatService.GetTodayBirthdayListAsync();
-        var usersAverageAge = await _siteStatService.GetUsersAverageAge();
+        var usersList = await siteStatService.GetTodayBirthdayListAsync();
+        var usersAverageAge = await siteStatService.GetUsersAverageAge();
 
-        return View("~/Areas/Identity/Views/Shared/Components/TodayBirthDays/Default.cshtml",
+        return View(viewName: "~/Areas/Identity/Views/Shared/Components/TodayBirthDays/Default.cshtml",
             new TodayBirthDaysViewModel
             {
                 Users = usersList,

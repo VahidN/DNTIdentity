@@ -6,13 +6,13 @@ namespace ASPNETCoreIdentitySample.Areas.Identity.TagHelpers;
 ///     More info: http://www.dntips.ir/post/2527
 ///     And http://www.dntips.ir/post/2581
 /// </summary>
-[HtmlTargetElement("div")]
+[HtmlTargetElement(tag: "div")]
 public class VisibilityTagHelper : TagHelper
 {
     /// <summary>
     ///     default to true otherwise all existing target elements will not be shown, because bool's default to false
     /// </summary>
-    [HtmlAttributeName("asp-is-visible")]
+    [HtmlAttributeName(name: "asp-is-visible")]
     public bool IsVisible { get; set; } = true;
 
     public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

@@ -4,12 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASPNETCoreIdentitySample.DataLayer.SQLite;
 
-public class SQLiteDbContext : ApplicationDbContext
+public class SQLiteDbContext(DbContextOptions options) : ApplicationDbContext(options)
 {
-    public SQLiteDbContext(DbContextOptions options) : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

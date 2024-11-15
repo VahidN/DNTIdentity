@@ -16,54 +16,33 @@ namespace ASPNETCoreIdentitySample.Services.Identity;
 /// <summary>
 ///     More info: http://www.dntips.ir/post/2578
 /// </summary>
-public class ApplicationUserManager : UserManager<User>, IApplicationUserManager
-{
-    private readonly IHttpContextAccessor _contextAccessor;
-    private readonly IdentityErrorDescriber _errors;
-    private readonly ILookupNormalizer _keyNormalizer;
-    private readonly ILogger<ApplicationUserManager> _logger;
-    private readonly IOptions<IdentityOptions> _optionsAccessor;
-    private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IEnumerable<IPasswordValidator<User>> _passwordValidators;
-    private readonly DbSet<Role> _roles;
-    private readonly IServiceProvider _services;
-    private readonly IUnitOfWork _uow;
-    private readonly IUsedPasswordsService _usedPasswordsService;
-    private readonly DbSet<User> _users;
-    private readonly IApplicationUserStore _userStore;
-    private readonly IEnumerable<IUserValidator<User>> _userValidators;
-    private User _currentUserInScope;
-
-    public ApplicationUserManager(IApplicationUserStore store,
-        IOptions<IdentityOptions> optionsAccessor,
-        IPasswordHasher<User> passwordHasher,
-        IEnumerable<IUserValidator<User>> userValidators,
-        IEnumerable<IPasswordValidator<User>> passwordValidators,
-        ILookupNormalizer keyNormalizer,
-        IdentityErrorDescriber errors,
-        IServiceProvider services,
-        ILogger<ApplicationUserManager> logger,
-        IHttpContextAccessor contextAccessor,
-        IUnitOfWork uow,
-        IUsedPasswordsService usedPasswordsService) : base(
+public class ApplicationUserManager(
+    IApplicationUserStore store,
+    IOptions<IdentityOptions> optionsAccessor,
+    IPasswordHasher<User> passwordHasher,
+    IEnumerable<IUserValidator<User>> userValidators,
+    IEnumerable<IPasswordValidator<User>> passwordValidators,
+    ILookupNormalizer keyNormalizer,
+    IdentityErrorDescriber errors,
+    IServiceProvider services,
+    ILogger<ApplicationUserManager> logger,
+    IHttpContextAccessor contextAccessor,
+    IUnitOfWork uow,
+    IUsedPasswordsService usedPasswordsService) : UserManager<User>(
         (UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>)store,
-        optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
-    {
-        _userStore = store ?? throw new ArgumentNullException(nameof(store));
-        _optionsAccessor = optionsAccessor ?? throw new ArgumentNullException(nameof(optionsAccessor));
-        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
-        _userValidators = userValidators ?? throw new ArgumentNullException(nameof(userValidators));
-        _passwordValidators = passwordValidators ?? throw new ArgumentNullException(nameof(passwordValidators));
-        _keyNormalizer = keyNormalizer ?? throw new ArgumentNullException(nameof(keyNormalizer));
-        _errors = errors ?? throw new ArgumentNullException(nameof(errors));
-        _services = services ?? throw new ArgumentNullException(nameof(services));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
-        _uow = uow ?? throw new ArgumentNullException(nameof(uow));
-        _usedPasswordsService = usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
-        _users = uow.Set<User>();
-        _roles = uow.Set<Role>();
-    }
+        optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger),
+    IApplicationUserManager
+{
+    private readonly IHttpContextAccessor _contextAccessor =
+        contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
+
+    private readonly DbSet<Role> _roles = uow.Set<Role>();
+
+    private readonly IUsedPasswordsService _usedPasswordsService =
+        usedPasswordsService ?? throw new ArgumentNullException(nameof(usedPasswordsService));
+
+    private readonly DbSet<User> _users = uow.Set<User>();
+    private User _currentUserInScope;
 
     #region BaseClass
 
@@ -313,15 +292,7 @@ public class ApplicationUserManager : UserManager<User>, IApplicationUserManager
             query = query.Where(x => x.IsActive);
         }
 
-        switch (sortByField)
-        {
-            default:
-                query = sortOrder == SortOrder.Descending
-                    ? query.OrderByDescending(x => x.Id)
-                    : query.OrderBy(x => x.Id);
-
-                break;
-        }
+        query = sortOrder == SortOrder.Descending ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id);
 
         return new PagedUsersListViewModel
         {
@@ -376,7 +347,7 @@ public class ApplicationUserManager : UserManager<User>, IApplicationUserManager
 
         var currentUserRoleIds = user.Roles.Select(x => x.RoleId).ToList();
 
-        selectedRoleIds ??= new List<int>();
+        selectedRoleIds ??= [];
 
         var newRolesToAdd = selectedRoleIds.Except(currentUserRoleIds).ToList();
 

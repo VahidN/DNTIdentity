@@ -15,7 +15,7 @@ await webApp.RunAsync();
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
 {
-    services.Configure<SiteSettings>(options => configuration.Bind(options));
+    services.Configure<SiteSettings>(configuration.Bind);
 
     services.Configure<ContentSecurityPolicyConfig>(options
         => configuration.GetSection(key: "ContentSecurityPolicyConfig").Bind(options));
@@ -39,7 +39,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddCloudscribePagination();
     services.AddWebOptimizerServices();
 
-    services.AddControllersWithViews(options => { options.Filters.Add(typeof(ApplyCorrectYeKeFilterAttribute)); });
+    services.AddControllersWithViews(options => { options.Filters.Add<ApplyCorrectYeKeFilterAttribute>(); });
     services.AddRazorPages();
 }
 

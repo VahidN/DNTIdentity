@@ -9,16 +9,9 @@ namespace ASPNETCoreIdentitySample.Controllers;
 public class HomeController : Controller
 {
     [BreadCrumb(Title = "ایندکس", Order = 1)]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Index() => View();
 
-    [BreadCrumb(Title = "خطا", Order = 1)]
-    public IActionResult Error()
-    {
-        return View();
-    }
+    [BreadCrumb(Title = "خطا", Order = 1)] public IActionResult Error() => View();
 
     /// <summary>
     ///     To test automatic challenge after redirecting from another site
@@ -28,6 +21,15 @@ public class HomeController : Controller
     public IActionResult CallBackResult(long token, string status, string orderId, string terminalNo, string rrn)
     {
         var userId = User.Identity?.GetUserId();
-        return Json(new { userId, token, status, orderId, terminalNo, rrn });
+
+        return Json(new
+        {
+            userId,
+            token,
+            status,
+            orderId,
+            terminalNo,
+            rrn
+        });
     }
 }
