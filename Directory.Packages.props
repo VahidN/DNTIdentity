@@ -1,6 +1,6 @@
 <Project>
     <ItemGroup>
-        <PackageVersion Include="Meziantou.Analyzer" Version="2.0.182"/>
+        <PackageVersion Include="Meziantou.Analyzer" Version="2.0.185"/>
         <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19"/>
         <PackageVersion Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4"/>
         <PackageVersion Include="AsyncFixer" Version="1.6.0"/>
@@ -30,8 +30,8 @@
         <PackageVersion Include="System.ComponentModel.Annotations" Version="5.0.0"/>
         <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0"/>
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
-        <PackageVersion Include="MSTest.TestAdapter" Version="3.6.4"/>
-        <PackageVersion Include="MSTest.TestFramework" Version="3.6.4"/>
+        <PackageVersion Include="MSTest.TestAdapter" Version="3.7.0"/>
+        <PackageVersion Include="MSTest.TestFramework" Version="3.7.0"/>
         <PackageVersion Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.0"/>
         <PackageVersion Include="cloudscribe.Web.Pagination" Version="8.0.0"/>
         <PackageVersion Include="LigerShark.WebOptimizer.Core" Version="3.0.433"/>
