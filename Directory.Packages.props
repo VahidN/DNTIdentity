@@ -13,7 +13,7 @@
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1"/>
         <PackageVersion Include="DNTBreadCrumb.Core" Version="2.0.2"/>
         <PackageVersion Include="DNTCaptcha.Core" Version="5.2.10"/>
-        <PackageVersion Include="DNTCommon.Web.Core" Version="8.8.0"/>
+        <PackageVersion Include="DNTCommon.Web.Core" Version="9.0.0"/>
         <PackageVersion Include="DNTPersianUtils.Core" Version="6.4.0"/>
         <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.1"/>
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.1"/>
