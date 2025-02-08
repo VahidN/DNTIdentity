@@ -19,8 +19,8 @@
       CA1054: Change the type of parameter of the method to allow a Uri to be passed as a 'System.Uri' object
       CA1055: Change the return type of method from 'string' to 'System.Uri'
     -->
-        <NoWarn>$(NoWarn);CA2007;CA1056;CA1054;CA1055;MA0004;RCS1090</NoWarn>
-        <NoError>$(NoError);CA2007;CA1056;CA1054;CA1055;MA0004;RCS1090</NoError>
+        <NoWarn>$(NoWarn);CA2007;CA1056;CA1054;CA1055;MA0004;RCS1090;S2479</NoWarn>
+        <NoError>$(NoError);CA2007;CA1056;CA1054;CA1055;MA0004;RCS1090;S2479</NoError>
         <Deterministic>true</Deterministic>
         <Features>strict</Features>
         <ReportAnalyzer>true</ReportAnalyzer>
