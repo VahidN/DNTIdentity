@@ -34,7 +34,7 @@
         <PackageVersion Include="MSTest.TestFramework" Version="3.7.3"/>
         <PackageVersion Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.1"/>
         <PackageVersion Include="cloudscribe.Web.Pagination" Version="8.0.0"/>
-        <PackageVersion Include="LigerShark.WebOptimizer.Core" Version="3.0.433"/>
+        <PackageVersion Include="LigerShark.WebOptimizer.Core" Version="3.0.413"/>
         <PackageVersion Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175"/>
     </ItemGroup>
 </Project>
