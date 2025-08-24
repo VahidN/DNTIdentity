@@ -1,0 +1,28 @@
+﻿@model ExternalLoginConfirmationViewModel
+@{
+	ViewData["Title"] = "تکمیل ثبت‌نام با ورود خارجی";
+}
+<div class="row mt-4">
+	<div class="col-md-6">
+		<h4>@ViewData["Title"]</h4>
+		<p class="text-muted">لطفاً برای ایجاد حساب داخلی، اطلاعات زیر را تکمیل کنید.</p>
+		<form asp-action="ExternalLoginConfirmation" method="post">
+			<input type="hidden" asp-for="ReturnUrl" />
+			<input type="hidden" asp-for="ProviderDisplayName" />
+			<div class="form-group mb-3">
+				<label asp-for="Email" class="form-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="FirstName" class="form-label"></label>
+				<input asp-for="FirstName" class="form-control" />
+			</div>
+			<div class="form-group mb-3">
+				<label asp-for="LastName" class="form-label"></label>
+				<input asp-for="LastName" class="form-control" />
+			</div>
+			<button type="submit" class="btn btn-info col-md-2">ثبت نام</button>
+		</form>
+	</div>
+</div>

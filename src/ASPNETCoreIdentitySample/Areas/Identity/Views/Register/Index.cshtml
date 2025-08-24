@@ -1,12 +1,19 @@
 ﻿@model RegisterViewModel
 @inject IPasswordRules PasswordRules
+@inject IApplicationSignInManager SignInManager
 @{
     ViewData["Title"] = "ثبت نام";
+    var externalSchemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+    var returnUrl = ViewContext.HttpContext.Request.Query["returnUrl"].ToString();
 }
 
 <div class="card mt-5">
-    <div class="card-header">
-        <h5 class="card-title">@ViewData["Title"]</h5>
+    <div class="card-header d-flex justify-content-between align-items-center">
+	    <h5 class="card-title">@ViewData["Title"]</h5>
+	    @if (externalSchemes?.Any() == true)
+	    {
+		    <small class="text-muted">همچنین می‌توانید با شبکه‌های اجتماعی ثبت‌نام کنید</small>
+	    }
     </div>
     <div class="card-body">
         <form asp-controller="Register"
@@ -78,8 +85,21 @@
                 </div>
             </div>
             <div class="form-group row">
-                <div class="offset-md-2 col-md-10">
-                    <button type="submit" class="btn btn-info col-md-2">ثبت نام</button>
+                <div class="offset-md-2 col-md-10 d-flex flex-wrap gap-2 align-items-center">
+	                <button type="submit" class="btn btn-info col-md-2">ثبت نام</button>
+	                @foreach (var p in externalSchemes)
+	                {
+		                <a class="btn btn-outline-secondary btn-sm"
+		                   asp-area="@AreaConstants.IdentityArea"
+		                   asp-controller="ExternalLogin"
+		                   asp-action="Challenge"
+		                   asp-route-provider="@p.Name"
+		                   asp-route-returnUrl="@returnUrl">
+			                <i class="fas fa-plug"></i>
+			                ثبت نام با @p.DisplayName
+		                </a>
+	                }
+	                }
                 </div>
             </div>
         </form>
