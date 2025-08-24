@@ -6,6 +6,12 @@ using DNTCommon.Web.Core;
 using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
+
+const string externalLoginErrorRedirectBase = "/Identity/Login?externalError=";
+const string externalLoginErrorGoogle = "GoogleRemoteFailure";
+const string externalLoginErrorMicrosoft = "MicrosoftRemoteFailure";
+const string externalLoginErrorGitHub = "GitHubRemoteFailure";
+
 ConfigureLogging(builder.Logging, builder.Environment, builder.Configuration);
 ConfigureServices(builder.Services, builder.Configuration, builder.Environment);
 var webApp = builder.Build();
@@ -65,7 +71,8 @@ static void ConfigureExternalProviders(AuthenticationBuilder auth, IConfiguratio
             options.Scope.Add("email");
             options.Events.OnRemoteFailure = ctx =>
             {
-                ctx.Response.Redirect("/Identity/Login?externalError=" + Uri.EscapeDataString(ctx.Failure?.Message ?? "GoogleRemoteFailure"));
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorGoogle);
                 ctx.HandleResponse();
                 return Task.CompletedTask;
             };
@@ -83,7 +90,8 @@ static void ConfigureExternalProviders(AuthenticationBuilder auth, IConfiguratio
             options.SaveTokens = true;
             options.Events.OnRemoteFailure = ctx =>
             {
-                ctx.Response.Redirect("/Identity/Login?externalError=" + Uri.EscapeDataString(ctx.Failure?.Message ?? "MicrosoftRemoteFailure"));
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorMicrosoft);
                 ctx.HandleResponse();
                 return Task.CompletedTask;
             };
@@ -103,7 +111,8 @@ static void ConfigureExternalProviders(AuthenticationBuilder auth, IConfiguratio
             options.Scope.Add("user:email");
             options.Events.OnRemoteFailure = ctx =>
             {
-                ctx.Response.Redirect("/Identity/Login?externalError=" + Uri.EscapeDataString(ctx.Failure?.Message ?? "GitHubRemoteFailure"));
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorGitHub);
                 ctx.HandleResponse();
                 return Task.CompletedTask;
             };
