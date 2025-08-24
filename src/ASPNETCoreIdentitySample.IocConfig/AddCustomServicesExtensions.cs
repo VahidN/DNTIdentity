@@ -1,6 +1,4 @@
-using System.Security.Claims;
-using System.Security.Principal;
-using ASPNETCoreIdentitySample.DataLayer.Context;
+﻿using ASPNETCoreIdentitySample.DataLayer.Context;
 using ASPNETCoreIdentitySample.Entities.Identity;
 using ASPNETCoreIdentitySample.Services.Contracts.Identity;
 using ASPNETCoreIdentitySample.Services.Identity;
@@ -9,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace ASPNETCoreIdentitySample.IocConfig;
 
@@ -65,6 +65,7 @@ public static class AddCustomServicesExtensions
         services.AddScoped<ISecurityTrimmingService, SecurityTrimmingService>();
         services.AddScoped<IAppLogItemsService, AppLogItemsService>();
 
+        services.AddScoped<IExternalLoginService, ExternalLoginService>();
         return services;
     }
 }

@@ -7,6 +7,7 @@ public class SiteSettings
 {
     public AdminUserSeed AdminUserSeed { get; set; }
     public Logging Logging { get; set; }
+    public OAuthOptions Authentication { get; set; }
     public SmtpConfig Smtp { get; set; }
     public Connectionstrings ConnectionStrings { get; set; }
     public bool EnableEmailConfirmation { get; set; }

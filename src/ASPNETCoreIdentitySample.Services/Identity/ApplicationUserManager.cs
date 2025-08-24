@@ -59,7 +59,11 @@ public class ApplicationUserManager(
 
         if (result.Succeeded)
         {
-            await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
+            // Skip adding to used passwords when there is no local password (external login scenario)
+            if (!string.IsNullOrWhiteSpace(user?.PasswordHash))
+            {
+                await _usedPasswordsService.AddToUsedPasswordsListAsync(user);
+            }
         }
 
         return result;

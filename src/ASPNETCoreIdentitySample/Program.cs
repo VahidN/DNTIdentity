@@ -3,8 +3,15 @@ using ASPNETCoreIdentitySample.Services.Identity.Logger;
 using ASPNETCoreIdentitySample.ViewModels.Identity.Settings;
 using DNTCaptcha.Core;
 using DNTCommon.Web.Core;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
+
+const string externalLoginErrorRedirectBase = "/Identity/Login?externalError=";
+const string externalLoginErrorGoogle = "GoogleRemoteFailure";
+const string externalLoginErrorMicrosoft = "MicrosoftRemoteFailure";
+const string externalLoginErrorGitHub = "GitHubRemoteFailure";
+
 ConfigureLogging(builder.Logging, builder.Environment, builder.Configuration);
 ConfigureServices(builder.Services, builder.Configuration, builder.Environment);
 var webApp = builder.Build();
@@ -36,11 +43,81 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
             .WithEncryptionKey(key: "This is my secure key!");
     });
 
+    var authBuilder = services.AddAuthentication();
+    ConfigureExternalProviders(authBuilder, configuration);
+
     services.AddCloudscribePagination();
     services.AddWebOptimizerServices();
 
     services.AddControllersWithViews(options => { options.Filters.Add<ApplyCorrectYeKeFilterAttribute>(); });
     services.AddRazorPages();
+}
+
+static void ConfigureExternalProviders(AuthenticationBuilder auth, IConfiguration configuration)
+{
+    static bool Has(string v) => !string.IsNullOrWhiteSpace(v);
+    var siteSettings = configuration.Get<SiteSettings>();
+
+    var googleClientId = siteSettings.Authentication.Google.ClientId;
+    var googleClientSecret = siteSettings.Authentication.Google.ClientSecret;
+    if (Has(googleClientId) && Has(googleClientSecret) && siteSettings.Authentication.Google.Enabled)
+    {
+        auth.AddGoogle(options =>
+        {
+            options.ClientId = googleClientId!;
+            options.ClientSecret = googleClientSecret!;
+            options.SaveTokens = true;
+            options.Scope.Add("profile");
+            options.Scope.Add("email");
+            options.Events.OnRemoteFailure = ctx =>
+            {
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorGoogle);
+                ctx.HandleResponse();
+                return Task.CompletedTask;
+            };
+        });
+    }
+
+    var msClientId = siteSettings.Authentication.Microsoft.ClientId;
+    var msClientSecret = siteSettings.Authentication.Microsoft.ClientSecret;
+    if (Has(msClientId) && Has(msClientSecret) && siteSettings.Authentication.Microsoft.Enabled)
+    {
+        auth.AddMicrosoftAccount(options =>
+        {
+            options.ClientId = msClientId!;
+            options.ClientSecret = msClientSecret!;
+            options.SaveTokens = true;
+            options.Events.OnRemoteFailure = ctx =>
+            {
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorMicrosoft);
+                ctx.HandleResponse();
+                return Task.CompletedTask;
+            };
+        });
+    }
+
+    var ghClientId = siteSettings.Authentication.GitHub.ClientId;
+    var ghClientSecret = siteSettings.Authentication.GitHub.ClientSecret;
+    if (Has(ghClientId) && Has(ghClientSecret) && siteSettings.Authentication.GitHub.Enabled)
+    {
+        auth.AddGitHub(options =>
+        {
+            options.ClientId = ghClientId!;
+            options.ClientSecret = ghClientSecret!;
+            options.SaveTokens = true;
+            options.Scope.Add("read:user");
+            options.Scope.Add("user:email");
+            options.Events.OnRemoteFailure = ctx =>
+            {
+                // Avoid exposing raw ctx.Failure?.Message to end users
+                ctx.Response.Redirect(externalLoginErrorRedirectBase + externalLoginErrorGitHub);
+                ctx.HandleResponse();
+                return Task.CompletedTask;
+            };
+        });
+    }
 }
 
 void ConfigureLogging(ILoggingBuilder logging, IHostEnvironment env, IConfiguration configuration)

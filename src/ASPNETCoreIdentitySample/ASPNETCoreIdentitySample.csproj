@@ -16,10 +16,13 @@
     <ProjectReference Include="..\ASPNETCoreIdentitySample.IocConfig\ASPNETCoreIdentitySample.IocConfig.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNet.Security.OAuth.GitHub" />
     <PackageReference Include="DNTBreadCrumb.Core" />
     <PackageReference Include="DNTCaptcha.Core" />
     <PackageReference Include="DNTCommon.Web.Core" />
     <PackageReference Include="LigerShark.WebOptimizer.Core" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
